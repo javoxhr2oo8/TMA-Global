@@ -3,7 +3,15 @@ useColorMode()
 </script>
 
 <template>
-  <div class="min-h-screen bg-olive-300 dark:bg-gray-900 transition-colors duration-300">
+  <div class="app bg-olive-300 dark:bg-gray-900 transition-colors duration-300">
     <NuxtLayout />
   </div>
 </template>
+<!-- min-h-screen -->
+<style>
+.app {
+  overflow-y: auto !important;
+  height: 100vh !important;
+  padding-top: 50px;
+}
+</style>
