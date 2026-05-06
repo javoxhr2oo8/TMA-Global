@@ -12,6 +12,6 @@ useColorMode()
 .app {
   overflow-y: auto !important;
   height: 100vh !important;
-  padding-top: 80px;
+  padding-top: 130px;
 }
 </style>
