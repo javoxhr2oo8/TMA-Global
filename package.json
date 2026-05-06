@@ -1,0 +1,25 @@
+{
+  "name": "itech-plus",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "0.11.3",
+    "nuxt": "^4.4.4",
+    "pinia": "^3.0.4",
+    "swiper": "^12.1.4",
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.2.8"
+  }
+}
