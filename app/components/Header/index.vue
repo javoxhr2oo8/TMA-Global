@@ -19,7 +19,7 @@ function toggle() {
                 </div>
 
                 <div class="profile-image w-[45px] h-[45px] flex items-center">
-                    <button class="text-[25px]" @click="toggle()"><i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i></button>
+                    <!-- <button class="text-[25px]" @click="toggle()"><i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i></button> -->
                     <img class="rounded-[50%] border-2 border-solid dark:border-white"
                         src="https://yt3.googleusercontent.com/r0N4Sbmx37gzhs8htds1sNzRs6CX-o8gqqe_ZOUI3QxcvZT2akDAbFiz-c1s3UlWmikU2mwNAQ=s900-c-k-c0x00ffffff-no-rj"
                         alt="">
