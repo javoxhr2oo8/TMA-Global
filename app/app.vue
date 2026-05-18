@@ -1,5 +1,20 @@
 <script setup lang="ts">
+const route = useRoute();
+const router = useRouter();
+const { showBackButton, hideBackButton } = useTelegram();
 useColorMode()
+
+watch(
+    () => route.path,
+    (path) => {
+        if (path === '/') {
+            hideBackButton();
+        } else {
+            showBackButton(() => router.back());
+        }
+    },
+    { immediate: true }
+);
 </script>
 
 <template>

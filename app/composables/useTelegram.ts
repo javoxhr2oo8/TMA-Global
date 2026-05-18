@@ -39,6 +39,13 @@ interface TelegramWebApp {
         onClick: (callback: () => void) => void;
         offClick: (callback: () => void) => void;
     };
+    BackButton: {
+        isVisible: boolean;
+        show: () => void;
+        hide: () => void;
+        onClick: (callback: () => void) => void;
+        offClick: (callback: () => void) => void;
+    };
     HapticFeedback: {
         notificationOccurred: (type: HapticNotificationType) => void;
         impactOccurred: (style: HapticImpactStyle) => void;
@@ -65,6 +72,8 @@ interface UseTelegramReturn {
     hapticNotification: (type: HapticNotificationType) => void;
     hapticImpact: (style?: HapticImpactStyle) => void;
     setHeaderColor: (color: string) => void;
+    showBackButton: (onClick: () => void) => void;
+    hideBackButton: () => void;
     isReady: boolean;
     initData: string;
     themeParams: TelegramThemeParams;
@@ -102,8 +111,31 @@ export const useTelegram = (): UseTelegramReturn => {
     };
 
     const setHeaderColor = (color: string): void => {
+        tg?.setHeaderColor(color);
+    };
+
+    // Хранит текущий колбэк, чтобы можно было снять его перед заменой
+    let backButtonCallback: (() => void) | null = null;
+
+    const showBackButton = (onClick: () => void): void => {
         if (tg) {
-            tg.setHeaderColor(color);
+            // Снимаем предыдущий обработчик если есть
+            if (backButtonCallback) {
+                tg.BackButton.offClick(backButtonCallback);
+            }
+            backButtonCallback = onClick;
+            tg.BackButton.onClick(backButtonCallback);
+            tg.BackButton.show();
+        }
+    };
+
+    const hideBackButton = (): void => {
+        if (tg) {
+            if (backButtonCallback) {
+                tg.BackButton.offClick(backButtonCallback);
+                backButtonCallback = null;
+            }
+            tg.BackButton.hide();
         }
     };
 
@@ -116,6 +148,8 @@ export const useTelegram = (): UseTelegramReturn => {
         hapticNotification,
         hapticImpact,
         setHeaderColor,
+        showBackButton,
+        hideBackButton,
         isReady: !!tg,
         initData: tg?.initData ?? '',
         themeParams: tg?.themeParams ?? {}
