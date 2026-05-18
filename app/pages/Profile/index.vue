@@ -16,7 +16,7 @@
               alt=""
             />
 
-            <img v-else :src="user.photo_url" alt="">
+            <img v-else :src="user.photo_url" alt="" class="w-24 h-24 rounded-full border-4 border-[#008236] object-cover">
 
             <div
               class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#00c853] border-2 border-[#17212b]"
