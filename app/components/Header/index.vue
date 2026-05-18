@@ -10,8 +10,8 @@ function toggle() {
 
 <template>
     <header>
-        <div class="header-top">
-            <h3><i class="fas fa-truck"></i> Tezkor buyurtma xizmati</h3>
+        <div class="header-top flex items-center justify-center p-[10px] bg-[#008236] rounded-b-[12px]">
+            <h3 class="text-white"><i class="fas fa-truck"></i> Tezkor buyurtma xizmati</h3>
         </div>
         <div class="container !mt-[10px]">
             <div class="header-wrapper flex items-center justify-between">
@@ -53,16 +53,5 @@ function toggle() {
 
 .logo img {
     width: 200px;
-}
-
-.header-top {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #008236;
-    padding: 10px 0;
-    color: #fff;
-    border-radius: 0 0 12px 12px;
 }
 </style>
