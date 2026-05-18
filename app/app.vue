@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const router = useRouter();
-const { showBackButton, hideBackButton, setHeaderColor } = useTelegram();
+const { showBackButton, hideBackButton, setHeaderColor, expand } = useTelegram();
 useColorMode()
 
 watch(
@@ -19,6 +19,7 @@ watch(
 );
 
 onMounted(()=> {
+  expand()
   setHeaderColor('#008236')
 })
 </script>
@@ -32,8 +33,9 @@ onMounted(()=> {
 <!-- min-h-screen -->
 <style>
 .app {
-  overflow-y: auto !important;
-  height: 100vh !important;
+  height: 100%;
+  /* overflow-y: auto !important;
+  height: 100vh !important; */
   /* padding-top: 100px; */
 }
 </style>

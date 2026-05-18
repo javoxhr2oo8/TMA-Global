@@ -53,6 +53,8 @@ interface TelegramWebApp {
     close: () => void;
     showAlert: (message: string, callback?: () => void) => void;
     setHeaderColor: (color: string) => void;
+    expand: () => void;
+    isExpanded: boolean;
 }
 
 declare global {
@@ -74,6 +76,7 @@ interface UseTelegramReturn {
     setHeaderColor: (color: string) => void;
     showBackButton: (onClick: () => void) => void;
     hideBackButton: () => void;
+    expand: () => void;
     isReady: boolean;
     initData: string;
     themeParams: TelegramThemeParams;
@@ -114,12 +117,10 @@ export const useTelegram = (): UseTelegramReturn => {
         tg?.setHeaderColor(color);
     };
 
-    // Хранит текущий колбэк, чтобы можно было снять его перед заменой
     let backButtonCallback: (() => void) | null = null;
 
     const showBackButton = (onClick: () => void): void => {
         if (tg) {
-            // Снимаем предыдущий обработчик если есть
             if (backButtonCallback) {
                 tg.BackButton.offClick(backButtonCallback);
             }
@@ -139,6 +140,10 @@ export const useTelegram = (): UseTelegramReturn => {
         }
     };
 
+    const expand = (): void => {
+        tg?.expand();
+    };
+
     return {
         tg,
         user,
@@ -150,6 +155,7 @@ export const useTelegram = (): UseTelegramReturn => {
         setHeaderColor,
         showBackButton,
         hideBackButton,
+        expand,
         isReady: !!tg,
         initData: tg?.initData ?? '',
         themeParams: tg?.themeParams ?? {}
