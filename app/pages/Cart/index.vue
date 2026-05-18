@@ -12,11 +12,11 @@ const totalPrice = computed(() => {
 </script>
 
 <template>
-  <div class="cart min-h-screen bg-gradient-to-b from-[#08110d] via-[#0d1b14] to-[#07100c] pb-28">
+  <div class="cart min-h-screen bg-gradient-to-b from-[#0e1621] via-[#0e1621] to-[#0e1621] pb-28 pt-[10px]">
     <div class="container py-5">
 
       <!-- HEADER -->
-      <div class="mb-5 rounded-3xl border border-white/5 bg-white/5 backdrop-blur-xl p-5">
+      <div class="mb-5 rounded-[10px] border border-white/5 bg-white/5 backdrop-blur-xl p-5">
         <div class="flex items-center justify-between gap-4">
 
           <div>
@@ -60,7 +60,7 @@ const totalPrice = computed(() => {
               Mahsulotlar
             </p>
 
-            <h3 class="text-white text-2xl font-bold">
+            <h3 class="text-white text-[20px] font-bold">
               {{ items.length }}
             </h3>
           </div>
@@ -70,7 +70,7 @@ const totalPrice = computed(() => {
               Umumiy
             </p>
 
-            <h3 class="text-[#00c853] text-2xl font-bold">
+            <h3 class="text-[#00c853] text-[20px] font-bold">
               {{ totalPrice || 0 }} uzs
             </h3>
           </div>
@@ -178,7 +178,7 @@ const totalPrice = computed(() => {
     width: 100%;
     position: fixed;
     bottom: 0;
-    padding: 10px;
+    padding: 20px;
     left: 0;
     background: #08110d;
 }
