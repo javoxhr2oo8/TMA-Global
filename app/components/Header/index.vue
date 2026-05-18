@@ -9,8 +9,11 @@ function toggle() {
 </script>
 
 <template>
-    <header class="pt-[10px]">
-        <div class="container">
+    <header>
+        <div class="header-top">
+            <h3><i class="fas fa-truck"></i> Tezkor buyurtma xizmati</h3>
+        </div>
+        <div class="container !mt-[10px]">
             <div class="header-wrapper flex items-center justify-between">
                 <div class="logo">
                     <div class="flex items-center gap-[10px] text-[30px]">
@@ -50,5 +53,16 @@ function toggle() {
 
 .logo img {
     width: 200px;
+}
+
+.header-top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #008236;
+    padding: 10px 0;
+    color: #fff;
+    border-radius: 0 0 12px 12px;
 }
 </style>
