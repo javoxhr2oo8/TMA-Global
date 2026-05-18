@@ -19,7 +19,7 @@ function toggle() {
                 </div>
 
                 <NuxtLink to="/profile" @click="hapticImpact('light')">
-                    <div class="profile-image w-[60px] h-[60px] flex items-center">
+                    <div class="profile-image w-[55px] h-[55px] flex items-center">
                         <!-- <button class="text-[25px]" @click="toggle()"><i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i></button> -->
                         <img v-if="user?.photo_url" :src="user.photo_url" alt="User Avatar"
                             class="user-avatar rounded-full border-4 border-[#008236] object-cover"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const router = useRouter();
-const { showBackButton, hideBackButton } = useTelegram();
+const { showBackButton, hideBackButton, setHeaderColor } = useTelegram();
 useColorMode()
 
 watch(
@@ -15,6 +15,10 @@ watch(
     },
     { immediate: true }
 );
+
+onMounted(()=> {
+  setHeaderColor('#008236')
+})
 </script>
 
 <template>
