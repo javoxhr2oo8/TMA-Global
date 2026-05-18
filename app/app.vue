@@ -9,8 +9,10 @@ watch(
     (path) => {
         if (path === '/') {
             hideBackButton();
+            setHeaderColor('#008236')
         } else {
             showBackButton(() => router.back());
+            setHeaderColor('#101828')
         }
     },
     { immediate: true }
