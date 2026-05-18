@@ -12,6 +12,7 @@
   </component>
 </template>
 
+
 <script setup>
 const { hapticImpact } = useTelegram()
 const props = defineProps({
