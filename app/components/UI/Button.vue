@@ -1,16 +1,11 @@
 <template>
-  <component
-    :is="tag === 'button' ? 'button' : 'NuxtLink'"
-    :to="to"
-    :disabled="disabled"
+  <component :is="tag === 'button' ? 'button' : 'NuxtLink'" :to="to" :disabled="disabled"
     class="btn relative cursor-pointer inline-flex items-center justify-center overflow-hidden font-medium transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:pointer-events-none"
     :class="[
       variantClasses[variant],
       sizeClasses[size],
       customClass
-    ]"
-    @mousedown="createRipple"
-  >
+    ]" @mousedown="createRipple" @click="hapticImpact('light')">
     <span class="content-flex relative z-10 pointer-events-none">
       <slot />
     </span>
@@ -18,6 +13,7 @@
 </template>
 
 <script setup>
+const { hapticImpact } = useTelegram()
 const props = defineProps({
   tag: { type: String, default: 'button' },
   to: { type: String, default: null },
@@ -54,7 +50,7 @@ const createRipple = (event) => {
   ripple.style.width = ripple.style.height = `${size}px`;
   ripple.style.left = `${x}px`;
   ripple.style.top = `${y}px`;
-  
+
   ripple.className = 'absolute rounded-full bg-white/30 pointer-events-none animate-ripple z-0';
 
   const prevRipple = button.querySelector('.animate-ripple');
@@ -72,6 +68,7 @@ const createRipple = (event) => {
     transform: scale(0);
     opacity: 1;
   }
+
   to {
     transform: scale(4);
     opacity: 0;
