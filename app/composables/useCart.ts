@@ -40,9 +40,13 @@ export const useCart = () => {
   }
 
   const updateQuantity = (id: number, quantity: number) => {
-    const item = items.value.find(i => i.id === id)
-    if (!item) return
-    quantity <= 0 ? removeItem(id) : (item.quantity = quantity)
+    if (quantity <= 0) {
+      removeItem(id)
+      return
+    }
+    const index = items.value.findIndex(i => i.id === id)
+    if (index === -1) return
+    items.value[index] = { ...items.value[index], quantity } as CartItem
   }
 
   const clearCart = () => {
@@ -66,7 +70,7 @@ export const useCart = () => {
   )
 
   return {
-    items: readonly(items),
+    items,
     addItem,
     removeItem,
     updateQuantity,

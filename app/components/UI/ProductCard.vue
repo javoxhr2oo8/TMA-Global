@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { ref, computed } from 'vue'
 import Button from '~/components/UI/Button.vue'
 
@@ -43,7 +44,6 @@ const handleMinus = () => {
 }
 
 const handlePlus = () => {
-    if (quantity.value >= (props.product.quantity ?? Infinity)) return
     updateQuantity(props.product.id, quantity.value + 1)
 }
 </script>
@@ -103,8 +103,7 @@ const handlePlus = () => {
                     <i class="fa-solid fa-minus"></i>
                 </Button>
                 <span class="text-[13px] text-white font-semibold text-[18px]">{{ quantity }}</span>
-                <Button @click="handlePlus" :disabled="quantity >= (product.quantity ?? Infinity)"
-                    class="w-full text-[16px] !p-[3px]">
+                <Button @click="handlePlus" class="w-full text-[16px] !p-[3px]">
                     <i class="fa-solid fa-plus"></i>
                 </Button>
             </div>
