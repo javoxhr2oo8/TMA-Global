@@ -18,6 +18,9 @@ export default defineNuxtConfig({
           crossorigin: 'anonymous',
           referrerpolicy: 'no-referrer'
         }
+      ],
+      script: [
+        { src: 'https://telegram.org/js/telegram-web-app.js', defer: true }
       ]
     }
   },
