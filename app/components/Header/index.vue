@@ -9,7 +9,7 @@ function toggle() {
 </script>
 
 <template>
-    <header>
+    <header class="pt-[10px]">
         <div class="container">
             <div class="header-wrapper flex items-center justify-between">
                 <div class="logo">
