@@ -10,11 +10,13 @@
         <div class="flex items-center gap-4">
 
           <div class="relative">
-            <img
+            <img v-if="!user?.photo_url"
               src="https://telegram.org/img/t_logo.png"
               class="w-24 h-24 rounded-full border-4 border-[#008236] object-cover"
               alt=""
             />
+
+            <img v-else :src="user.photo_url" alt="">
 
             <div
               class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#00c853] border-2 border-[#17212b]"
@@ -23,28 +25,25 @@
 
           <div class="flex-1">
             <h1 class="text-[24px] font-bold">
-              {{ firstName }}
+              {{ user.first_name ? user.first_name : firstName }}
             </h1>
 
             <p class="text-gray-400 mt-1">
-              @{{ username }}
+              @{{ user.username ? user.username : username }}
             </p>
 
             <div
               class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#008236]/15 text-[#39ff88] text-sm"
             >
               <i class="fa-solid fa-id-card"></i>
-              {{ tgId }}
+              {{ user.id ? user.id :tgId }}
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- MENU -->
       <div class="!mt-5 flex flex-col gap-3">
-
-        <!-- SAVAT -->
         <Button
           class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"
         >
@@ -75,7 +74,6 @@
           </div>
         </Button>
 
-        <!-- FAVORITES -->
         <Button
           class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"
         >
@@ -106,7 +104,6 @@
           </div>
         </Button>
 
-        <!-- CHANNEL -->
         <Button
           class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"
         >
@@ -137,7 +134,6 @@
           </div>
         </Button>
 
-        <!-- GROUP -->
         <Button
           class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"
         >
@@ -180,4 +176,5 @@ import Button from '~/components/UI/Button.vue';
 const firstName = 'Javokhir'
 const username = 'javokhir'
 const tgId = '123456789'
+const { user, hapticImpact } = useTelegram()
 </script>

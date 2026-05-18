@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from '~/components/UI/Button.vue';
 const { isDark, setPreference } = useColorMode()
-const { user } = useTelegram()
+const { user, hapticImpact } = useTelegram()
 
 function toggle() {
     setPreference(isDark.value ? 'light' : 'dark')
@@ -18,7 +18,7 @@ function toggle() {
                     </div>
                 </div>
 
-                <NuxtLink to="/profile">
+                <NuxtLink to="/profile" @click="hapticImpact('light')">
                     <div class="profile-image w-[45px] h-[45px] flex items-center">
                         <!-- <button class="text-[25px]" @click="toggle()"><i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i></button> -->
                         <img v-if="user?.photo_url" :src="user.photo_url" alt="User Avatar"
