@@ -25,18 +25,18 @@
 
           <div class="flex-1">
             <h1 class="text-[24px] font-bold">
-              {{ user.first_name ? user.first_name : firstName }}
+              {{ user?.first_name ? user?.first_name : firstName }}
             </h1>
 
             <p class="text-gray-400 mt-1">
-              @{{ user.username ? user.username : username }}
+              @{{ user?.username ? user?.username : username }}
             </p>
 
             <div
               class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#008236]/15 text-[#39ff88] text-sm"
             >
               <i class="fa-solid fa-id-card"></i>
-              {{ user.id ? user.id :tgId }}
+              {{ user?.id ? user?.id :tgId }}
             </div>
           </div>
 
