@@ -13,7 +13,7 @@
           640: { slidesPerView: 2, spaceBetween: 20 },
           1024: { slidesPerView: 3, spaceBetween: 24 }
         }"
-        class="w-full"
+        class="w-full h-[150px]"
       >
         <swiper-slide v-for="(item, index) in slides" :key="index">
           <div class="rounded-[10px] overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative">
@@ -48,7 +48,7 @@ import 'swiper/css/pagination'
 const modules = [Navigation, Pagination, Autoplay]
 
 const slides = [
-  { title: 'Slide 1', image: 'https://www.outdoor-rus.ru/news/2021/img/11-23.jpg' },
+  { title: 'Slide 1', image: 'https://img.freepik.com/premium-photo/beautiful-mixes-race-woman-holding-shopping-bags-smiling_204996-1035.jpg?semt=ais_hybrid&w=740' },
   { title: 'Slide 2', image: 'https://avatars.mds.yandex.net/i?id=13e248bcb56e8c28c088103d129ece0b5a227ba2-4316934-images-thumbs&n=13' },
   { title: 'Slide 3', image: 'https://i.ytimg.com/vi/dSwUUQwrenY/maxresdefault.jpg' },
   { title: 'Slide 4', image: 'https://uznews.uz/storage/uploads/68/12/97/file_6812970d60152_orig.jpg' },

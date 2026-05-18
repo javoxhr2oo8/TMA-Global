@@ -12,12 +12,15 @@ interface Product {
     image: string
     badge?: string
     isFavorite?: boolean
-    isDeliveryFree?: boolean
+    isDeliveryFree?: boolean,
+    quantity?: number
 }
 
 const props = defineProps<{
     product: Product
 }>()
+
+const { addItem, removeItem, isInCart, updateQuantity, items } = useCart()
 
 const isFav = ref(props.product.isFavorite ?? false)
 
@@ -25,19 +28,36 @@ const discount = computed(() => {
     if (!props.product.oldPrice) return null
     return Math.round((1 - props.product.price / props.product.oldPrice) * 100)
 })
+
+// Текущий товар в корзине
+const cartItem = computed(() => items.value.find(i => i.id === props.product.id))
+const inCart = computed(() => isInCart(props.product.id))
+const quantity = computed(() => cartItem.value?.quantity ?? 0)
+
+const handleAdd = () => {
+    addItem(props.product)
+}
+
+const handleMinus = () => {
+    updateQuantity(props.product.id, quantity.value - 1)
+}
+
+const handlePlus = () => {
+    if (quantity.value >= (props.product.quantity ?? Infinity)) return
+    updateQuantity(props.product.id, quantity.value + 1)
+}
 </script>
 
 <template>
-    <div
-        class="group relative h-full flex flex-col overflow-hidden rounded-[12px] 
+    <div class="group relative h-full flex flex-col overflow-hidden rounded-[12px] 
                border border-white/20 dark:border-white/10 
                bg-white/40 dark:bg-white/5 backdrop-blur-[20px] 
                hover:bg-white/60 dark:hover:bg-white/10 transition-all duration-500 shadow-xl">
-        
+
         <div class="relative h-[200px] flex-shrink-0 overflow-hidden bg-gray-200/20">
             <img :src="props.product.image" :alt="props.product.title"
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            
+
             <div class="absolute top-3 left-3 flex flex-col gap-1.5">
                 <span v-if="discount"
                     class="bg-white/20 backdrop-blur-xl border border-white/30 text-gray-900 dark:text-white text-[10px] font-bold px-2 py-0.5 rounded-lg">
@@ -45,8 +65,7 @@ const discount = computed(() => {
                 </span>
             </div>
 
-            <Button 
-                @click.stop="isFav = !isFav"
+            <Button @click.stop="isFav = !isFav"
                 class="!absolute top-3 right-3 !w-9 !h-9 !p-0 !rounded-full !bg-white/20 dark:!bg-black/20 !backdrop-blur-xl !border-white/30 flex items-center justify-center">
                 <i :class="isFav ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart text-gray-700 dark:text-white'"
                     class="text-[13px]"></i>
@@ -67,16 +86,28 @@ const discount = computed(() => {
             <div class="mt-auto flex items-end justify-between pt-2 border-t border-gray-200/30 dark:border-white/5">
                 <div class="flex flex-col">
                     <span class="text-[16px] font-bold text-gray-900 dark:text-white leading-none">
-                        {{ props.product.price.toLocaleString() }} <span class="text-[11px] font-normal opacity-60">сум</span>
+                        {{ props.product.price.toLocaleString() }} <span
+                            class="text-[11px] font-normal opacity-60">сум</span>
                     </span>
                 </div>
-
             </div>
-            <Button 
-                class="!p-0 !mt-[10px] !rounded-xl !bg-blue-600 hover:!bg-blue-500 !shadow-lg !shadow-blue-500/20">
+
+            <Button v-if="!inCart" @click="handleAdd"
+                class="!p-0 !mt-[10px] !rounded-xl !bg-green-700 hover:!bg-green-800 !shadow-lg">
                 <i class="fa-solid fa-cart-shopping text-white text-sm"></i>
-                Savatag +
+                Savatga +
             </Button>
+
+            <div v-else class="add-rem-quan-btns !mt-[10px] flex gap-[10px] items-center">
+                <Button @click="handleMinus" class="w-full text-[16px] !p-[3px]">
+                    <i class="fa-solid fa-minus"></i>
+                </Button>
+                <span class="text-[13px] text-white font-semibold text-[18px]">{{ quantity }}</span>
+                <Button @click="handlePlus" :disabled="quantity >= (product.quantity ?? Infinity)"
+                    class="w-full text-[16px] !p-[3px]">
+                    <i class="fa-solid fa-plus"></i>
+                </Button>
+            </div>
         </div>
     </div>
 </template>
@@ -92,7 +123,6 @@ const discount = computed(() => {
     inset: 0;
     border-radius: 24px;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent, rgba(255,255,255,0.1));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;

@@ -28,7 +28,7 @@ const props = defineProps({
 });
 
 const variantClasses = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800',
+  primary: 'bg-green-700 text-white hover:bg-green-800 active:bg-green-900',
   secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300',
   outline: 'border-2 border-blue-600 text-blue-600 hover:bg-blue-50',
   dark: 'bg-black text-white hover:bg-zinc-900'

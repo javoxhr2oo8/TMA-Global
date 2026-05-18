@@ -21,8 +21,8 @@ const activeId = ref(1)
                         <li v-for="cat in categories" :key="cat.id" @click="activeId = cat.id" :class="[
                             'cursor-pointer px-4 py-2 rounded-full text-[14px] font-medium whitespace-nowrap transition-all duration-200 select-none',
                             activeId === cat.id
-                                ? 'bg-blue-600 text-white shadow-md'
-                                : 'text-blue-400 hover:text-blue-500'
+                                ? 'bg-green-600 text-white shadow-md'
+                                : 'text-green-600 hover:text-green-500'
                         ]" :style="activeId !== cat.id ? { background: 'rgba(37, 99, 235, 0.1)' } : {}">
                             {{ cat.label }}
                         </li>

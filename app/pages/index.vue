@@ -5,7 +5,7 @@ import AppSwiper from '~/components/UI/AppSwiper.vue';
 <template>
     <div>
         <Header/>
-        <AppSwiper/>
+        <AppSwiper v-if="false"/>
         <Categories/>
         <Main/>
     </div>
