@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Button from '~/components/UI/Button.vue';
 const { isDark, setPreference } = useColorMode()
+const { user } = useTelegram()
 
 function toggle() {
-  setPreference(isDark.value ? 'light' : 'dark')
+    setPreference(isDark.value ? 'light' : 'dark')
 }
 </script>
 
@@ -19,8 +20,10 @@ function toggle() {
 
                 <div class="profile-image w-[45px] h-[45px] flex items-center">
                     <!-- <button class="text-[25px]" @click="toggle()"><i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i></button> -->
-                    <img class="rounded-[50%] border-2 border-solid dark:border-white"
-                        src="https://www.clipartmax.com/png/full/258-2582267_circled-user-male-skin-type-1-2-icon-male-user-icon.png"
+                    <img v-if="user?.photo_url" :src="user.photo_url" alt="User Avatar" class="user-avatar"
+                        @error="(e: Event) => ((e.target as HTMLImageElement).src = 'https://via.placeholder.com/40')" />
+                    <img v-else
+                        src="https://cdn3.iconfinder.com/data/icons/basicolor-essentials/24/051_user_profile_avatar-1024.png"
                         alt="">
 
                 </div>
