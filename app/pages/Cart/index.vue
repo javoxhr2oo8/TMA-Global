@@ -1,6 +1,7 @@
 <script setup>
 import Button from '~/components/UI/Button.vue'
 import ProductCard from '~/components/UI/ProductCard.vue'
+import { formatPrice } from '@/utils/util'
 
 const { items } = useCart()
 
@@ -71,7 +72,7 @@ const totalPrice = computed(() => {
             </p>
 
             <h3 class="text-[#00c853] text-[20px] font-bold">
-              {{ totalPrice || 0 }} uzs
+              {{ formatPrice(totalPrice) }}
             </h3>
           </div>
         </div>
@@ -81,7 +82,7 @@ const totalPrice = computed(() => {
       <!-- EMPTY -->
       <div
         v-if="items.length === 0"
-        class="empty-card"
+        class="empty-card !mt-[10px]"
       >
 
         <div class="empty-icon">
@@ -123,7 +124,7 @@ const totalPrice = computed(() => {
         />
       </div>
 
-      <div class="order-btn-wrp">
+      <div class="order-btn-wrp" v-if="items.length">
         <Button class="w-full">
             <i class="fas fa-truck"></i>
             Buyurtma berish
@@ -143,7 +144,7 @@ const totalPrice = computed(() => {
 .empty-card {
   width: 100%;
   min-height: 70vh;
-  border-radius: 30px;
+  border-radius: 10px;
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.05);
 
