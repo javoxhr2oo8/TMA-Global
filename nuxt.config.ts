@@ -24,6 +24,16 @@ export default defineNuxtConfig({
       ]
     }
   },
+  runtimeConfig: {
+    public: {
+      firebaseApiKey: '',
+      firebaseAuthDomain: '',
+      firebaseProjectId: '',
+      firebaseStorageBucket: '',
+      firebaseMessagingSenderId: '',
+      firebaseAppId: ''
+    }
+  },
   modules: ['@pinia/nuxt'],
   vite: {
     plugins: [tailwindcss()],

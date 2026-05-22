@@ -1,6 +1,9 @@
 <!-- pages/index.vue -->
 <script setup lang="ts">
+import { useRandomCollection } from '~/composables/useRandomCollection'
+const { data, loading, fetchRandom } = useRandomCollection('products')
 import ProductCard from '../UI/ProductCard.vue';
+
 const products = [
   {
     id: 1,
@@ -93,12 +96,14 @@ const products = [
     quantity: 7,
   },
 ]
+
+onMounted(() => fetchRandom(20))
 </script>
 
 <template>
   <div class="container py-8">
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <ProductCard v-for="product in products" :key="product.id" :product="product" />
+      <ProductCard v-for="product in data" :key="product.id" :product="product" />
     </div>
   </div>
 </template>
