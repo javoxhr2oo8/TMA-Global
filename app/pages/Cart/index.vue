@@ -1,5 +1,6 @@
 <script setup>
 import Button from '~/components/UI/Button.vue'
+import BackButton from '~/components/UI/BackButton.vue'
 import ProductCard from '~/components/UI/ProductCard.vue'
 import { formatPrice } from '@/utils/util'
 
@@ -15,6 +16,12 @@ const totalPrice = computed(() => {
 <template>
   <div class="cart min-h-screen bg-gradient-to-b from-[#0e1621] via-[#0e1621] to-[#0e1621] pb-28 pt-[10px]">
     <div class="container py-5">
+
+      <!-- BACK -->
+      <div class="mb-4 flex items-center gap-3">
+        <BackButton />
+        <span class="text-base font-medium text-white/80">Orqaga</span>
+      </div>
 
       <!-- HEADER -->
       <div class="mb-5 rounded-[10px] border border-white/5 bg-white/5 backdrop-blur-xl p-5">

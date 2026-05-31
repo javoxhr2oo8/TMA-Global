@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from "@/components/UI/Button.vue"
+import BackButton from "@/components/UI/BackButton.vue"
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination } from 'swiper/modules'
 
@@ -55,9 +56,7 @@ const formatPrice = (price: number) => {
                 </Swiper>
 
                 <div class="absolute left-0 top-0 z-20 flex w-full items-center justify-between p-4">
-                    <Button class="!h-11 !w-11 !rounded-full !border !border-white/10 !bg-black/40 !p-0 backdrop-blur">
-                        <i class="fa-solid fa-arrow-left text-sm" />
-                    </Button>
+                    <BackButton class="!h-11 !w-11 !border-white/10 !bg-black/40" />
 
                     <Button class="!h-11 !w-11 !rounded-full !border !border-white/10 !bg-black/40 !p-0 text-[#22c55e] backdrop-blur">
                         <i class="fa-regular fa-heart text-sm" />

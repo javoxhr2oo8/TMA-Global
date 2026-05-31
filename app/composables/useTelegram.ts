@@ -55,6 +55,8 @@ interface TelegramWebApp {
     setHeaderColor: (color: string) => void;
     expand: () => void;
     isExpanded: boolean;
+    version: string;
+    isVersionAtLeast: (version: string) => boolean;
 }
 
 declare global {
@@ -77,6 +79,7 @@ interface UseTelegramReturn {
     showBackButton: (onClick: () => void) => void;
     hideBackButton: () => void;
     expand: () => void;
+    isVersionAtLeast: (version: string) => boolean;
     isReady: boolean;
     initData: string;
     themeParams: TelegramThemeParams;
@@ -89,6 +92,18 @@ export const useTelegram = (): UseTelegramReturn => {
 
     const user: TelegramUser | undefined = tg?.initDataUnsafe?.user;
 
+    // Telegram metodlari versiyaga bog'liq. Masalan setHeaderColor,
+    // BackButton va HapticFeedback faqat 6.1+ da bor. 6.0 da chaqirilsa
+    // "not supported in version 6.0" ogohlantirishi chiqadi — shuning
+    // uchun har bir chaqiruvni versiya bilan tekshiramiz.
+    const isVersionAtLeast = (version: string): boolean => {
+        if (!tg) return false;
+        if (typeof tg.isVersionAtLeast === 'function') {
+            return tg.isVersionAtLeast(version);
+        }
+        return parseFloat(tg.version ?? '6.0') >= parseFloat(version);
+    };
+
     const closeApp = (): void => {
         tg?.close();
     };
@@ -98,10 +113,12 @@ export const useTelegram = (): UseTelegramReturn => {
     };
 
     const hapticNotification = (type: HapticNotificationType): void => {
+        if (!isVersionAtLeast('6.1')) return;
         tg?.HapticFeedback.notificationOccurred(type);
     };
 
     const hapticImpact = (style: HapticImpactStyle = 'light'): void => {
+        if (!isVersionAtLeast('6.1')) return;
         tg?.HapticFeedback.impactOccurred(style);
     };
 
@@ -114,13 +131,14 @@ export const useTelegram = (): UseTelegramReturn => {
     };
 
     const setHeaderColor = (color: string): void => {
+        if (!isVersionAtLeast('6.1')) return;
         tg?.setHeaderColor(color);
     };
 
     let backButtonCallback: (() => void) | null = null;
 
     const showBackButton = (onClick: () => void): void => {
-        if (tg) {
+        if (tg && isVersionAtLeast('6.1')) {
             if (backButtonCallback) {
                 tg.BackButton.offClick(backButtonCallback);
             }
@@ -131,7 +149,7 @@ export const useTelegram = (): UseTelegramReturn => {
     };
 
     const hideBackButton = (): void => {
-        if (tg) {
+        if (tg && isVersionAtLeast('6.1')) {
             if (backButtonCallback) {
                 tg.BackButton.offClick(backButtonCallback);
                 backButtonCallback = null;
@@ -156,6 +174,7 @@ export const useTelegram = (): UseTelegramReturn => {
         showBackButton,
         hideBackButton,
         expand,
+        isVersionAtLeast,
         isReady: !!tg,
         initData: tg?.initData ?? '',
         themeParams: tg?.themeParams ?? {}
