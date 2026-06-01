@@ -20,7 +20,7 @@ const totalPrice = computed(() => {
   >
     <div class="container py-5">
       <!-- BACK -->
-      <div class="pb-4 flex items-center gap-3">
+      <div class="mb-4 flex items-center gap-3">
         <BackButton />
         <span class="text-base font-medium text-white/80">Orqaga</span>
       </div>

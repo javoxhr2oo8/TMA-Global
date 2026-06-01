@@ -2,119 +2,42 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRandomCollection } from '~/composables/useRandomCollection'
+import { demoProducts } from '~/utils/products'
 import ProductCard from '../UI/ProductCard.vue';
 
 const { data, loading, fetchRandom } = useRandomCollection('products')
+const { activeCategory } = useCategory()
 
-const products = [
-  {
-    id: 1,
-    title: 'Nike Air Max 270 React ENG кроссовки',
-    price: 1_250_000,
-    oldPrice: 1_800_000,
-    rating: 4.5,
-    reviewCount: 238,
-    image: 'https://avatars.mds.yandex.net/get-mpic/11771522/2a000001957ef635e9998504c280688c16aa/orig',
-    badge: 'Хит',
-    isDeliveryFree: true,
-    quantity: 7,
-    desc: 'Кроссовки Nike Air Max 270 React ENG сочетают в себе стиль и комфорт. Верх из легкого материала обеспечивает вентиляцию, а амортизационная система Air Max 270 React гарантирует мягкую посадку и поддержку на протяжении всего дня.',
-  },
-  {
-    id: 2,
-    title: 'Samsung Galaxy A55 5G 8/256GB',
-    price: 4_990_000,
-    oldPrice: 5_500_000,
-    rating: 4,
-    reviewCount: 95,
-    image: 'https://avatars.mds.yandex.net/i?id=f32cc4878317e7bf2f7619f2b6c59e2f8197efa6-10841731-images-thumbs&n=13',
-    isDeliveryFree: false,
-    quantity: 3,
-  },
-  {
-    id: 3,
-    title: 'Adidas Ultraboost 22 Running Shoes',
-    price: 980_000,
-    rating: 5,
-    reviewCount: 412,
-    image: 'https://avatars.mds.yandex.net/i?id=0359f7850750ad34045d50aeb9117ba2b397378e-12923554-images-thumbs&n=13',
-    badge: 'Новинка',
-    isDeliveryFree: true,
-    quantity: 8,
-  },
-  {
-    id: 4,
-    title: 'Apple AirPods Pro 2nd Generation',
-    price: 3_200_000,
-    oldPrice: 3_800_000,
-    rating: 4.5,
-    reviewCount: 178,
-    image: 'https://www.obstore.ru/upload/iblock/acc/qano738sjrtwqdge0o5bqfz1bp1ovezr.jpg',
-    isDeliveryFree: true,
-  },
-  {
-    id: 5,
-    title: 'Apple watch Ultra 49mm',
-    price: 1_250_000,
-    oldPrice: 1_800_000,
-    rating: 4.5,
-    reviewCount: 238,
-    image: 'https://avatars.mds.yandex.net/i?id=43dadeb84fec312c658e3490629af1991a9c3564-6609300-images-thumbs&n=13',
-    badge: 'Хит',
-    isDeliveryFree: true,
-    quantity: 5,
-  },
-  {
-    id: 6,
-    title: 'Ipad 9 gen 128gb',
-    price: 4_990_000,
-    oldPrice: 5_500_000,
-    rating: 4,
-    reviewCount: 95,
-    image: 'https://i.ebayimg.com/images/g/Q10AAOSwTo1k1SoJ/s-l1600.jpg',
-    isDeliveryFree: false,
-    quantity: 7,
-  },
-  {
-    id: 7,
-    title: 'X box Series X 1TB Black Edition',
-    price: 980_000,
-    rating: 5,
-    reviewCount: 412,
-    image: 'https://main-cdn.sbermegamarket.ru/big1/hlr-system/ccs/262622/WEJPWFNFUklFU1hfMjBfNzgwODM1Nzg4/b0.jpg',
-    badge: 'Новинка',
-    isDeliveryFree: true,
-    quantity: 2,
-  },
-  {
-    id: 8,
-    title: 'PlayStation 5 Slim 825GB',
-    price: 3_200_000,
-    oldPrice: 3_800_000,
-    rating: 4.5,
-    reviewCount: 178,
-    image: 'https://avatars.mds.yandex.net/get-mpic/5320264/2a00000191c3761f1e8d18bec236f3acb465/450x600',
-    isDeliveryFree: true,
-    quantity: 7,
-  },
-]
-
-/*
-  Firebase'dan ma'lumot kelsa — o'shani ko'rsatamiz.
-  Agar config bo'sh bo'lsa yoki kolleksiya bo'sh bo'lsa (data.length === 0),
-  demo mahsulotlar ko'rinadi, shunda grid hech qachon bo'sh qolmaydi.
-*/
-const list = computed(() =>
-  data.value && data.value.length ? data.value : products
+// Firebase'dan ma'lumot kelsa o'shani, bo'lmasa demo mahsulotlarni manba qilamiz
+const source = computed(() =>
+  data.value && data.value.length ? data.value : demoProducts
 )
+
+// Tanlangan kategoriya bo'yicha filtrlash ('Barchasi' = hammasi)
+const list = computed(() => {
+  if (activeCategory.value === 'Barchasi') return source.value
+  return source.value.filter((p: any) => p.category === activeCategory.value)
+})
 
 onMounted(() => fetchRandom(20))
 </script>
 
 <template>
   <div class="container py-8">
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div
+      v-if="list.length"
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
       <ProductCard v-for="product in list" :key="product.id" :product="product" />
+    </div>
+
+    <!-- Bo'sh holat -->
+    <div v-else class="flex flex-col items-center justify-center py-16 text-center">
+      <div class="w-20 h-20 rounded-3xl bg-green-600/10 flex items-center justify-center mb-4">
+        <i class="fa-solid fa-box-open text-green-500 text-3xl"></i>
+      </div>
+      <h3 class="text-white text-lg font-semibold">Bu kategoriyada mahsulot yo'q</h3>
+      <p class="text-gray-400 text-sm mt-1">Boshqa kategoriyani tanlab ko'ring</p>
     </div>
   </div>
 </template>
