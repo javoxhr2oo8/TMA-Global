@@ -1,8 +1,10 @@
-<!-- pages/index.vue -->
+<!-- components/Main/index.vue -->
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRandomCollection } from '~/composables/useRandomCollection'
-const { data, loading, fetchRandom } = useRandomCollection('products')
 import ProductCard from '../UI/ProductCard.vue';
+
+const { data, loading, fetchRandom } = useRandomCollection('products')
 
 const products = [
   {
@@ -50,7 +52,7 @@ const products = [
     image: 'https://www.obstore.ru/upload/iblock/acc/qano738sjrtwqdge0o5bqfz1bp1ovezr.jpg',
     isDeliveryFree: true,
   },
-    {
+  {
     id: 5,
     title: 'Apple watch Ultra 49mm',
     price: 1_250_000,
@@ -97,13 +99,22 @@ const products = [
   },
 ]
 
+/*
+  Firebase'dan ma'lumot kelsa — o'shani ko'rsatamiz.
+  Agar config bo'sh bo'lsa yoki kolleksiya bo'sh bo'lsa (data.length === 0),
+  demo mahsulotlar ko'rinadi, shunda grid hech qachon bo'sh qolmaydi.
+*/
+const list = computed(() =>
+  data.value && data.value.length ? data.value : products
+)
+
 onMounted(() => fetchRandom(20))
 </script>
 
 <template>
   <div class="container py-8">
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <ProductCard v-for="product in data" :key="product.id" :product="product" />
+      <ProductCard v-for="product in list" :key="product.id" :product="product" />
     </div>
   </div>
 </template>

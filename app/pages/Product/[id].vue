@@ -28,6 +28,10 @@ const product = {
 }
 
 const { addItem, isInCart, updateQuantity, items } = useCart()
+const { toggleItem: toggleFav, isFavorite } = useFavorites()
+
+const isFav = computed(() => isFavorite(product.id))
+const handleFav = () => toggleFav(product)
 
 const cartItem = computed(() => items.value.find(i => i.id === product.id))
 const inCart = computed(() => isInCart(product.id))
@@ -58,8 +62,8 @@ const formatPrice = (price: number) => {
                 <div class="absolute left-0 top-0 z-20 flex w-full items-center justify-between p-4">
                     <BackButton class="!h-11 !w-11 !border-white/10 !bg-black/40" />
 
-                    <Button class="!h-11 !w-11 !rounded-full !border !border-white/10 !bg-black/40 !p-0 text-[#22c55e] backdrop-blur">
-                        <i class="fa-regular fa-heart text-sm" />
+                    <Button @click="handleFav" class="!h-11 !w-11 !rounded-full !border !border-white/10 !bg-black/40 !p-0 backdrop-blur">
+                        <i :class="isFav ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart text-[#22c55e]'" class="text-sm" />
                     </Button>
                 </div>
 

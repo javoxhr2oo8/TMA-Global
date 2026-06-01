@@ -25,6 +25,10 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
+    // server-only (maxfiy) — faqat serverda o'qiladi, klientga chiqmaydi
+    botToken: '',                 // NUXT_BOT_TOKEN
+    adminChatId: '',              // NUXT_ADMIN_CHAT_ID
+    firebaseServiceAccount: '',   // NUXT_FIREBASE_SERVICE_ACCOUNT (ixtiyoriy, JSON string)
     public: {
       firebaseApiKey: '',
       firebaseAuthDomain: '',
@@ -43,5 +47,5 @@ export default defineNuxtConfig({
   },
   ssr: false,
   css: ['~/assets/css/main.css'],
-  devtools: { enabled: true }
+  devtools: { enabled: false }
 })

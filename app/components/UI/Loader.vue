@@ -1,62 +1,63 @@
 <template>
-    <div class="loader-wrapper">
-        <span class="loader"></span>
-    </div>
+  <div class="loader-wrapper">
+    <span class="loader"></span>
+  </div>
 </template>
 
 <style>
 .loader-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #101828e3;
-    backdrop-filter: blur(12px);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #101828e3;
+  backdrop-filter: blur(12px);
+  z-index: 9999;
 }
 .loader {
-    width: 48px;
-    height: 48px;
-    border: 10px solid #FFF;
-    border-radius: 50%;
-    position: relative;
-    transform: rotate(45deg);
-    box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  border: 10px solid #fff;
+  border-radius: 50%;
+  position: relative;
+  transform: rotate(45deg);
+  box-sizing: border-box;
 }
 
 .loader::before {
-    content: "";
-    position: absolute;
-    box-sizing: border-box;
-    inset: -10px;
-    border-radius: 50%;
-    border: 10px solid #008236;
-    animation: prixClipFix 2s infinite linear;
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+  inset: -10px;
+  border-radius: 50%;
+  border: 10px solid #008236;
+  animation: prixClipFix 2s infinite linear;
 }
 
 @keyframes prixClipFix {
-    0% {
-        clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0)
-    }
+  0% {
+    clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+  }
 
-    25% {
-        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0)
-    }
+  25% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+  }
 
-    50% {
-        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%)
-    }
+  50% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+  }
 
-    75% {
-        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%)
-    }
+  75% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+  }
 
-    100% {
-        clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0)
-    }
+  100% {
+    clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  }
 }
 </style>

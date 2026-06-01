@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import Button from '~/components/UI/Button.vue'
 
 interface Product {
@@ -21,8 +21,10 @@ const props = defineProps<{
 }>()
 
 const { addItem, removeItem, isInCart, updateQuantity, items } = useCart()
+const { toggleItem: toggleFav, isFavorite } = useFavorites()
 
-const isFav = ref(props.product.isFavorite ?? false)
+const isFav = computed(() => isFavorite(props.product.id))
+const handleFav = () => toggleFav(props.product)
 
 const discount = computed(() => {
     if (!props.product.oldPrice) return null
@@ -84,7 +86,7 @@ const handlePlus = () => updateQuantity(props.product.id, quantity.value + 1)
 
         <div class="px-[10px] pb-[10px] flex flex-col gap-[10px]">
 
-            <Button @click="isFav = !isFav"
+            <Button @click="handleFav"
                 class="!absolute top-3 right-3 !w-9 !h-9 !p-0 !rounded-full !bg-white/20 dark:!bg-black/20 !backdrop-blur-xl !border-white/30 flex items-center justify-center">
                 <i :class="isFav ? 'fa-solid fa-heart text-red-500' : 'fa-regular fa-heart text-gray-700 dark:text-white'"
                     class="text-[13px]"></i>

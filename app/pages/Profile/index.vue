@@ -76,27 +76,29 @@
           </Button>
         </NuxtLink>
 
-        <Button
-          class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"
-        >
-          <div class="flex items-center justify-between w-full">
-            <div class="flex items-center gap-4">
-              <div
-                class="w-12 h-12 rounded-2xl bg-pink-500/15 flex items-center justify-center"
-              >
-                <i class="fa-solid fa-heart text-pink-400 text-lg"></i>
+        <NuxtLink to="/favorites">
+          <Button
+            class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"
+          >
+            <div class="flex items-center justify-between w-full">
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-12 h-12 rounded-2xl bg-pink-500/15 flex items-center justify-center"
+                >
+                  <i class="fa-solid fa-heart text-pink-400 text-lg"></i>
+                </div>
+
+                <div class="text-left">
+                  <h3 class="font-semibold text-[16px]">Sevimlilar</h3>
+
+                  <p class="text-sm text-gray-400">Saqlanganlar</p>
+                </div>
               </div>
 
-              <div class="text-left">
-                <h3 class="font-semibold text-[16px]">Sevimlilar</h3>
-
-                <p class="text-sm text-gray-400">Saqlanganlar</p>
-              </div>
+              <i class="fa-solid fa-chevron-right text-gray-500"></i>
             </div>
-
-            <i class="fa-solid fa-chevron-right text-gray-500"></i>
-          </div>
-        </Button>
+          </Button>
+        </NuxtLink>
 
         <Button
           class="!block !p-[10px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200"

@@ -51,6 +51,7 @@ interface TelegramWebApp {
         impactOccurred: (style: HapticImpactStyle) => void;
     };
     close: () => void;
+    sendData: (data: string) => void;
     showAlert: (message: string, callback?: () => void) => void;
     setHeaderColor: (color: string) => void;
     expand: () => void;
@@ -71,6 +72,7 @@ interface UseTelegramReturn {
     tg: TelegramWebApp | null;
     user: TelegramUser | undefined;
     closeApp: () => void;
+    sendData: (data: string) => void;
     showAlert: (message: string) => void;
     showMainButton: (text: string, onClick: () => void) => void;
     hapticNotification: (type: HapticNotificationType) => void;
@@ -108,8 +110,22 @@ export const useTelegram = (): UseTelegramReturn => {
         tg?.close();
     };
 
+    // Buyurtma ma'lumotini Telegram bot'ga yuboradi (web_app_data update).
+    // Diqqat: sendData faqat Mini App reply-keyboard tugmasi orqali ochilganda
+    // ishlaydi va yuborgandan keyin ilovani avtomatik yopadi. Limit ~4096 bayt.
+    const sendData = (data: string): void => {
+        tg?.sendData(data);
+    };
+
     const showAlert = (message: string): void => {
-        tg?.showAlert(message);
+        // tg.showAlert faqat Bot API 6.2+ da bor. Eski versiyalarda
+        // "WebAppMethodUnsupported" xatosi tashlanadi — shuning uchun
+        // versiyani tekshirib, bo'lmasa oddiy alert'ga tushamiz.
+        if (tg && isVersionAtLeast('6.2')) {
+            tg.showAlert(message);
+        } else if (import.meta.client) {
+            window.alert(message);
+        }
     };
 
     const hapticNotification = (type: HapticNotificationType): void => {
@@ -166,6 +182,7 @@ export const useTelegram = (): UseTelegramReturn => {
         tg,
         user,
         closeApp,
+        sendData,
         showAlert,
         showMainButton,
         hapticNotification,
