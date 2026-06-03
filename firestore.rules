@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // MAHSULOTLAR
+    // - read: hammaga ochiq (do'kon mahsulotlarni ko'rsatishi uchun)
+    // - write: faqat tizimga kirgan admin (admin panel orqali) yoza oladi
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // BUYURTMALAR
+    // Server (service account) orqali yoziladi va u qoidalarni chetlab o'tadi.
+    // Klientdan to'g'ridan-to'g'ri kirish taqiqlangan.
+    match /orders/{orderId} {
+      allow read, write: if false;
+    }
+
+    // Boshqa hamma narsa — taqiq
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,30 +1,17 @@
 // plugins/firebase.client.ts
-import { initializeApp, getApps } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
+import { getDb, getFirebaseApp } from '~/composables/useFirebase'
 
 export default defineNuxtPlugin(() => {
-    const config = useRuntimeConfig()
+  const app = getFirebaseApp()
+  const firestore = getDb()
+  const auth = getAuth(app)
 
-    console.log('Firebase config:', config.public) // 👈 добавь это
-
-    const firebaseConfig = {
-        apiKey: config.public.firebaseApiKey,
-        authDomain: config.public.firebaseAuthDomain,
-        projectId: config.public.firebaseProjectId,
-        storageBucket: config.public.firebaseStorageBucket,
-        messagingSenderId: config.public.firebaseMessagingSenderId,
-        appId: config.public.firebaseAppId
-    }
-
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig)
-    const firestore = getFirestore(app)
-    const auth = getAuth(app)
-
-    return {
-        provide: {
-            firestore,
-            auth
-        }
-    }
+  return {
+    provide: {
+      firebaseApp: app,
+      firestore,
+      auth,
+    },
+  }
 })

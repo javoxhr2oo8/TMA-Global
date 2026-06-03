@@ -1,22 +1,8 @@
 // app/composables/useProduct.ts
-import { initializeApp, getApps } from 'firebase/app'
-import { getFirestore, doc, getDoc, type Firestore } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
+import { getDb } from '~/composables/useFirebase'
 import { useStore } from '~/store/store'
 import { findDemoProduct } from '~/utils/products'
-
-const getFirestoreInstance = (): Firestore => {
-  const config = useRuntimeConfig()
-  const firebaseConfig = {
-    apiKey: config.public.firebaseApiKey,
-    authDomain: config.public.firebaseAuthDomain,
-    projectId: config.public.firebaseProjectId,
-    storageBucket: config.public.firebaseStorageBucket,
-    messagingSenderId: config.public.firebaseMessagingSenderId,
-    appId: config.public.firebaseAppId,
-  }
-  const app = getApps().length ? getApps()[0]! : initializeApp(firebaseConfig)
-  return getFirestore(app)
-}
 
 export const useProduct = () => {
   const product = ref<any | null>(null)
@@ -27,22 +13,19 @@ export const useProduct = () => {
     loading.value = true
     store.loader = true
     try {
-      const config = useRuntimeConfig()
+      const db = getDb()
+      const snap = await getDoc(doc(db, 'products', String(id)))
 
-      // Firebase sozlangan bo'lsa — Firestore'dan hujjatni olamiz
-      if (config.public.firebaseProjectId) {
-        const db = getFirestoreInstance()
-        const snap = await getDoc(doc(db, 'products', String(id)))
-        if (snap.exists()) {
-          product.value = { id: snap.id, ...snap.data() }
-          return
-        }
+      if (snap.exists()) {
+        product.value = { id: snap.id, ...snap.data() }
+        console.log(`[Firestore] products/${id} olindi`)
+      } else {
+        // Firestore'da topilmasa — zaxira (demo). Xohlasangiz bu qatorni olib tashlang.
+        console.warn(`[Firestore] products/${id} topilmadi, demo'ga tushildi`)
+        product.value = findDemoProduct(id)
       }
-
-      // Firebase bo'sh yoki hujjat topilmasa — demo mahsulotga tushamiz
-      product.value = findDemoProduct(id)
     } catch (e) {
-      console.error('Product fetch error:', e)
+      console.error('[Firestore] mahsulotni o\'qishda xato:', e)
       product.value = findDemoProduct(id)
     } finally {
       loading.value = false

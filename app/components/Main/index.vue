@@ -2,16 +2,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRandomCollection } from '~/composables/useRandomCollection'
-import { demoProducts } from '~/utils/products'
-import ProductCard from '../UI/ProductCard.vue';
+import ProductCard from '../UI/ProductCard.vue'
 
 const { data, loading, fetchRandom } = useRandomCollection('products')
 const { activeCategory } = useCategory()
 
-// Firebase'dan ma'lumot kelsa o'shani, bo'lmasa demo mahsulotlarni manba qilamiz
-const source = computed(() =>
-  data.value && data.value.length ? data.value : demoProducts
-)
+// Manba — FAQAT Firebase'dan kelgan ma'lumot
+const source = computed(() => data.value ?? [])
 
 // Tanlangan kategoriya bo'yicha filtrlash ('Barchasi' = hammasi)
 const list = computed(() => {
@@ -36,8 +33,12 @@ onMounted(() => fetchRandom(20))
       <div class="w-20 h-20 rounded-3xl bg-green-600/10 flex items-center justify-center mb-4">
         <i class="fa-solid fa-box-open text-green-500 text-3xl"></i>
       </div>
-      <h3 class="text-white text-lg font-semibold">Bu kategoriyada mahsulot yo'q</h3>
-      <p class="text-gray-400 text-sm mt-1">Boshqa kategoriyani tanlab ko'ring</p>
+      <h3 class="text-white text-lg font-semibold">
+        {{ loading ? 'Yuklanmoqda...' : 'Mahsulot topilmadi' }}
+      </h3>
+      <p class="text-gray-400 text-sm mt-1">
+        {{ loading ? 'Iltimos kuting' : "Firebase'da mahsulot yo'q yoki kategoriya bo'sh" }}
+      </p>
     </div>
   </div>
 </template>
