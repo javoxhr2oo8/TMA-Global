@@ -126,8 +126,8 @@ const closeModal = () => {
 };
 
 const onSave = async (data: Record<string, any>) => {
-  if (!data.title || !data.image || !data.price) {
-    notify("Nomi, narxi va rasm shart.", true);
+  if (!data.title || !data.images?.length || !data.price) {
+    notify("Nomi, narxi va kamida 1 ta rasm shart.", true);
     return;
   }
   saving.value = true;

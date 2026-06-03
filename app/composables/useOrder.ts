@@ -36,6 +36,7 @@ export const useOrder = () => {
         hapticNotification('success')
         showAlert(`Buyurtmangiz qabul qilindi!\nRaqam: #${res.orderId}`)
         clearCart()
+        await navigateTo('/')
         return
       }
 
@@ -45,6 +46,7 @@ export const useOrder = () => {
       hapticNotification('success')
       showAlert("Buyurtmangiz qabul qilindi! (test rejimi)")
       clearCart()
+      await navigateTo('/')
     } catch (e: any) {
       console.error('Order error:', e)
       hapticNotification('error')
