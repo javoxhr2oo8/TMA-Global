@@ -19,6 +19,9 @@ const fmt = (n: any) => Number(n || 0).toLocaleString('ru-RU')
         {{ fmt(product.price) }} <span class="text-[11px] font-normal">so'm</span>
         <s v-if="product.oldPrice" class="text-[#94a3b8] font-normal text-xs ml-1.5">{{ fmt(product.oldPrice) }}</s>
       </div>
+      <div v-if="product.quantity != null" class="text-[12px] text-[#94a3b8]">
+        Omborda: {{ product.quantity }} ta
+      </div>
     </div>
 
     <div class="flex gap-2 px-3.5 pb-3.5">

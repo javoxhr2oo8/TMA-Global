@@ -5,7 +5,7 @@ import ProductCard from "~/components/UI/ProductCard.vue";
 import { formatPrice } from "@/utils/util";
 
 const { items } = useCart();
-const { placeOrder, submitting } = useOrder();
+const goCheckout = () => navigateTo("/checkout");
 
 const totalPrice = computed(() => {
   return items.value?.reduce((acc, item) => {
@@ -110,9 +110,9 @@ const totalPrice = computed(() => {
       </div>
 
       <div class="order-btn-wrp" v-if="items.length">
-        <Button class="w-full" @click="placeOrder" :disabled="submitting">
+        <Button class="w-full" @click="goCheckout">
           <i class="fas fa-truck"></i>
-          {{ submitting ? "Yuborilmoqda..." : "Buyurtma berish" }}
+          Buyurtma berish
         </Button>
       </div>
     </div>

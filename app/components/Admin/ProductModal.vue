@@ -17,6 +17,12 @@ const emit = defineEmits<{
 }>();
 
 const { uploading, uploadMany } = useImageUpload();
+const { formatMoney, unformatMoney } = useInputMask();
+
+// Narx maydonlari uchun: kiritilganda 3 xonadan bo'sh joy bilan formatlaymiz
+const onMoney = (key: "price" | "oldPrice", e: Event) => {
+  form[key] = formatMoney((e.target as HTMLInputElement).value);
+};
 
 const blank = () => ({
   title: "",
@@ -25,6 +31,7 @@ const blank = () => ({
   category: "Kiyimlar",
   brand: "",
   desc: "",
+  quantity: "",
 });
 const form = reactive<any>(blank());
 const images = ref<string[]>([]); // tayyor URL'lar (yoki data URL)
@@ -40,11 +47,12 @@ watch(
     if (p) {
       Object.assign(form, {
         title: p.title || "",
-        price: p.price ?? "",
-        oldPrice: p.oldPrice ?? "",
+        price: p.price != null ? formatMoney(String(p.price)) : "",
+        oldPrice: p.oldPrice != null ? formatMoney(String(p.oldPrice)) : "",
         category: p.category || "Kiyimlar",
         brand: p.brand || "",
         desc: p.desc || "",
+        quantity: p.quantity ?? "",
       });
       // Eski mahsulotlarda faqat `image` bo'lishi mumkin — uni ham qo'llab-quvvatlaymiz
       if (Array.isArray(p.images) && p.images.length)
@@ -91,7 +99,7 @@ if (img) images.value.unshift(img); // img: string ✅
 };
 
 const onSave = () => {
-  const num = (v: any) => (v === "" || v == null ? null : Number(v));
+  const num = (v: any) => unformatMoney(v);
   const data: Record<string, any> = {
     title: form.title.trim(),
     price: num(form.price) ?? 0,
@@ -100,7 +108,7 @@ const onSave = () => {
     category: form.category,
     brand: form.brand.trim(),
     desc: form.desc.trim(),
-    quantity: 999,
+    quantity: num(form.quantity),
   };
   const oldP = num(form.oldPrice);
   if (oldP != null) data.oldPrice = oldP;
@@ -138,18 +146,22 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
         <div>
           <label :class="labelCls">Narxi (so'm) *</label>
           <input
-            v-model="form.price"
-            type="number"
-            placeholder="1250000"
+            :value="form.price"
+            @input="onMoney('price', $event)"
+            type="text"
+            inputmode="numeric"
+            placeholder="1 250 000"
             :class="inputCls"
           />
         </div>
         <div>
           <label :class="labelCls">Eski narxi</label>
           <input
-            v-model="form.oldPrice"
-            type="number"
-            placeholder="1800000"
+            :value="form.oldPrice"
+            @input="onMoney('oldPrice', $event)"
+            type="text"
+            inputmode="numeric"
+            placeholder="1 800 000"
             :class="inputCls"
           />
         </div>
@@ -251,6 +263,11 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
           <label :class="labelCls">Brend</label>
           <input v-model="form.brand" placeholder="Nike" :class="inputCls" />
         </div>
+      </div>
+
+      <div class="mb-3">
+        <label :class="labelCls">Soni (omborda) — bo'sh qoldirsangiz ko'rsatilmaydi</label>
+        <input v-model="form.quantity" type="number" min="0" placeholder="masalan: 10" :class="inputCls" />
       </div>
 
       <div class="flex gap-2.5 mt-2">

@@ -62,7 +62,7 @@ const handlePlus = () => updateQuantity(props.product.id, quantity.value + 1)
             </div>
 
             <div class="p-[10px] flex flex-col flex-1 min-h-0">
-                <div class="flex items-center gap-1 mb-1.5">
+                <div v-if="props.product.rating" class="flex items-center gap-1 mb-1.5">
                     <i v-for="star in 5" :key="star" class="fa-solid fa-star text-[8px]"
                         :class="star <= Math.round(props.product.rating) ? 'text-amber-400' : 'text-gray-300 dark:text-white/20'"></i>
                     <span class="text-[10px] text-gray-500 dark:text-white/50 ml-1">{{ props.product.rating }}</span>

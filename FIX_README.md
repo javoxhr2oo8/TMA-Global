@@ -127,3 +127,63 @@ Agar baribir saqlanmasa — brauzer DevTools → Console'dagi xatoni o'qing:
 - `permission-denied` → Firestore Rules publish qilinmagan yoki auth yo'q.
 - `storage/unauthorized` yoki `storage/...` → Storage yoqilmagan / Rules yo'q.
 - "DEMO loyiha ishlatilyapti" ogohlantirishi → `.env` hali to'ldirilmagan.
+
+---
+
+## Yangi: Mijoz reytingi (bosiladigan yulduzcha)
+
+Mahsulot sahifasida mijozlar yulduzcha bosib baho beradi; baho Firebase'ga
+saqlanadi va o'rtacha reyting (do'kon kartasi + sahifa) avtomatik yangilanadi.
+
+**Yangi/o'zgargan fayllar:**
+- `app/composables/useRating.ts` — yangi (anonim auth + transaction bilan o'rtacha)
+- `app/pages/product/[id].vue` — bosiladigan yulduzchalar bloki qo'shildi
+- `firestore.rules` — reyting uchun yangilandi
+
+**Ishlashi uchun ALBATTA (Firebase Console):**
+1. Authentication → Sign-in method → **Anonymous** → Enable.
+2. Firestore → **Rules** → yangi `firestore.rules` mazmunini joylang → **Publish**.
+
+Ya'ni: mijoz baho qo'yganda ilova uni Firebase'ga anonim foydalanuvchi sifatida
+kiritadi (parol so'ralmaydi), baho `products/{id}/ratings/{uid}` ga yoziladi va
+mahsulotning `ratingSum`, `reviewCount`, `rating` (o'rtacha) maydonlari yangilanadi.
+Har bir foydalanuvchi bittagina baho qo'yadi va keyin uni o'zgartira oladi.
+
+Agar baho qo'yilmasa va konsolda `auth/operation-not-allowed` chiqsa — Anonymous
+auth yoqilmagan; `permission-denied` chiqsa — yangi rules publish qilinmagan.
+
+---
+
+## Yangi: Checkout (rasmiylashtirish) oynasi
+
+Savatdagi "Buyurtma berish" endi to'g'ridan-to'g'ri yubormaydi — avval `/checkout`
+sahifasiga o'tadi. U yerda mijoz quyidagilarni kiritadi:
+- **Telefon raqam** (majburiy)
+- **Viloyat/shahar** (majburiy)
+- **Manzil** (kuryer tanlansa majburiy; "Olib ketish"da shart emas)
+- **Yetkazib berish usuli** (Kuryer / Olib ketish)
+- **To'lov** (yetkazishda: Naqd / Karta)
+- **Izoh** (ixtiyoriy)
+
+"Buyurtmani tasdiqlash" bosilganda bularning hammasi admin'ga yuboriladi (telefon,
+manzil, usul, to'lov, izoh bilan birga), Firestore'ga ham yoziladi (service account
+sozlangan bo'lsa). To'lov ONLAYN emas — yetkazib berishda olinadi.
+
+**Yangi/o'zgargan fayllar:**
+- `app/pages/checkout/index.vue` — yangi sahifa
+- `app/composables/useOrder.ts` — mijoz ma'lumotini yuboradi
+- `server/api/orders.post.ts` — telefon/manzil/usul/izohni admin xabariga qo'shadi
+- `app/pages/cart/index.vue` — tugma endi /checkout ga olib boradi
+
+---
+
+## Yangi: Input maskalar (Price Mask + Phone Formatter)
+
+- `app/composables/useInputMask.ts` — yangi (maska funksiyalari).
+- **Price Mask** — admin ProductModal'da "Narxi" va "Eski narxi" maydonlari kiritilganda
+  avtomatik 3 xonadan bo'sh joy bilan ajraladi (masalan, `1 250 000`). Saqlashda toza son
+  (1250000) Firestore'ga yoziladi.
+- **Phone Formatter** — checkout sahifasidagi telefon maydoni `+998 XX XXX XX XX` ko'rinishiga
+  keltiriladi va to'liq (9 ta raqam) bo'lishi tekshiriladi.
+
+Qo'shimcha Firebase yoki env sozlamasi shart emas — faqat fayllarni deploy qiling.
