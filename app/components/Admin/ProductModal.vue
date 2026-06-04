@@ -86,9 +86,29 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
 </script>
 
 <template>
-  <div v-if="open" class="fixed inset-0 bg-[#030810]/70 backdrop-blur-sm grid place-items-center z-50 p-[18px]" @click.self="$emit('close')">
-    <div class="w-full max-w-[480px] max-h-[90vh] overflow-y-auto bg-[#101828] border border-white/10 rounded-[20px] p-[22px]">
-      <h2 class="text-[19px] font-bold mb-4">{{ product ? "Mahsulotni tahrirlash" : "Yangi mahsulot" }}</h2>
+  <Transition name="modal">
+    <div
+      v-if="open"
+      class="modal-overlay fixed inset-0 z-50 grid place-items-center bg-[#030810]/70 p-4 backdrop-blur-sm"
+      @click.self="$emit('close')"
+    >
+      <div class="modal-card flex max-h-[90vh] w-full max-w-[480px] flex-col overflow-hidden rounded-[20px] border border-white/10 bg-[#101828] shadow-2xl">
+
+        <!-- HEADER (qotib turadi) -->
+        <div class="flex shrink-0 items-center justify-between gap-3 border-b border-white/10 px-[22px] py-4">
+          <h2 class="text-[19px] font-bold text-white">{{ product ? "Mahsulotni tahrirlash" : "Yangi mahsulot" }}</h2>
+          <button
+            type="button"
+            aria-label="Yopish"
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#94a3b8] transition-colors hover:bg-white/10 hover:text-white active:scale-95"
+            @click="$emit('close')"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- BODY (faqat shu qism scroll bo'ladi — chiroyli scrollbar) -->
+        <div class="modal-body min-h-0 flex-1 overflow-y-auto px-[22px] py-5">
 
       <div class="mb-3">
         <label :class="labelCls">Nomi *</label>
@@ -128,20 +148,79 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
 
       <div class="mb-3">
         <label :class="labelCls">Soni (omborda) — bo'sh qoldirsangiz ko'rsatilmaydi</label>
-        <input v-model="form.quantity" type="number" min="0" placeholder="masalan: 10" :class="inputCls" />
+        <input v-model="form.quantity" type="number" min="0" placeholder="masalan: 10" :class="[inputCls, 'field-number']" />
       </div>
 
-      <div class="flex gap-2.5 mt-2">
-        <button :disabled="saving || uploading"
-          class="flex-[2] py-3 rounded-xl font-bold text-[#031b0e] bg-gradient-to-br from-[#22c55e] to-[#16a34a] cursor-pointer disabled:opacity-60"
-          @click="onSave">
-          {{ saving ? "Saqlanmoqda..." : uploading ? "Rasm yuklanmoqda..." : "Saqlash" }}
-        </button>
-        <button class="flex-1 bg-[#161f33] text-[#eef2f8] border border-white/10 rounded-xl text-[13px] font-semibold cursor-pointer hover:border-white/20 transition-colors"
-          @click="$emit('close')">
-          Bekor qilish
-        </button>
-      </div>
-    </div>
-  </div>
+      </div><!-- /modal-body -->
+
+        <!-- FOOTER (qotib turadi — "Saqlash" har doim ko'rinadi) -->
+        <div class="flex shrink-0 gap-2.5 border-t border-white/10 px-[22px] py-4">
+          <button :disabled="saving || uploading"
+            class="flex-[2] cursor-pointer rounded-xl bg-gradient-to-br from-[#22c55e] to-[#16a34a] py-3 font-bold text-[#031b0e] transition-opacity active:scale-[0.99] disabled:opacity-60"
+            @click="onSave">
+            {{ saving ? "Saqlanmoqda..." : uploading ? "Rasm yuklanmoqda..." : "Saqlash" }}
+          </button>
+          <button class="flex-1 cursor-pointer rounded-xl border border-white/10 bg-[#161f33] text-[13px] font-semibold text-[#eef2f8] transition-colors hover:border-white/20"
+            @click="$emit('close')">
+            Bekor qilish
+          </button>
+        </div>
+
+      </div><!-- /modal-card -->
+    </div><!-- /modal-overlay -->
+  </Transition>
 </template>
+
+<style scoped>
+/* Yumshoq kirish/chiqish animatsiyasi */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+.modal-enter-active .modal-card,
+.modal-leave-active .modal-card {
+  transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+.modal-enter-from .modal-card,
+.modal-leave-to .modal-card {
+  transform: translateY(14px) scale(0.97);
+  opacity: 0;
+}
+
+/* Chiroyli, ingichka scrollbar — faqat body ichida */
+.modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.26);
+  background-clip: padding-box;
+}
+
+/* type=number spinnerlarini olib tashlash */
+.field-number::-webkit-outer-spin-button,
+.field-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.field-number {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+</style>

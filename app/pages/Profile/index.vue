@@ -2,10 +2,7 @@
   <div class="min-h-screen bg-[#0e1621] text-white">
     <div class="px-4 pt-6">
       <!-- BACK -->
-      <div class="pb-6 flex items-center gap-3">
-        <BackButton />
-        <span class="text-base font-medium text-white/80">Orqaga</span>
-      </div>
+      <BackBar class="pb-6" />
 
       <!-- PROFILE -->
       <div class="bg-[#17212b] rounded-[20px] p-5 border border-white/5">
@@ -150,7 +147,7 @@
 
 <script setup>
 import Button from "~/components/UI/Button.vue";
-import BackButton from "~/components/UI/BackButton.vue";
+import BackBar from "~/components/UI/BackBar.vue";
 const firstName = "Javokhir";
 const username = "javokhir";
 const tgId = "123456789";
