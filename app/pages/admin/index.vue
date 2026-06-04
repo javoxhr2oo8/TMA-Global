@@ -14,7 +14,6 @@ const statCats = computed(
 );
 const statSale = computed(() => list.value.filter((p) => p.oldPrice).length);
 
-/* ---------- auth ---------- */
 const loginErr = ref("");
 const loggingIn = ref(false);
 
@@ -53,7 +52,6 @@ const onLogout = async () => {
   await logout();
 };
 
-/* ---------- toast ---------- */
 const toast = reactive({ msg: "", bad: false, show: false });
 let toastTimer: any;
 const notify = (msg: string, bad = false) => {
@@ -64,7 +62,6 @@ const notify = (msg: string, bad = false) => {
   toastTimer = setTimeout(() => (toast.show = false), 2600);
 };
 
-/* ---------- modal ---------- */
 const modalOpen = ref(false);
 const editing = ref<any | null>(null);
 const saving = ref(false);
@@ -73,10 +70,12 @@ const openAdd = () => {
   editing.value = null;
   modalOpen.value = true;
 };
+
 const openEdit = (p: any) => {
   editing.value = p;
   modalOpen.value = true;
 };
+
 const closeModal = () => {
   modalOpen.value = false;
 };
@@ -114,10 +113,7 @@ const onDelete = async (p: any) => {
 };
 
 onMounted(() => {
-  init();
-  setTimeout(() => {
-    if (user.value) load();
-  }, 400);
+  init(() => load())
 });
 </script>
 

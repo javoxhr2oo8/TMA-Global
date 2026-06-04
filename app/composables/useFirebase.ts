@@ -1,12 +1,4 @@
 // app/composables/useFirebase.ts
-// Butun ilova uchun YAGONA Firebase manbasi.
-//
-// DIQQAT: Quyidagi konfiguratsiya — BOSHQA loyiha (king-avto-system).
-// Bu shunchaki demo qulaylik uchun. Mahsulotlaringiz SIZNING Firebase
-// konsolingizda ko'rinishi uchun .env (NUXT_PUBLIC_FIREBASE_*) ga
-// O'ZINGIZNING loyihangiz qiymatlarini yozing. Aks holda ma'lumot demo
-// loyihaga yoziladi yoki ruxsat berilmaydi — va konsolingiz bo'sh ko'rinadi.
-
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
 import { getFirestore, type Firestore } from 'firebase/firestore'
 import { getStorage, type FirebaseStorage } from 'firebase/storage'
@@ -35,6 +27,12 @@ export const getFirebaseConfig = () => {
     )
   }
 
+  console.log('[Firebase Config]', {
+    apiKey: c.firebaseApiKey,
+    projectId: c.firebaseProjectId,
+    appId: c.firebaseAppId,
+  })
+
   return {
     apiKey: c.firebaseApiKey || DEMO_CONFIG.apiKey,
     authDomain: c.firebaseAuthDomain || DEMO_CONFIG.authDomain,
@@ -45,8 +43,16 @@ export const getFirebaseConfig = () => {
   }
 }
 
-export const getFirebaseApp = (): FirebaseApp =>
-  getApps().length ? getApp() : initializeApp(getFirebaseConfig())
+export const getFirebaseApp = (): FirebaseApp => {
+  if (getApps().length) {
+    const app = getApp()
+    console.log('[Firebase] уже инициализирован:', app.options.projectId)
+    return app
+  }
+  const config = getFirebaseConfig()
+  console.log('[Firebase] инициализируется с:', config.projectId)
+  return initializeApp(config)
+}
 
 export const getDb = (): Firestore => getFirestore(getFirebaseApp())
 

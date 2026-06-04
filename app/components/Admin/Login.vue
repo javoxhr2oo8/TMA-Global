@@ -18,7 +18,7 @@ const inputCls =
 </script>
 
 <template>
-  <div class="min-h-screen grid place-items-center p-6">
+  <div class="admin-login min-h-screen grid place-items-center p-6">
     <div
       class="w-full max-w-[380px ] bg-[#101828] border border-white/10 rounded-3xl px-7 py-9"
     >
@@ -65,3 +65,12 @@ const inputCls =
     </div>
   </div>
 </template>
+
+<style scoped>
+.admin-login {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+</style>
