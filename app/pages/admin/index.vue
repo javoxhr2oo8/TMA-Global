@@ -7,44 +7,8 @@ const { products, loading, load, create, update, remove } = useAdminProducts();
 
 const categories = ["Kiyimlar", "Uskunalar", "Oziq ovqatlar", "Xoz tovarlar"];
 
-/* ---------- DEMO rejim: demo@tma.uz / demo1234 ---------- */
-const DEMO_EMAIL = "demo@tma.uz";
-const DEMO_PASSWORD = "demo1234";
-const demoMode = ref(false);
-const demoProducts = ref<any[]>([
-  {
-    id: "d1",
-    title: "Nike Air Max 270",
-    category: "Kiyimlar",
-    brand: "Nike",
-    price: 1250000,
-    oldPrice: 1800000,
-    image: "https://picsum.photos/seed/nike/400",
-  },
-  {
-    id: "d2",
-    title: "Bosch UniversalImpact drel",
-    category: "Uskunalar",
-    brand: "Bosch",
-    price: 890000,
-    image: "https://picsum.photos/seed/bosch/400",
-  },
-  {
-    id: "d3",
-    title: "Premium zaytun moyi 1L",
-    category: "Oziq ovqatlar",
-    brand: "De Cecco",
-    price: 75000,
-    oldPrice: 95000,
-    image: "https://picsum.photos/seed/oil/400",
-  },
-]);
-let demoSeq = 100;
-
-const isAuthed = computed(() => demoMode.value || !!user.value);
-const list = computed(() =>
-  demoMode.value ? demoProducts.value : products.value,
-);
+const isAuthed = computed(() => !!user.value);
+const list = computed(() => products.value);
 const statCats = computed(
   () => new Set(list.value.map((p) => p.category).filter(Boolean)).size,
 );
@@ -64,10 +28,6 @@ const onLogin = async ({
   loginErr.value = "";
   if (!email || !password) {
     loginErr.value = "Email va parolni kiriting.";
-    return;
-  }
-  if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-    demoMode.value = true;
     return;
   }
   loggingIn.value = true;
@@ -90,10 +50,6 @@ const onLogin = async ({
 };
 
 const onLogout = async () => {
-  if (demoMode.value) {
-    demoMode.value = false;
-    return;
-  }
   await logout();
 };
 
@@ -132,19 +88,7 @@ const onSave = async (data: Record<string, any>) => {
   }
   saving.value = true;
   try {
-    if (demoMode.value) {
-      if (editing.value) {
-        const i = demoProducts.value.findIndex(
-          (x) => x.id === editing.value.id,
-        );
-        if (i > -1)
-          demoProducts.value[i] = { ...demoProducts.value[i], ...data };
-        notify("Yangilandi ✓");
-      } else {
-        demoProducts.value.unshift({ id: "d" + ++demoSeq, ...data });
-        notify("Qo'shildi ✓");
-      }
-    } else if (editing.value) {
+    if (editing.value) {
       await update(editing.value.id, data);
       notify("Yangilandi ✓");
     } else {
@@ -153,7 +97,7 @@ const onSave = async (data: Record<string, any>) => {
     }
     closeModal();
   } catch (e: any) {
-    notify("Saqlashda xato: " + e.code, true);
+    notify("Saqlashda xato: " + (e.code || e.message), true);
   } finally {
     saving.value = false;
   }
@@ -162,14 +106,10 @@ const onSave = async (data: Record<string, any>) => {
 const onDelete = async (p: any) => {
   if (!confirm(`"${p.title || "mahsulot"}" o'chirilsinmi?`)) return;
   try {
-    if (demoMode.value) {
-      demoProducts.value = demoProducts.value.filter((x) => x.id !== p.id);
-    } else {
-      await remove(p.id);
-    }
+    await remove(p.id);
     notify("O'chirildi ✓");
   } catch (e: any) {
-    notify("O'chirishda xato: " + e.code, true);
+    notify("O'chirishda xato: " + (e.code || e.message), true);
   }
 };
 
