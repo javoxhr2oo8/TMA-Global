@@ -3,15 +3,22 @@
 import { reactive, ref, computed, onMounted } from "vue";
 import Button from "~/components/UI/Button.vue";
 import BackButton from "~/components/UI/BackButton.vue";
+import UiSelect from "~/components/UI/Select.vue";
 import { formatPrice } from "@/utils/util";
 
 const { items, totalItems, totalPrice } = useCart();
 const { placeOrder, submitting } = useOrder();
 const { formatPhone, phoneDigits } = useInputMask();
 
-// Telefon kiritilganda +998 XX XXX XX XX ko'rinishiga keltiramiz
+// Telefon kiritilganda +998 XX XXX XX XX ko'rinishiga keltiramiz.
+// MUHIM: Vue qiymat o'zgarmaganda (masalan, 10-raqam kesib tashlanganda)
+// DOM input'ni yangilamaydi — shuning uchun el.value ni qo'lda sinxronlaymiz,
+// aks holda ortiqcha raqam ekranda qoladi va cheklanmaydi.
 const onPhone = (e: Event) => {
-  form.phone = formatPhone((e.target as HTMLInputElement).value);
+  const el = e.target as HTMLInputElement;
+  const formatted = formatPhone(el.value);
+  form.phone = formatted;
+  el.value = formatted;
 };
 
 const regions = [
@@ -110,6 +117,7 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
             @input="onPhone($event)"
             type="tel"
             inputmode="tel"
+            maxlength="17"
             placeholder="+998 90 123 45 67"
             :class="inputCls"
           />
@@ -117,10 +125,7 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
 
         <div>
           <label :class="labelCls">Viloyat / shahar *</label>
-          <select v-model="form.region" :class="inputCls">
-            <option value="" disabled>Tanlang…</option>
-            <option v-for="r in regions" :key="r">{{ r }}</option>
-          </select>
+          <UiSelect v-model="form.region" :options="regions" placeholder="Tanlang…" />
         </div>
 
         <div>
@@ -138,15 +143,11 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label :class="labelCls">Yetkazib berish</label>
-            <select v-model="form.delivery" :class="inputCls">
-              <option v-for="d in deliveries" :key="d">{{ d }}</option>
-            </select>
+            <UiSelect v-model="form.delivery" :options="deliveries" />
           </div>
           <div>
             <label :class="labelCls">To'lov (yetkazishda)</label>
-            <select v-model="form.payment" :class="inputCls">
-              <option v-for="p in payments" :key="p">{{ p }}</option>
-            </select>
+            <UiSelect v-model="form.payment" :options="payments" />
           </div>
         </div>
 

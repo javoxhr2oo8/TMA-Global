@@ -57,6 +57,7 @@ interface TelegramWebApp {
     expand: () => void;
     isExpanded: boolean;
     version: string;
+    platform?: string;
     isVersionAtLeast: (version: string) => boolean;
 }
 
@@ -83,6 +84,7 @@ interface UseTelegramReturn {
     expand: () => void;
     isVersionAtLeast: (version: string) => boolean;
     isReady: boolean;
+    isTelegram: boolean;
     initData: string;
     themeParams: TelegramThemeParams;
 }
@@ -93,6 +95,14 @@ export const useTelegram = (): UseTelegramReturn => {
         : null;
 
     const user: TelegramUser | undefined = tg?.initDataUnsafe?.user;
+
+    // Ilova haqiqatan ham Telegram ichida ochilganmi?
+    // telegram-web-app.js skripti brauzerda ham window.Telegram.WebApp ni
+    // yaratadi, lekin u holda platform === 'unknown' va initData bo'sh bo'ladi.
+    // Shu sababli faqat !!tg yetarli emas.
+    const platform: string = tg?.platform ?? 'unknown';
+    const isTelegram: boolean =
+        !!tg && (platform !== 'unknown' || (tg.initData?.length ?? 0) > 0);
 
     // Telegram metodlari versiyaga bog'liq. Masalan setHeaderColor,
     // BackButton va HapticFeedback faqat 6.1+ da bor. 6.0 da chaqirilsa
@@ -193,6 +203,7 @@ export const useTelegram = (): UseTelegramReturn => {
         expand,
         isVersionAtLeast,
         isReady: !!tg,
+        isTelegram,
         initData: tg?.initData ?? '',
         themeParams: tg?.themeParams ?? {}
     };

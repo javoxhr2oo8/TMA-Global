@@ -9,91 +9,93 @@
 // bo'lishi kerak, va firestore.rules yangilangan bo'lishi shart (ratings + reyting
 // maydonlarini yangilashga ruxsat).
 
-import { getAuth, signInAnonymously } from 'firebase/auth'
-import { doc, getDoc, runTransaction } from 'firebase/firestore'
-import { getFirebaseApp, getDb } from '~/composables/useFirebase'
-import { useTelegram } from '~/composables/useTelegram'
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { doc, getDoc, runTransaction } from "firebase/firestore";
+import { getFirebaseApp, getDb } from "~/composables/useFirebase";
+import { useTelegram } from "~/composables/useTelegram";
 
 export const useRating = () => {
-  const { user } = useTelegram()
-  const submitting = ref(false)
+  const { user } = useTelegram();
+  const submitting = ref(false);
 
   const ensureAuth = async () => {
-    const auth = getAuth(getFirebaseApp())
+    const auth = getAuth(getFirebaseApp());
     if (!auth.currentUser) {
-      await signInAnonymously(auth)
+      await signInAnonymously(auth);
     }
-    return auth.currentUser!
-  }
+    return auth.currentUser!;
+  };
 
   // Foydalanuvchining shu mahsulotga qo'ygan bahosini oladi (kirgan bo'lsa).
   // Kirmagan bo'lsa 0 qaytaradi (baho qo'yganda kiradi).
   const getMyRating = async (pid: string): Promise<number> => {
-    const auth = getAuth(getFirebaseApp())
-    const u = auth.currentUser
-    if (!u) return 0
+    const auth = getAuth(getFirebaseApp());
+    const u = auth.currentUser;
+    if (!u) return 0;
     try {
-      const snap = await getDoc(doc(getDb(), 'products', pid, 'ratings', u.uid))
-      return snap.exists() ? Number(snap.data().stars) || 0 : 0
+      const snap = await getDoc(
+        doc(getDb(), "products", pid, "ratings", u.uid),
+      );
+      return snap.exists() ? Number(snap.data().stars) || 0 : 0;
     } catch {
-      return 0
+      return 0;
     }
-  }
+  };
 
   // Baho qo'yadi / yangilaydi. Yangi o'rtacha va sonni qaytaradi.
   const submitRating = async (
     pid: string,
     stars: number,
   ): Promise<{ rating: number; reviewCount: number; myStars: number }> => {
-    if (stars < 1 || stars > 5) throw new Error("Baho 1..5 bo'lishi kerak")
-    submitting.value = true
+    if (stars < 1 || stars > 5) throw new Error("Baho 1..5 bo'lishi kerak");
+    submitting.value = true;
     try {
-      const u = await ensureAuth()
-      const db = getDb()
-      const productRef = doc(db, 'products', pid)
-      const ratingRef = doc(db, 'products', pid, 'ratings', u.uid)
+      const u = await ensureAuth();
+      const db = getDb();
+      const productRef = doc(db, "products", pid);
+      const ratingRef = doc(db, "products", pid, "ratings", u.uid);
 
       const result = await runTransaction(db, async (tx) => {
-        const prodSnap = await tx.get(productRef)
-        const mySnap = await tx.get(ratingRef)
-        const p: any = prodSnap.exists() ? prodSnap.data() : {}
+        const prodSnap = await tx.get(productRef);
+        const mySnap = await tx.get(ratingRef);
+        const p: any = prodSnap.exists() ? prodSnap.data() : {};
 
-        const prevCount = Number(p.reviewCount) || 0
+        const prevCount = Number(p.reviewCount) || 0;
         // ratingSum bo'lmasa, eski rating*reviewCount'dan tiklab olamiz
         const prevSum =
           p.ratingSum != null
             ? Number(p.ratingSum)
-            : (Number(p.rating) || 0) * prevCount
+            : (Number(p.rating) || 0) * prevCount;
 
-        let newSum = prevSum
-        let newCount = prevCount
+        let newSum = prevSum;
+        let newCount = prevCount;
         if (mySnap.exists()) {
           // mavjud bahoni yangilash — son o'zgarmaydi
-          newSum = prevSum - (Number(mySnap.data().stars) || 0) + stars
+          newSum = prevSum - (Number(mySnap.data().stars) || 0) + stars;
         } else {
-          newSum = prevSum + stars
-          newCount = prevCount + 1
+          newSum = prevSum + stars;
+          newCount = prevCount + 1;
         }
-        const avg = newCount ? Math.round((newSum / newCount) * 10) / 10 : 0
+        const avg = newCount ? Math.round((newSum / newCount) * 10) / 10 : 0;
 
         tx.set(ratingRef, {
           stars,
           tgId: user?.id ?? null,
           updatedAt: Date.now(),
-        })
+        });
         tx.update(productRef, {
           ratingSum: newSum,
           reviewCount: newCount,
           rating: avg,
-        })
-        return { rating: avg, reviewCount: newCount }
-      })
+        });
+        return { rating: avg, reviewCount: newCount };
+      });
 
-      return { ...result, myStars: stars }
+      return { ...result, myStars: stars };
     } finally {
-      submitting.value = false
+      submitting.value = false;
     }
-  }
+  };
 
-  return { submitting, ensureAuth, getMyRating, submitRating }
-}
+  return { submitting, ensureAuth, getMyRating, submitRating };
+};

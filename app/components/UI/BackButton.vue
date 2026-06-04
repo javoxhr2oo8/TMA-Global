@@ -1,9 +1,12 @@
 <script setup lang="ts">
-// Qayta ishlatiladigan "Orqaga" tugmasi.
-// Telegram native BackButton (app.vue da) bilan birga ishlaydi —
-// bu sahifa ichidagi ko'rinadigan tugma.
+// "Orqaga" tugmasi — faqat ZAXIRA sifatida ishlaydi.
+// Telegram ichida Telegram'ning o'z native BackButton'i (app.vue da ulangan)
+// ishlatiladi, shuning uchun bu tugma yashiriladi. Ilova oddiy brauzerda
+// (Telegram'dan tashqarida) ochilganda esa zaxira sifatida ko'rinadi.
+import { ref, computed, onMounted } from 'vue'
+
 const router = useRouter()
-const { hapticImpact } = useTelegram()
+const { hapticImpact, isTelegram } = useTelegram()
 
 const props = withDefaults(
   defineProps<{
@@ -13,6 +16,13 @@ const props = withDefaults(
     to: null,
   }
 )
+
+// SSR/hydration nomuvofiqligini oldini olish uchun mount'dan keyin hisoblaymiz.
+const mounted = ref(false)
+onMounted(() => {
+  mounted.value = true
+})
+const showFallback = computed(() => mounted.value && !isTelegram)
 
 function goBack(): void {
   hapticImpact('light')
@@ -33,6 +43,7 @@ function goBack(): void {
 
 <template>
   <button
+    v-if="showFallback"
     type="button"
     aria-label="Orqaga"
     @click="goBack"

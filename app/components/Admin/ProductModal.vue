@@ -1,6 +1,7 @@
 <!-- app/components/Admin/ProductModal.vue -->
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
+import UiSelect from "~/components/UI/Select.vue";
 
 const props = defineProps<{
   open: boolean;
@@ -17,7 +18,10 @@ const { formatMoney, unformatMoney } = useInputMask();
 
 // Narx maydonlari: kiritilganda 3 xonadan bo'sh joy bilan formatlaymiz
 const onMoney = (key: "price" | "oldPrice", e: Event) => {
-  form[key] = formatMoney((e.target as HTMLInputElement).value);
+  const el = e.target as HTMLInputElement;
+  const formatted = formatMoney(el.value);
+  form[key] = formatted;
+  el.value = formatted; // Vue qiymat o'zgarmaganda DOM ni yangilamaydi — majburan sinxronlaymiz
 };
 
 const blank = () => ({
@@ -114,9 +118,7 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
         <div>
           <label :class="labelCls">Kategoriya</label>
-          <select v-model="form.category" :class="inputCls">
-            <option v-for="c in categories" :key="c">{{ c }}</option>
-          </select>
+          <UiSelect v-model="form.category" :options="categories" />
         </div>
         <div>
           <label :class="labelCls">Brend</label>
