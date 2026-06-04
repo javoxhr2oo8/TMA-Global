@@ -187,3 +187,22 @@ sozlangan bo'lsa). To'lov ONLAYN emas — yetkazib berishda olinadi.
   keltiriladi va to'liq (9 ta raqam) bo'lishi tekshiriladi.
 
 Qo'shimcha Firebase yoki env sozlamasi shart emas — faqat fayllarni deploy qiling.
+
+---
+
+## Yangi: Uzun fayllar komponentlarga bo'lindi (faqat tozalik)
+
+Ishlash mantig'i o'zgarmadi — kod o'qishga osonroq bo'lishi uchun bo'lindi:
+
+- `product/[id].vue` (272 → ~55 qator): bo'laklarga ajraldi —
+  `components/Product/Gallery.vue` (rasm galereyasi),
+  `components/Product/Info.vue` (nomi/narx/tavsif/brend),
+  `components/Product/Rating.vue` (baholash),
+  `components/Product/BottomBar.vue` (savatga qo'shish paneli).
+- `Admin/ProductModal.vue` (296 → ~145 qator): rasm qismi
+  `components/Admin/ProductImages.vue` ga chiqarildi (v-model orqali).
+- `Hero/index.vue` (221 → ~165 qator): slaydlar ma'lumoti
+  `components/Hero/slides.ts` ga ko'chirildi.
+
+Eslatma (yana bir bor): bu bo'lish ilovani **tezlashtirmaydi** — faqat kodni
+toza qiladi. Tezlik uchun rasm hajmini (Logo2.png 516KB) optimallashtirish kerak.
