@@ -4,14 +4,6 @@ import BackButton from "@/components/UI/BackButton.vue"
 const route = useRoute()
 const { product, loading, fetchProduct } = useProduct()
 
-// Reyting o'zgarganda mahsulotdagi o'rtacha/son ham yangilanadi
-const onRated = (v: { rating: number; reviewCount: number }) => {
-  if (product.value) {
-    product.value.rating = v.rating
-    product.value.reviewCount = v.reviewCount
-  }
-}
-
 onMounted(() => fetchProduct(route.params.id as string))
 </script>
 
@@ -24,9 +16,7 @@ onMounted(() => fetchProduct(route.params.id as string))
         <ProductGallery :product="product" />
 
         <div class="relative z-10 -mt-6 rounded-t-[32px] border-t border-white/10 bg-[#101828] px-4 pt-6">
-          <ProductInfo :product="product">
-            <ProductRating :product="product" @rated="onRated" />
-          </ProductInfo>
+          <ProductInfo :product="product" />
         </div>
 
         <ProductBottomBar :product="product" />

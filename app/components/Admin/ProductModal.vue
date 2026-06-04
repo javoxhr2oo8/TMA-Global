@@ -32,10 +32,12 @@ const blank = () => ({
   brand: "",
   desc: "",
   quantity: "",
+  rating: 0,
 });
 const form = reactive<any>(blank());
 const images = ref<string[]>([]); // ProductImages bilan v-model
 const uploading = ref(false); // ProductImages'dagi yuklash holati
+const hoverStar = ref(0); // admin reyting tanlashda hover effekti
 
 watch(
   () => [props.open, props.product],
@@ -51,6 +53,7 @@ watch(
         brand: p.brand || "",
         desc: p.desc || "",
         quantity: p.quantity ?? "",
+        rating: Number(p.rating) || 0,
       });
       if (Array.isArray(p.images) && p.images.length) images.value = [...p.images];
       else if (p.image) images.value = [p.image];
@@ -74,6 +77,7 @@ const onSave = () => {
     brand: form.brand.trim(),
     desc: form.desc.trim(),
     quantity: num(form.quantity),
+    rating: Number(form.rating) || 0,
   };
   const oldP = num(form.oldPrice);
   if (oldP != null) data.oldPrice = oldP;
@@ -143,6 +147,38 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
         <div>
           <label :class="labelCls">Brend</label>
           <input v-model="form.brand" placeholder="Nike" :class="inputCls" />
+        </div>
+      </div>
+
+      <!-- REYTING (admin qo'lda 1..5 yulduzcha qo'yadi) -->
+      <div class="mb-3">
+        <label :class="labelCls">Reyting (yulduzcha)</label>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5" @mouseleave="hoverStar = 0">
+            <button
+              v-for="n in 5"
+              :key="n"
+              type="button"
+              class="text-[26px] leading-none transition-transform active:scale-90"
+              :class="n <= (hoverStar || form.rating) ? 'text-yellow-400' : 'text-white/20'"
+              :aria-label="`${n} yulduz`"
+              @click="form.rating = n"
+              @mouseenter="hoverStar = n"
+            >
+              <i class="fa-solid fa-star"></i>
+            </button>
+          </div>
+          <span class="text-sm text-[#94a3b8]">
+            {{ form.rating ? form.rating + " / 5" : "Belgilanmagan" }}
+          </span>
+          <button
+            v-if="form.rating"
+            type="button"
+            class="ml-auto text-xs font-medium text-[#94a3b8] transition-colors hover:text-white"
+            @click="form.rating = 0"
+          >
+            Tozalash
+          </button>
         </div>
       </div>
 

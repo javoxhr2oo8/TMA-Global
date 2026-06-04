@@ -15,7 +15,7 @@ const reviewCount = computed(() => Number(props.product?.reviewCount) || 0);
       <div v-if="product.rating" class="flex items-center gap-2 rounded-full bg-yellow-500/10 px-3 py-1.5 text-sm text-yellow-400">
         <i class="fa-solid fa-star text-xs" />
         <span class="font-medium">{{ avgRating }}</span>
-        <span class="text-yellow-400/60 text-xs">({{ reviewCount }})</span>
+        <span v-if="reviewCount" class="text-yellow-400/60 text-xs">({{ reviewCount }})</span>
       </div>
       <div v-if="product.quantity != null" class="rounded-full bg-[#008236]/10 px-3 py-1.5 text-sm text-[#22c55e]">
         Omborda {{ product.quantity }} ta
