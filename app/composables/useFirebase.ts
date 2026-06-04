@@ -1,6 +1,12 @@
 // app/composables/useFirebase.ts
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
-import { getFirestore, type Firestore } from 'firebase/firestore'
+import {
+  initializeFirestore,
+  getFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  type Firestore,
+} from 'firebase/firestore'
 import { getStorage, type FirebaseStorage } from 'firebase/storage'
 
 const DEMO_CONFIG = {
@@ -54,6 +60,24 @@ export const getFirebaseApp = (): FirebaseApp => {
   return initializeApp(config)
 }
 
-export const getDb = (): Firestore => getFirestore(getFirebaseApp())
+let dbInstance: Firestore | null = null
+
+export const getDb = (): Firestore => {
+  if (dbInstance) return dbInstance
+  const app = getFirebaseApp()
+  try {
+    // Doimiy lokal kesh (IndexedDB). Shu tufayli ilovaga qayta kirilganda
+    // ma'lumot keshdan darhol o'qiladi, server javobi esa fon rejimida
+    // yangilanadi ("avval ko'rsat, keyin yangila"). Offline'da ham ishlaydi.
+    dbInstance = initializeFirestore(app, {
+      localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+    })
+  } catch {
+    // initializeFirestore allaqachon chaqirilgan yoki muhit IndexedDB'ni
+    // qo'llab-quvvatlamasa — oddiy (xotira) variantга tushamiz.
+    dbInstance = getFirestore(app)
+  }
+  return dbInstance
+}
 
 export const getStorageInstance = (): FirebaseStorage => getStorage(getFirebaseApp())
