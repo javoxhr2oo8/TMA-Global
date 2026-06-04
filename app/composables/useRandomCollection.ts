@@ -3,7 +3,6 @@ import {
   collection, query, orderBy, startAfter, limit, getDocs, type DocumentSnapshot,
 } from 'firebase/firestore'
 import { getDb } from '~/composables/useFirebase'
-import { useStore } from '~/store/store'
 
 export const useRandomCollection = (collectionName: string) => {
   const data = ref<any[]>([])
@@ -11,11 +10,12 @@ export const useRandomCollection = (collectionName: string) => {
   const hasMore = ref(true)
   const lastDoc = ref<DocumentSnapshot | null>(null)
   const pageSize = 10
-  const store = useStore()
 
   const fetchRandom = async () => {
+    // Diqqat: bu yerda global ekran loaderi (store.loader) YOQILMAYDI.
+    // Bosh sahifa Hero/Categories darhol ko'rinishi va mahsulotlar o'z joyida
+    // skeleton bilan yuklanishi uchun faqat lokal `loading` ishlatiladi.
     loading.value = true
-    store.loader = true
     try {
       const db = getDb()
       const snap = await getDocs(
@@ -29,7 +29,6 @@ export const useRandomCollection = (collectionName: string) => {
       data.value = []
     } finally {
       loading.value = false
-      store.loader = false
     }
   }
 

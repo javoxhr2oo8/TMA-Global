@@ -12,6 +12,15 @@ export default defineNuxtConfig({
         },
       ],
       link: [
+        // Tashqi resurslarga oldindan ulanish (DNS/TLS) — birinchi yuklash tezroq
+        {
+          rel: "preconnect",
+          href: "https://cdnjs.cloudflare.com",
+          crossorigin: "anonymous",
+        },
+        { rel: "preconnect", href: "https://firestore.googleapis.com" },
+        { rel: "preconnect", href: "https://firebasestorage.googleapis.com" },
+        { rel: "preconnect", href: "https://avatars.mds.yandex.net" },
         {
           rel: "stylesheet",
           href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",

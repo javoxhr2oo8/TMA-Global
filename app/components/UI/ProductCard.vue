@@ -50,7 +50,7 @@ const handlePlus = () => updateQuantity(props.product.id, quantity.value + 1)
         <NuxtLink :to="`/product/${props.product.id}`" class="flex flex-col flex-1 min-h-0">
 
             <div class="relative h-[200px] flex-shrink-0 overflow-hidden bg-gray-200/20">
-                <img :src="props.product.image" :alt="props.product.title"
+                <img :src="props.product.image" :alt="props.product.title" loading="lazy" decoding="async"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
 
                 <div class="absolute top-3 left-3 flex flex-col gap-1.5">

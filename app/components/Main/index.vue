@@ -30,15 +30,31 @@ onMounted(() => fetchRandom())
       <ProductCard v-for="product in list" :key="product.id" :product="product" />
     </div>
 
+    <!-- Yuklanayotganda skeleton (Hero/Categories darhol ko'rinadi, bu yer ham bo'sh qolmaydi) -->
+    <div
+      v-else-if="loading"
+      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      aria-hidden="true"
+    >
+      <div
+        v-for="n in 6"
+        :key="n"
+        class="animate-pulse rounded-2xl border border-white/5 bg-white/[0.03] p-3"
+      >
+        <div class="aspect-square w-full rounded-xl bg-white/10"></div>
+        <div class="mt-3 h-3 w-3/4 rounded bg-white/10"></div>
+        <div class="mt-2 h-3 w-1/2 rounded bg-white/10"></div>
+        <div class="mt-3 h-5 w-2/3 rounded bg-white/10"></div>
+      </div>
+    </div>
+
     <div v-else class="flex flex-col items-center justify-center py-16 text-center">
       <div class="w-20 h-20 rounded-3xl bg-green-600/10 flex items-center justify-center mb-4">
         <i class="fa-solid fa-box-open text-green-500 text-3xl"></i>
       </div>
-      <h3 class="text-white text-lg font-semibold">
-        {{ loading ? 'Yuklanmoqda...' : 'Mahsulot topilmadi' }}
-      </h3>
+      <h3 class="text-white text-lg font-semibold">Mahsulot topilmadi</h3>
       <p class="text-gray-400 text-sm mt-1">
-        {{ loading ? 'Iltimos kuting' : "Firebase'da mahsulot yo'q yoki kategoriya bo'sh" }}
+        Firebase'da mahsulot yo'q yoki kategoriya bo'sh
       </p>
     </div>
 

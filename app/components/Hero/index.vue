@@ -51,6 +51,7 @@ function onImgError(e: Event) {
                 :alt="item.title"
                 class="hero-img w-full h-full object-cover"
                 loading="lazy"
+                decoding="async"
                 @error="onImgError"
               />
               <!-- matn o‘qilishi uchun qoraytiruvchi gradient -->

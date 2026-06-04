@@ -22,10 +22,18 @@ const rate = async (n: number) => {
     emit("rated", { rating: res.rating, reviewCount: res.reviewCount });
     hapticNotification("success");
   } catch (e: any) {
-    rateErr.value =
-      e?.code === "auth/operation-not-allowed" || e?.code === "auth/admin-restricted-operation"
-        ? "Baholash uchun Firebase'da Anonymous auth yoqilishi kerak."
-        : "Baho saqlanmadi. Qayta urinib ko'ring.";
+    const code: string = e?.code || "";
+    console.error("[Rating] saqlashda xato:", code, e?.message, e);
+    if (
+      code === "auth/operation-not-allowed" ||
+      code === "auth/admin-restricted-operation"
+    ) {
+      rateErr.value = "Baholash uchun Firebase'da Anonymous auth yoqilishi kerak.";
+    } else if (code === "permission-denied") {
+      rateErr.value = "Ruxsat yo'q — Firestore rules'ni publish qiling.";
+    } else {
+      rateErr.value = "Baho saqlanmadi. Qayta urinib ko'ring.";
+    }
     hapticNotification("error");
   }
 };
