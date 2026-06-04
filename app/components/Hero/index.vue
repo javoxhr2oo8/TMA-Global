@@ -89,13 +89,13 @@ function onImgError(e: Event) {
         </div>
 
         <!-- Navigatsiya tugmalari -->
-        <button
+        <button v-if="false"
           class="hero-prev absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm shadow-md rounded-full w-8 h-8 flex items-center justify-center hover:bg-white active:scale-95 transition-all"
           aria-label="Oldingi"
         >
           <i class="fa-solid fa-chevron-left text-gray-800 text-xs"></i>
         </button>
-        <button
+        <button v-if="false"
           class="hero-next absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm shadow-md rounded-full w-8 h-8 flex items-center justify-center hover:bg-white active:scale-95 transition-all"
           aria-label="Keyingi"
         >

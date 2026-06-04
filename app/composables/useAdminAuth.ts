@@ -5,15 +5,15 @@ import {
 import { getFirebaseApp } from '~/composables/useFirebase'
 
 export const useAdminAuth = () => {
-  // SSR o'chiq (ssr:false), shuning uchun faqat klientda ishlaydi
   const user = useState<User | null>('adminUser', () => null)
   const ready = useState<boolean>('adminAuthReady', () => false)
 
-  const init = () => {
+  const init = (onAuthed?: () => void) => {
     const auth = getAuth(getFirebaseApp())
     onAuthStateChanged(auth, (u) => {
       user.value = u
       ready.value = true
+      if (u && onAuthed) onAuthed()
     })
   }
 
