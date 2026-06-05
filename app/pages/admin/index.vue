@@ -4,6 +4,15 @@ import { ref, computed, reactive, onMounted } from "vue";
 
 const { user, ready, init, login, logout } = useAdminAuth();
 const { products, loading, load, create, update, remove } = useAdminProducts();
+const { orders, loading: ordersLoading, load: loadOrders, updateStatus, remove: removeOrder } = useAdminOrders();
+
+const activeTab = ref<"products" | "orders">("products");
+const tabCls = (t: string) =>
+  "px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer transition-colors " +
+  (activeTab.value === t
+    ? "bg-[#22c55e] text-[#031b0e]"
+    : "bg-white/5 text-[#94a3b8] hover:text-white border border-white/10");
+const goOrders = () => { activeTab.value = "orders"; loadOrders(); };
 
 const categories = ["Kiyimlar", "Uskunalar", "Oziq ovqatlar", "Xoz tovarlar"];
 
@@ -112,6 +121,16 @@ const onDelete = async (p: any) => {
   }
 };
 
+const onOrderStatus = async ({ id, status }: { id: string; status: string }) => {
+  try { await updateStatus(id, status); notify("Holat yangilandi ✓"); }
+  catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
+};
+const onOrderDelete = async (o: any) => {
+  if (!confirm(`#${o.orderId || o.id} buyurtma o'chirilsinmi?`)) return;
+  try { await removeOrder(o.id); notify("O'chirildi ✓"); }
+  catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
+};
+
 onMounted(() => {
   init(() => load())
 });
@@ -141,6 +160,13 @@ onMounted(() => {
       <AdminTopBar @logout="onLogout" />
 
       <div class="max-w-[1080px] mx-auto px-5 pt-7 pb-20">
+        <!-- TABLAR -->
+        <div class="flex gap-2 mb-6">
+          <button :class="tabCls('products')" @click="activeTab = 'products'">Mahsulotlar</button>
+          <button :class="tabCls('orders')" @click="goOrders">Buyurtmalar</button>
+        </div>
+
+        <template v-if="activeTab === 'products'">
         <div class="flex justify-between items-center flex-wrap gap-3.5 mb-5">
           <div>
             <h1 class="text-2xl font-extrabold">Mahsulotlar</h1>
@@ -167,6 +193,16 @@ onMounted(() => {
           :loading="loading"
           @edit="openEdit"
           @delete="onDelete"
+        />
+        </template>
+
+        <AdminOrders
+          v-else
+          :orders="orders"
+          :loading="ordersLoading"
+          @status="onOrderStatus"
+          @delete="onOrderDelete"
+          @refresh="loadOrders"
         />
       </div>
     </template>

@@ -206,3 +206,46 @@ Ishlash mantig'i o'zgarmadi — kod o'qishga osonroq bo'lishi uchun bo'lindi:
 
 Eslatma (yana bir bor): bu bo'lish ilovani **tezlashtirmaydi** — faqat kodni
 toza qiladi. Tezlik uchun rasm hajmini (Logo2.png 516KB) optimallashtirish kerak.
+
+---
+
+## Yangi: Admin panelda Buyurtmalar
+
+Admin panel tepasida endi ikki tab bor: **Mahsulotlar** va **Buyurtmalar**.
+"Buyurtmalar" tabida mijozlar bergan barcha buyurtmalar ko'rinadi:
+- buyurtma raqami, sana, holat (Yangi/Tasdiqlandi/Yetkazildi/Bekor)
+- mijoz: ism, telefon (bosib qo'ng'iroq), manzil, yetkazib berish, to'lov, izoh
+- mahsulotlar ro'yxati va umumiy summa
+- holatni o'zgartirish (select) va o'chirish
+
+**Yangi fayllar:**
+- `app/composables/useAdminOrders.ts` — buyurtmalarni Firestore'dan o'qiydi, holat/yangilash/o'chirish
+- `app/components/Admin/Orders.vue` — buyurtmalar ro'yxati UI
+- `app/pages/admin/index.vue` — tablar qo'shildi
+
+Buyurtmalar mijoz checkout qilganda Firestore `orders` kolleksiyasiga yoziladi
+(`useOrder.placeOrder`). Admin (email/parol bilan kirgan) ularni o'qiy oladi —
+`firestore.rules` allaqachon shunga ruxsat bergan, qo'shimcha sozlama shart emas.
+
+---
+
+## Yangi: Savat va Sevimlilar saqlanib qoladi (localStorage)
+
+Muammo: savatga qo'shilgan mahsulot va "like" qilinganlar Telegram ilovasi
+yopilib qayta ochilganda yo'qolardi.
+
+Sabab: ular **cookie**'da saqlanardi (`useCookie`). Cookie 4KB bilan cheklangan,
+mahsulot obyektlari esa uzun rasm URL'lari bilan bu chegaradan oshib ketib,
+saqlanmay qolardi.
+
+Yechim: endi **localStorage**'da saqlanadi (≈5MB, Telegram webview'da ham
+saqlanib qoladi). Foydalanuvchi o'zi olib tashlamaguncha turadi.
+
+O'zgargan/yangi fayllar:
+- `app/composables/useCart.ts` — cookie o'rniga useState (localStorage'dan to'ldiriladi)
+- `app/composables/useFavorites.ts` — xuddi shunday
+- `app/plugins/persist.client.ts` (YANGI) — cart/favorites'ni localStorage bilan sinxronlaydi
+
+Agar Telegram'ning ayrim versiyalari webview xotirasini tozalab tashlasa va
+localStorage baribir o'chsa — eng ishonchli yo'l Telegram'ning CloudStorage API'si
+(har bir foydalanuvchi uchun serverda saqlanadi). Kerak bo'lsa qo'shib beraman.

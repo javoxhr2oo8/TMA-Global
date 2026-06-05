@@ -1,4 +1,6 @@
 // app/composables/useFavorites.ts
+// Sevimlilar (like) localStorage'da saqlanadi (app/plugins/persist.client.ts orqali).
+// Foydalanuvchi o'zi olib tashlamaguncha saqlanib turadi (ilova yopilsa ham).
 
 interface Product {
   id: number
@@ -15,31 +17,21 @@ interface Product {
 }
 
 export const useFavorites = () => {
-  const cookie = useCookie<Product[]>('favorites', { default: () => [] })
-  const items = useState<Product[]>('favorites', () => cookie.value)
+  const items = useState<Product[]>('favorites', () => [])
 
-  watch(items, (val) => {
-    cookie.value = val
-  }, { deep: true })
-
-  const isFavorite = (id: number) => items.value.some(i => i.id === id)
+  const isFavorite = (id: number) => items.value.some((i) => i.id === id)
 
   const addItem = (product: Product) => {
-    if (!isFavorite(product.id)) {
-      items.value.push({ ...product })
-    }
+    if (!isFavorite(product.id)) items.value.push({ ...product })
   }
 
   const removeItem = (id: number) => {
-    items.value = items.value.filter(i => i.id !== id)
+    items.value = items.value.filter((i) => i.id !== id)
   }
 
   const toggleItem = (product: Product) => {
-    if (isFavorite(product.id)) {
-      removeItem(product.id)
-    } else {
-      addItem(product)
-    }
+    if (isFavorite(product.id)) removeItem(product.id)
+    else addItem(product)
   }
 
   const clear = () => {
@@ -47,19 +39,7 @@ export const useFavorites = () => {
   }
 
   const totalItems = computed(() => items.value.length)
+  const totalPrice = computed(() => items.value.reduce((sum, i) => sum + (i.price || 0), 0))
 
-  const totalPrice = computed(() =>
-    items.value.reduce((sum, i) => sum + (i.price || 0), 0)
-  )
-
-  return {
-    items,
-    isFavorite,
-    addItem,
-    removeItem,
-    toggleItem,
-    clear,
-    totalItems,
-    totalPrice,
-  }
+  return { items, isFavorite, addItem, removeItem, toggleItem, clear, totalItems, totalPrice }
 }

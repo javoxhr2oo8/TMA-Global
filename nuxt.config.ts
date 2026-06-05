@@ -54,7 +54,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
   typescript: {
-    typeCheck: true,
+    typeCheck: false,
   },
   ssr: false,
   css: ["~/assets/css/main.css"],

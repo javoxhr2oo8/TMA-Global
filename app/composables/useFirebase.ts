@@ -1,12 +1,13 @@
 // app/composables/useFirebase.ts
+// Butun ilova uchun YAGONA Firebase manbasi.
+//
+// MUHIM: Firestore XOTIRA keshida ishlaydi (IndexedDB EMAS).
+// Avval persistentLocalCache (IndexedDB) ishlatilgan edi — u ba'zi muhitlarda
+// "FIRESTORE INTERNAL ASSERTION FAILED (b815)" / DataCloneError xatosini beradi.
+// Do'kon uchun offline kesh shart emas, shuning uchun oddiy (xotira) kesh ishlatamiz.
+
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
-import {
-  initializeFirestore,
-  getFirestore,
-  persistentLocalCache,
-  persistentMultipleTabManager,
-  type Firestore,
-} from 'firebase/firestore'
+import { getFirestore, type Firestore } from 'firebase/firestore'
 import { getStorage, type FirebaseStorage } from 'firebase/storage'
 
 const DEMO_CONFIG = {
@@ -33,12 +34,6 @@ export const getFirebaseConfig = () => {
     )
   }
 
-  console.log('[Firebase Config]', {
-    apiKey: c.firebaseApiKey,
-    projectId: c.firebaseProjectId,
-    appId: c.firebaseAppId,
-  })
-
   return {
     apiKey: c.firebaseApiKey || DEMO_CONFIG.apiKey,
     authDomain: c.firebaseAuthDomain || DEMO_CONFIG.authDomain,
@@ -49,34 +44,14 @@ export const getFirebaseConfig = () => {
   }
 }
 
-export const getFirebaseApp = (): FirebaseApp => {
-  if (getApps().length) {
-    const app = getApp()
-    console.log('[Firebase] уже инициализирован:', app.options.projectId)
-    return app
-  }
-  const config = getFirebaseConfig()
-  console.log('[Firebase] инициализируется с:', config.projectId)
-  return initializeApp(config)
-}
+export const getFirebaseApp = (): FirebaseApp =>
+  getApps().length ? getApp() : initializeApp(getFirebaseConfig())
 
 let dbInstance: Firestore | null = null
 
+// Firestore — XOTIRA keshi (IndexedDB emas). Barqaror, b815 xatosi bo'lmaydi.
 export const getDb = (): Firestore => {
-  if (dbInstance) return dbInstance
-  const app = getFirebaseApp()
-  try {
-    // Doimiy lokal kesh (IndexedDB). Shu tufayli ilovaga qayta kirilganda
-    // ma'lumot keshdan darhol o'qiladi, server javobi esa fon rejimida
-    // yangilanadi ("avval ko'rsat, keyin yangila"). Offline'da ham ishlaydi.
-    dbInstance = initializeFirestore(app, {
-      localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
-    })
-  } catch {
-    // initializeFirestore allaqachon chaqirilgan yoki muhit IndexedDB'ni
-    // qo'llab-quvvatlamasa — oddiy (xotira) variantга tushamiz.
-    dbInstance = getFirestore(app)
-  }
+  if (!dbInstance) dbInstance = getFirestore(getFirebaseApp())
   return dbInstance
 }
 

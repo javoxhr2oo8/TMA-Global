@@ -1,4 +1,8 @@
 // app/composables/useCart.ts
+// Savat localStorage'da saqlanadi (app/plugins/persist.client.ts hydrate qiladi va yozadi).
+// Shu tufayli ilova yopilib qayta ochilganda ham savat saqlanib qoladi.
+// (Avval cookie ishlatilgan edi — 4KB chegarasi tufayli uzun rasm URL'lari bilan
+//  savat saqlanmay qolardi.)
 
 interface Product {
   id: number
@@ -19,15 +23,10 @@ interface CartItem extends Product {
 }
 
 export const useCart = () => {
-  const cookie = useCookie<CartItem[]>('cart', { default: () => [] })
-  const items = useState<CartItem[]>('cart', () => cookie.value)
-
-  watch(items, (val) => {
-    cookie.value = val
-  }, { deep: true })
+  const items = useState<CartItem[]>('cart', () => [])
 
   const addItem = (product: Product) => {
-    const existing = items.value.find(i => i.id === product.id)
+    const existing = items.value.find((i) => i.id === product.id)
     if (existing) {
       existing.quantity++
     } else {
@@ -36,7 +35,7 @@ export const useCart = () => {
   }
 
   const removeItem = (id: number) => {
-    items.value = items.value.filter(i => i.id !== id)
+    items.value = items.value.filter((i) => i.id !== id)
   }
 
   const updateQuantity = (id: number, quantity: number) => {
@@ -44,7 +43,7 @@ export const useCart = () => {
       removeItem(id)
       return
     }
-    const index = items.value.findIndex(i => i.id === id)
+    const index = items.value.findIndex((i) => i.id === id)
     if (index === -1) return
     items.value[index] = { ...items.value[index], quantity } as CartItem
   }
@@ -53,20 +52,16 @@ export const useCart = () => {
     items.value = []
   }
 
-  const isInCart = (id: number) => {
-    return items.value.some(i => i.id === id)
-  }
+  const isInCart = (id: number) => items.value.some((i) => i.id === id)
 
-  const totalItems = computed(() =>
-    items.value.reduce((sum, i) => sum + i.quantity, 0)
-  )
+  const totalItems = computed(() => items.value.reduce((sum, i) => sum + i.quantity, 0))
 
   const totalPrice = computed(() =>
-    items.value.reduce((sum, i) => sum + i.price * i.quantity, 0)
+    items.value.reduce((sum, i) => sum + i.price * i.quantity, 0),
   )
 
   const totalDiscount = computed(() =>
-    items.value.reduce((sum, i) => sum + ((i.oldPrice ?? i.price) - i.price) * i.quantity, 0)
+    items.value.reduce((sum, i) => sum + ((i.oldPrice ?? i.price) - i.price) * i.quantity, 0),
   )
 
   return {
