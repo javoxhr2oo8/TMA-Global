@@ -178,7 +178,7 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
         @click="onSubmit"
       >
         <i class="fa-solid fa-circle-check"></i>
-        {{ submitting ? "Yuborilmoqda..." : `Buyurtmani tasdiqlash · ${formatPrice(totalPrice)} so'm` }}
+        {{ submitting ? "Yuborilmoqda..." : `Tasdiqlash · ${formatPrice(totalPrice)} so'm` }}
       </Button>
     </div>
   </div>

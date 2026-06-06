@@ -16,7 +16,7 @@ const totalPrice = computed(() => {
 
 <template>
   <div
-    class="cart min-h-screen bg-gradient-to-b from-[#0e1621] via-[#0e1621] to-[#0e1621] pb-28 pt-[10px]"
+    class="cart min-h-screen bg-gradient-to-b from-[#0e1621] via-[#0e1621] to-[#0e1621] pb-[10px] pt-[10px]"
   >
     <div class="container py-5">
       <!-- BACK -->
@@ -125,7 +125,7 @@ const totalPrice = computed(() => {
 
 .empty-card {
   width: 100%;
-  min-height: 70vh;
+  min-height: 75vh;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.05);

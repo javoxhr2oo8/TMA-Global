@@ -62,7 +62,7 @@ function onImgError(e: Event) {
         </swiper>
 
         <!-- Ustki yozuv (rasm bilan birga almashib turadi) -->
-        <div class="hero-overlay absolute inset-0 z-10 flex flex-col justify-end p-4 sm:p-6 pointer-events-none">
+        <div class="hero-overlay absolute inset-0 z-10 flex flex-col justify-center p-4 sm:p-6 pointer-events-none">
           <Transition name="hero" mode="out-in">
             <div :key="activeIndex" class="hero-content max-w-[78%]">
               <span class="hero-line inline-flex items-center text-[11px] sm:text-[13px] font-semibold text-white bg-[#008236] px-3 py-1 rounded-full shadow">
@@ -77,14 +77,14 @@ function onImgError(e: Event) {
                 {{ slides[activeIndex]?.subtitle }}
               </p>
 
-              <NuxtLink
+              <!-- <NuxtLink
                 :to="slides[activeIndex]?.to || '/'"
                 class="hero-line hero-cta pointer-events-auto inline-flex items-center gap-2 mt-3 bg-white text-[#008236] font-semibold text-[12px] sm:text-[14px] px-4 sm:px-5 py-2 rounded-full shadow-md active:scale-95 transition-transform"
                 @click="hapticImpact('light')"
               >
                 {{ slides[activeIndex]?.cta }}
                 <i class="fa-solid fa-arrow-right text-[10px] sm:text-[12px]"></i>
-              </NuxtLink>
+              </NuxtLink> -->
             </div>
           </Transition>
         </div>

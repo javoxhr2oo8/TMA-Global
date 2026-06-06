@@ -12,7 +12,7 @@ const totalPrice = computed(() => {
 
 <template>
   <div
-    class="favorites min-h-screen bg-gradient-to-b from-[#0e1621] via-[#0e1621] to-[#0e1621] pb-28 pt-[10px]"
+    class="favorites min-h-screen bg-gradient-to-b from-[#0e1621] via-[#0e1621] to-[#0e1621] pb-[10px] pt-[10px]"
   >
     <div class="container py-5">
       <!-- BACK -->
@@ -32,21 +32,6 @@ const totalPrice = computed(() => {
             class="w-14 h-14 rounded-2xl bg-pink-500/15 flex items-center justify-center border border-pink-500/20"
           >
             <i class="fa-solid fa-heart text-pink-400 text-2xl"></i>
-          </div>
-        </div>
-
-        <!-- INFO -->
-        <div v-if="items.length" class="mt-5 grid grid-cols-2 gap-3 !mt-[10px]">
-          <div class="rounded-2xl bg-[#0f1d17] border border-white/5 p-4">
-            <p class="text-gray-400 text-sm mb-1">Mahsulotlar</p>
-            <h3 class="text-white text-[20px] font-bold">{{ items.length }}</h3>
-          </div>
-
-          <div class="rounded-2xl bg-[#0f1d17] border border-white/5 p-4">
-            <p class="text-gray-400 text-sm mb-1">Umumiy</p>
-            <h3 class="text-[#00c853] text-[20px] font-bold">
-              {{ formatPrice(totalPrice) }}
-            </h3>
           </div>
         </div>
       </div>
@@ -80,7 +65,7 @@ const totalPrice = computed(() => {
 
 .empty-card {
   width: 100%;
-  min-height: 70vh;
+  min-height: 77vh;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.05);

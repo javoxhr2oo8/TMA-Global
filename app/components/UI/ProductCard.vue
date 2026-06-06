@@ -55,7 +55,7 @@ const handlePlus = () => updateQuantity(props.product.id, quantity.value + 1)
 
                 <div class="absolute top-3 left-3 flex flex-col gap-1.5">
                     <span v-if="discount"
-                        class="bg-white/20 backdrop-blur-xl border border-white/30 text-gray-900 dark:text-white text-[10px] font-bold px-2 py-0.5 rounded-lg">
+                        class="bg-[#a49f9f] backdrop-blur-xl border border-white/30 text-gray-900 dark:text-white text-[10px] font-bold px-2 py-0.5 rounded-lg">
                         -{{ discount }}%
                     </span>
                 </div>

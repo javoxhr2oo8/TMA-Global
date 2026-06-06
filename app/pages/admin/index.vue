@@ -14,10 +14,11 @@ const tabCls = (t: string) =>
     : "bg-white/5 text-[#94a3b8] hover:text-white border border-white/10");
 const goOrders = () => { activeTab.value = "orders"; loadOrders(); };
 
-const categories = ["Kiyimlar", "Uskunalar", "Oziq ovqatlar", "Xoz tovarlar"];
+const categories = ["Elektronika", "Kiyim va poyabzal", "Oziq-ovqat", "Uy va roʻzgʻor", "Bolalar dunyosi", "Sport va xobbi"];
 
 const isAuthed = computed(() => !!user.value);
 const list = computed(() => products.value);
+
 const statCats = computed(
   () => new Set(list.value.map((p) => p.category).filter(Boolean)).size,
 );

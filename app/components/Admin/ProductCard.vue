@@ -8,7 +8,7 @@ const fmt = (n: any) => Number(n || 0).toLocaleString('ru-RU')
 <template>
   <div class="bg-[#101828] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
     <div
-      class="h-[145px] bg-[#0b1220] bg-center bg-cover bg-no-repeat"
+      class="h-[230px] bg-[#0b1220] bg-center bg-cover bg-no-repeat"
       :style="{ backgroundImage: `url('${product.image}')` }"
     ></div>
 

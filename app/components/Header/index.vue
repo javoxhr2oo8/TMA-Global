@@ -52,6 +52,6 @@ function toggle() {
 }
 
 .logo img {
-    width: 200px;
+    width: 160px;
 }
 </style>

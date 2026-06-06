@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '../UI/Button.vue'
 import { computed } from 'vue'
 import { useRandomCollection } from '~/composables/useRandomCollection'
 import ProductCard from '../UI/ProductCard.vue'
@@ -23,24 +24,13 @@ onMounted(() => fetchRandom())
 
 <template>
   <div class="container py-8">
-    <div
-      v-if="list.length"
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
+    <div v-if="list.length" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[8px]">
       <ProductCard v-for="product in list" :key="product.id" :product="product" />
     </div>
 
     <!-- Yuklanayotganda skeleton (Hero/Categories darhol ko'rinadi, bu yer ham bo'sh qolmaydi) -->
-    <div
-      v-else-if="loading"
-      class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-      aria-hidden="true"
-    >
-      <div
-        v-for="n in 6"
-        :key="n"
-        class="animate-pulse rounded-2xl border border-white/5 bg-white/[0.03] p-3"
-      >
+    <div v-else-if="loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" aria-hidden="true">
+      <div v-for="n in 6" :key="n" class="animate-pulse rounded-2xl border border-white/5 bg-white/[0.03] p-3">
         <div class="aspect-square w-full rounded-xl bg-white/10"></div>
         <div class="mt-3 h-3 w-3/4 rounded bg-white/10"></div>
         <div class="mt-2 h-3 w-1/2 rounded bg-white/10"></div>
@@ -59,12 +49,16 @@ onMounted(() => fetchRandom())
     </div>
 
     <div v-if="showMore" class="flex justify-center mt-6">
-      <button
-        class="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-2.5 rounded-xl transition"
-        @click="loadMore"
-      >
+      <button class="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-2.5 rounded-xl transition"
+        @click="loadMore">
         Ko'proq
       </button>
     </div>
+
+    <NuxtLink class="fixed bottom-5 right-5 z-50" to="/cart">
+      <Button class="!p-[6px] !rounded-[30px]">
+        <i class="fas fa-basket-shopping text-[25px]"></i>
+      </Button>
+    </NuxtLink>
   </div>
 </template>
