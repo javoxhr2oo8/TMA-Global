@@ -24,7 +24,7 @@ interface CollState {
 }
 
 const caches = new Map<string, CollState>()
-const pageSize = 10
+const pageSize = 30
 
 function getState(name: string): CollState {
   let s = caches.get(name)
