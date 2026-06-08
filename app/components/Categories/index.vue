@@ -23,10 +23,10 @@ function onCategoryClick(label: string) {
         <div class="w-full">
             <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide px-4 py-1">
                 <button v-for="cat in categories" :key="cat.id" @click="onCategoryClick(cat.label)" :class="[
-                    'flex items-center gap-2 px-4 py-2 rounded-xl border text-[13px] font-semibold transition-all duration-200 whitespace-nowrap shadow-sm touch-manipulation select-none',
+                    'flex items-center gap-2 px-4 py-2 rounded-xl border text-[13px] font-semibold transition-all duration-200 whitespace-nowrap shadow-sm select-none',
                     activeCategory === cat.label
                         ? 'bg-gradient-to-r from-green-600 to-emerald-600 border-emerald-600 text-white shadow-md shadow-green-600/20'
-                        : 'bg-gradient-to-b from-white to-gray-50/50 border-gray-100 text-gray-700 hover:border-gray-200 hover:text-green-600 active:bg-gray-100'
+                        : 'bg-gradient-to-b from-white to-gray-50/50 border-gray-100 text-gray-700'
                 ]">
                     <i :class="[
                         cat.icon,
