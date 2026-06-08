@@ -12,7 +12,7 @@ export default defineNuxtConfig({
         },
       ],
       link: [
-        // Tashqi resurslarga oldindan ulanish (DNS/TLS) — birinchi yuklash tezroq
+        { rel: 'manifest', href: '/manifest.webmanifest' },
         {
           rel: "preconnect",
           href: "https://cdnjs.cloudflare.com",
@@ -36,10 +36,9 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    // server-only (maxfiy) — faqat serverda o'qiladi, klientga chiqmaydi
-    botToken: "", // NUXT_BOT_TOKEN
-    adminChatId: "", // NUXT_ADMIN_CHAT_ID
-    firebaseServiceAccount: "", // NUXT_FIREBASE_SERVICE_ACCOUNT (ixtiyoriy, JSON string)
+    botToken: "",
+    adminChatId: "",
+    firebaseServiceAccount: "",
     public: {
       firebaseApiKey: "",
       firebaseAuthDomain: "",
@@ -49,7 +48,57 @@ export default defineNuxtConfig({
       firebaseAppId: "",
     },
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", '@vite-pwa/nuxt'],
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      id: '/',
+      name: 'Quulay Market',
+      short_name: 'Quulay',
+      description: 'Telegram orqali qulay va tezkor onlayn xarid qilish tajribasi',
+      theme_color: '#008236',
+      background_color: '#008236',
+      display: 'standalone',
+      orientation: 'portrait',
+      scope: '/',
+      start_url: '/',
+      icons: [
+        {
+          src: '/icons/app-logo.png',
+          sizes: '1254x1254',
+          type: 'image/png',
+          purpose: 'any'
+        },
+        {
+          src: '/icons/app-logo.png',
+          sizes: '1254x1254',
+          type: 'image/png',
+          purpose: 'maskable'
+        }
+      ],
+      screenshots: [
+        {
+          src: '/icons/app-logo.png',
+          sizes: '1254x1254',
+          type: 'image/png',
+          form_factor: 'wide'
+        },
+        {
+          src: '/icons/app-logo.png',
+          sizes: '1254x1254',
+          type: 'image/png',
+          form_factor: 'narrow'
+        }
+      ]
+    },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}']
+    },
+    devOptions: {
+      enabled: true
+    }
+  },
   vite: {
     plugins: [tailwindcss()],
   },

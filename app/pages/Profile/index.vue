@@ -19,7 +19,8 @@
             <p class="text-gray-400 mt-1">
               @{{ user?.username ? user?.username : username }}
             </p>
-            <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#008236]/15 text-[#39ff88] text-sm">
+            <div
+              class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#008236]/15 text-[#39ff88] text-sm">
               <i class="fa-solid fa-id-card"></i>
               {{ user?.id ? user?.id : tgId }}
             </div>
@@ -29,7 +30,8 @@
 
       <div class="!mt-5 flex flex-col gap-3">
         <NuxtLink to="/cart">
-          <Button class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
+          <Button
+            class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
             <div class="flex items-center justify-between w-full">
               <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-2xl bg-[#008236]/15 flex items-center justify-center">
@@ -46,7 +48,8 @@
         </NuxtLink>
 
         <NuxtLink to="/favorites">
-          <Button class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
+          <Button
+            class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
             <div class="flex items-center justify-between w-full">
               <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-2xl bg-pink-500/15 flex items-center justify-center">
@@ -62,7 +65,8 @@
           </Button>
         </NuxtLink>
 
-        <Button class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
+        <Button
+          class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
           <div class="flex items-center justify-between w-full">
             <div class="flex items-center gap-4">
               <div class="w-12 h-12 rounded-2xl bg-sky-500/15 flex items-center justify-center">
@@ -77,7 +81,8 @@
           </div>
         </Button>
 
-        <Button class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
+        <Button
+          class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
           <div class="flex items-center justify-between w-full">
             <div class="flex items-center gap-4">
               <div class="w-12 h-12 rounded-2xl bg-[#008236]/15 flex items-center justify-center">
@@ -92,7 +97,8 @@
           </div>
         </Button>
 
-        <Button class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
+        <Button
+          class="!block !p-[3px] w-full !justify-start !items-start text-left !bg-[#17212b] rounded-2xl p-4 border border-white/5 active:scale-[0.98] duration-200">
           <div class="flex items-center justify-between w-full">
             <div class="flex items-center gap-4">
               <div class="w-12 h-12 rounded-2xl bg-blue-500/15 flex items-center justify-center">
@@ -108,8 +114,7 @@
         </Button>
 
         <div class="grid grid-cols-2 gap-3 mt-1">
-          <Button
-            @click="installApp"
+          <Button @click="installApp()"
             class="!block !p-[3px] !bg-[#17212b] rounded-2xl border border-[#008236]/20 active:scale-[0.98] duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-[#008236]/15 flex items-center justify-center flex-shrink-0">
@@ -122,8 +127,7 @@
             </div>
           </Button>
 
-          <Button
-            @click="closeApp"
+          <Button @click="closeApp"
             class="!block !p-[3px] !bg-[#17212b] rounded-2xl border border-red-500/20 active:scale-[0.98] duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
@@ -144,19 +148,51 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import Button from "~/components/UI/Button.vue";
 import BackBar from "~/components/UI/BackBar.vue";
 
 const firstName = "Javokhir";
 const username = "javokhir";
 const tgId = "123456789";
-const { user, hapticImpact } = useTelegram();
+const { user, hapticImpact, closeApp } = useTelegram();
 
-const installApp = () => {
-  // PWA install logic
+const deferredPrompt = ref(null);
+const showInstallBtn = ref(false);
+
+const captureInstallEvent = (e) => {
+  e.preventDefault();
+  deferredPrompt.value = e;
+  showInstallBtn.value = true;
 };
 
-const closeApp = () => {
-  window.close();
+onMounted(() => {
+  // Слушаем событие от браузера
+  window.addEventListener('beforeinstallprompt', captureInstallEvent);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeinstallprompt', captureInstallEvent);
+});
+
+const installApp = async () => {
+  console.log("Кнопка нажата!");
+
+  if (!deferredPrompt.value) {
+    console.warn("Браузер еще не разрешил установку! deferredPrompt равен null.");
+    return;
+  }
+
+  try {
+    if (hapticImpact) hapticImpact('light');
+    deferredPrompt.value.prompt();
+    const { outcome } = await deferredPrompt.value.userChoice;
+    console.log(`Пользователь ответил: ${outcome}`);
+  } catch (err) {
+    console.error("Ошибка при вызове окна установки:", err);
+  }
+
+  deferredPrompt.value = null;
+  showInstallBtn.value = false;
 };
 </script>
