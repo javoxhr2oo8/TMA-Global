@@ -155,44 +155,28 @@ import BackBar from "~/components/UI/BackBar.vue";
 const firstName = "Javokhir";
 const username = "javokhir";
 const tgId = "123456789";
-const { user, hapticImpact, closeApp } = useTelegram();
-
-const deferredPrompt = ref(null);
-const showInstallBtn = ref(false);
-
-const captureInstallEvent = (e) => {
-  e.preventDefault();
-  deferredPrompt.value = e;
-  showInstallBtn.value = true;
-};
-
-onMounted(() => {
-  // Слушаем событие от браузера
-  window.addEventListener('beforeinstallprompt', captureInstallEvent);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener('beforeinstallprompt', captureInstallEvent);
-});
+const { user, hapticImpact, closeApp, openLink } = useTelegram();
+const { install, canInstall, isInstalled } = usePwaInstall();
 
 const installApp = async () => {
-  console.log("Кнопка нажата!");
+  if (hapticImpact) hapticImpact('light');
 
-  if (!deferredPrompt.value) {
-    console.warn("Браузер еще не разрешил установку! deferredPrompt равен null.");
+  // Oddiy brauzerda PWA prompt tayyor bo'lsa — shu prompt'ni ko'rsatamiz
+  if (canInstall.value) {
+    await install();
     return;
   }
 
-  try {
-    if (hapticImpact) hapticImpact('light');
-    deferredPrompt.value.prompt();
-    const { outcome } = await deferredPrompt.value.userChoice;
-    console.log(`Пользователь ответил: ${outcome}`);
-  } catch (err) {
-    console.error("Ошибка при вызове окна установки:", err);
+  // Allaqachon o'rnatilgan bo'lsa xabar beramiz
+  if (isInstalled.value) {
+    alert("Ilova allaqachon o'rnatilgan!");
+    return;
   }
 
-  deferredPrompt.value = null;
-  showInstallBtn.value = false;
+  // Telegram WebView ichida beforeinstallprompt ishlamaydi.
+  // Foydalanuvchini tashqi brauzerga yo'naltiramiz — u yerda
+  // brauzer PWA install tugmasini o'zi ko'rsatadi.
+  const appUrl = window.location.origin;
+  openLink(appUrl);
 };
 </script>

@@ -12,7 +12,6 @@ export default defineNuxtConfig({
         },
       ],
       link: [
-        { rel: 'manifest', href: '/manifest.webmanifest' },
         {
           rel: "preconnect",
           href: "https://cdnjs.cloudflare.com",
@@ -48,56 +47,63 @@ export default defineNuxtConfig({
       firebaseAppId: "",
     },
   },
-  modules: ["@pinia/nuxt", '@vite-pwa/nuxt'],
+  modules: ["@pinia/nuxt", "@vite-pwa/nuxt"],
   pwa: {
-    registerType: 'autoUpdate',
+    registerType: "autoUpdate",
     manifest: {
-      id: '/',
-      name: 'Quulay Market',
-      short_name: 'Quulay',
-      description: 'Telegram orqali qulay va tezkor onlayn xarid qilish tajribasi',
-      theme_color: '#008236',
-      background_color: '#008236',
-      display: 'standalone',
-      orientation: 'portrait',
-      scope: '/',
-      start_url: '/',
+      id: "/",
+      name: "Quulay Market",
+      short_name: "Quulay",
+      description:
+        "Telegram orqali qulay va tezkor onlayn xarid qilish tajribasi",
+      theme_color: "#008236",
+      background_color: "#008236",
+      display: "standalone",
+      orientation: "portrait",
+      scope: "/",
+      start_url: "/",
       icons: [
         {
-          src: '/icons/app-logo.png',
-          sizes: '1254x1254',
-          type: 'image/png',
-          purpose: 'any'
+          src: "/icons/pwa-64x64.png",
+          sizes: "64x64",
+          type: "image/png",
+          purpose: "any",
         },
         {
-          src: '/icons/app-logo.png',
-          sizes: '1254x1254',
-          type: 'image/png',
-          purpose: 'maskable'
-        }
+          src: "/icons/pwa-192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/icons/pwa-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/icons/maskable-icon-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "maskable",
+        },
       ],
       screenshots: [
         {
-          src: '/icons/app-logo.png',
-          sizes: '1254x1254',
-          type: 'image/png',
-          form_factor: 'wide'
+          src: "/icons/pwa-512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+          form_factor: "narrow",
         },
-        {
-          src: '/icons/app-logo.png',
-          sizes: '1254x1254',
-          type: 'image/png',
-          form_factor: 'narrow'
-        }
-      ]
+      ],
     },
     workbox: {
-      navigateFallback: '/',
-      globPatterns: ['**/*.{js,css,html,png,svg,ico}']
+      navigateFallback: "/",
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
     },
     devOptions: {
-      enabled: true
-    }
+      enabled: true,
+    },
   },
   vite: {
     plugins: [tailwindcss()],

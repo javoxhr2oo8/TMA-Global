@@ -52,6 +52,7 @@ interface TelegramWebApp {
   };
   close: () => void;
   sendData: (data: string) => void;
+  openLink: (url: string, options?: { try_instant_view?: boolean }) => void;
   showAlert: (message: string, callback?: () => void) => void;
   showConfirm: (
     message: string,
@@ -77,6 +78,7 @@ interface UseTelegramReturn {
   tg: TelegramWebApp | null;
   user: TelegramUser | undefined;
   closeApp: () => void;
+  openLink: (url: string) => void;
   sendData: (data: string) => void;
   showAlert: (message: string) => void;
   showMainButton: (text: string, onClick: () => void) => void;
@@ -118,6 +120,16 @@ export const useTelegram = (): UseTelegramReturn => {
       return tg.isVersionAtLeast(version);
     }
     return parseFloat(tg.version ?? "6.0") >= parseFloat(version);
+  };
+
+  // Tashqi brauzerda URL ochadi. Telegram WebView ichida PWA install
+  // bo'lmagani uchun foydalanuvchini oddiy Chrome/Safari ga yo'naltiramiz.
+  const openLink = (url: string): void => {
+    if (tg && typeof (tg as any).openLink === "function") {
+      (tg as any).openLink(url);
+    } else if (import.meta.client) {
+      window.open(url, "_blank");
+    }
   };
 
   const closeApp = (): void => {
@@ -203,6 +215,7 @@ export const useTelegram = (): UseTelegramReturn => {
     tg,
     user,
     closeApp,
+    openLink,
     sendData,
     showAlert,
     showMainButton,
