@@ -197,8 +197,9 @@
           <h3 class="text-center text-lg font-semibold">Ilovani o'rnatish</h3>
 
           <p class="mt-3 text-center text-sm text-gray-400">
-            Telegram ichida o'rnatish oynasi ishlamasligi mumkin. Chrome
-            brauzerida ochib, u yerdan ilovani o'rnating.
+            Ilovani telefonga o'rnatish uchun Chrome brauzerida ochish kerak.
+            Quyidagi tugmani bosing — sahifa Chrome'da ochiladi, so'ng
+            <b class="text-white">«Bosh ekranga qo'shish»</b> tugmasini toping.
           </p>
 
           <div class="mt-5 flex gap-3">
@@ -233,29 +234,37 @@ import BackBar from "~/components/UI/BackBar.vue";
 const firstName = "Javokhir";
 const username = "javokhir";
 const tgId = "123456789";
-const { user, hapticImpact, closeApp, openLink } = useTelegram();
+const { user, hapticImpact, closeApp, openLink, tg } = useTelegram();
 const { install, canInstall, isInstalled } = usePwaInstall();
 const showInstallModal = ref(false);
 
 const installApp = async () => {
   if (hapticImpact) hapticImpact("light");
 
-  if (canInstall.value) {
-    await install();
-    return;
-  }
-
   if (isInstalled.value) {
     alert("Ilova allaqachon o'rnatilgan!");
     return;
   }
 
+  if (canInstall.value) {
+    await install();
+    return;
+  }
+
+  // Telegram ichida: tashqi brauzerda ochish taklifi
   showInstallModal.value = true;
 };
+
 const openInBrowser = () => {
   const appUrl = window.location.origin;
-
-  openLink(appUrl);
   showInstallModal.value = false;
+
+  // Telegram WebApp mavjud bo'lsa, tashqi brauzerda ochadi (try_instant_view: false = Chrome/Safari)
+  if (tg && typeof tg.openLink === "function") {
+    tg.openLink(appUrl, { try_instant_view: false });
+  } else {
+    window.open(appUrl, "_blank");
+  }
 };
+
 </script>
