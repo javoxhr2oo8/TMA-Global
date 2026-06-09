@@ -123,11 +123,10 @@ export const useTelegram = (): UseTelegramReturn => {
   const closeApp = (): void => {
     if (!tg) return;
     if (isVersionAtLeast("6.2")) {
-      tg.showAlert("Ilovani yopmoqchimisiz?\n\nYopish uchun OK bosing.", () => {
-        tg.close();
+      tg.showConfirm("Ilovani yopmoqchimisiz?", (confirmed) => {
+        if (confirmed) tg.close();
       });
     } else {
-      // Eski versiyalarda showAlert ham ishlamaydi — to'g'ridan-to'g'ri yopamiz
       tg.close();
     }
   };
