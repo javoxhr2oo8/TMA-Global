@@ -4,11 +4,19 @@ import { reactive, ref, computed, onMounted } from "vue";
 import Button from "~/components/UI/Button.vue";
 import BackButton from "~/components/UI/BackButton.vue";
 import UiSelect from "~/components/UI/Select.vue";
+import OrderSuccessModal from "~/components/UI/OrderSuccessModal.vue";
 import { formatPrice } from "@/utils/util";
 
 const { items, totalItems, totalPrice } = useCart();
-const { placeOrder, submitting } = useOrder();
+const { placeOrder, submitting, lastOrderId } = useOrder();
 const { formatPhone, phoneDigits } = useInputMask();
+
+const showSuccess = ref(false);
+
+const onModalClose = () => {
+  showSuccess.value = false;
+  navigateTo("/");
+};
 
 // Telefon kiritilganda +998 XX XXX XX XX ko'rinishiga keltiramiz.
 // MUHIM: Vue qiymat o'zgarmaganda (masalan, 10-raqam kesib tashlanganda)
@@ -67,7 +75,7 @@ const onSubmit = async () => {
     err.value = "Yetkazib berish manzilini kiriting.";
     return;
   }
-  await placeOrder({
+  const ok = await placeOrder({
     phone: form.phone.trim(),
     region: form.region,
     address: form.address.trim(),
@@ -75,6 +83,10 @@ const onSubmit = async () => {
     payment: form.payment,
     comment: form.comment.trim(),
   });
+
+  if (ok) {
+    showSuccess.value = true;
+  }
 };
 
 // Savat bo'sh bo'lsa — bosh sahifaga qaytaramiz
@@ -181,5 +193,12 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
         {{ submitting ? "Yuborilmoqda..." : `Tasdiqlash · ${formatPrice(totalPrice)} so'm` }}
       </Button>
     </div>
+
+    <!-- SUCCESS MODAL -->
+    <OrderSuccessModal
+      :open="showSuccess"
+      :order-id="lastOrderId"
+      @close="onModalClose"
+    />
   </div>
 </template>

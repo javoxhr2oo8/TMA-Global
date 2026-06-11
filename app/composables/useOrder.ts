@@ -18,6 +18,7 @@ export const useOrder = () => {
   const { tg, user, initData, showAlert, hapticNotification } = useTelegram()
 
   const submitting = ref(false)
+  const lastOrderId = ref('')
 
   const buildItems = () =>
     items.value.map((i) => ({
@@ -91,9 +92,8 @@ export const useOrder = () => {
       await notifyTelegram(customer)
 
       hapticNotification('success')
-      showAlert(`Buyurtmangiz qabul qilindi!\nRaqam: #${orderId}`)
+      lastOrderId.value = orderId
       clearCart()
-      await navigateTo('/')
       return true
     } catch (e: any) {
       console.error('Order error:', e?.code, e?.message, e)
@@ -109,5 +109,5 @@ export const useOrder = () => {
     }
   }
 
-  return { placeOrder, submitting, buildItems }
+  return { placeOrder, submitting, buildItems, lastOrderId }
 }
