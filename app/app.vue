@@ -30,6 +30,7 @@ onMounted(() => {
 
 <template>
   <div class="app bg-olive-300 dark:bg-gray-900 transition-colors duration-300">
+    <NuxtPwaManifest />
     <NuxtLayout />
     <Loader v-if="store.loader"/>
   </div>

@@ -64,6 +64,13 @@ interface TelegramWebApp {
   version: string;
   platform?: string;
   isVersionAtLeast: (version: string) => boolean;
+  // Bot API 8.0+ : Mini App'ni qurilma bosh ekraniga yorliq sifatida qo'shish
+  addToHomeScreen?: () => void;
+  checkHomeScreenStatus?: (
+    callback: (status: "unsupported" | "unknown" | "added" | "missed") => void,
+  ) => void;
+  onEvent?: (eventType: string, callback: (...args: any[]) => void) => void;
+  offEvent?: (eventType: string, callback: (...args: any[]) => void) => void;
 }
 
 declare global {
@@ -93,6 +100,10 @@ interface UseTelegramReturn {
   isTelegram: boolean;
   initData: string;
   themeParams: TelegramThemeParams;
+  // Telegramning o'zi ichida Mini App'ni bosh ekranga yorliq sifatida qo'shish
+  canAddToHomeScreen: boolean;
+  addToHomeScreen: () => void;
+  onHomeScreenAdded: (callback: () => void) => void;
 }
 
 export const useTelegram = (): UseTelegramReturn => {
@@ -211,6 +222,25 @@ export const useTelegram = (): UseTelegramReturn => {
     tg?.expand();
   };
 
+  // Telegram Mini App'ni qurilma bosh ekraniga yorliq sifatida qo'shish
+  // (Bot API 8.0+, Telegram 11.0+ da mavjud). Bosilganda Telegram o'zining
+  // tasdiqlash oynasini ko'rsatadi va yorliqni bosh ekranga qo'yadi —
+  // bu PWA install promptidan farqli, alohida brauzer kerak emas.
+  const canAddToHomeScreen: boolean =
+    !!tg && typeof tg.addToHomeScreen === "function" && isVersionAtLeast("8.0");
+
+  const addToHomeScreen = (): void => {
+    if (tg && typeof tg.addToHomeScreen === "function") {
+      tg.addToHomeScreen();
+    }
+  };
+
+  const onHomeScreenAdded = (callback: () => void): void => {
+    if (tg && typeof tg.onEvent === "function") {
+      tg.onEvent("homeScreenAdded", callback);
+    }
+  };
+
   return {
     tg,
     user,
@@ -230,5 +260,8 @@ export const useTelegram = (): UseTelegramReturn => {
     isTelegram,
     initData: tg?.initData ?? "",
     themeParams: tg?.themeParams ?? {},
+    canAddToHomeScreen,
+    addToHomeScreen,
+    onHomeScreenAdded,
   };
 };
