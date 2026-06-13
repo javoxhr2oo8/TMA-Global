@@ -43,6 +43,7 @@ const blank = () => ({
   oldPrice: "",
   category: "Kiyimlar",
   brand: "",
+  ikpu: "",
   desc: "",
   quantity: "",
   rating: 0,
@@ -64,6 +65,7 @@ watch(
         oldPrice: p.oldPrice != null ? formatMoney(String(p.oldPrice)) : "",
         category: p.category || "Kiyimlar",
         brand: p.brand || "",
+        ikpu: p.ikpu || "",
         desc: p.desc || "",
         quantity: p.quantity ?? "",
         rating: Number(p.rating) || 0,
@@ -93,6 +95,7 @@ const onSave = () => {
     image: images.value[0] || "", // birinchisi — asosiy (eski kod bilan moslik uchun)
     category: form.category,
     brand: form.brand.trim(),
+    ikpu: form.ikpu.trim(),
     desc: form.desc.trim(),
     quantity: num(form.quantity),
     rating: Number(form.rating) || 0,
@@ -204,6 +207,17 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
                 :class="inputCls"
               />
             </div>
+          </div>
+
+          <div class="mb-3">
+            <label :class="labelCls"
+              >ИКПУ kodi</label
+            >
+            <input
+              v-model="form.ikpu"
+              placeholder="masalan: 06121001001000000"
+              :class="inputCls"
+            />
           </div>
 
           <!-- REYTING (admin qo'lda 1..5 yulduzcha qo'yadi) -->

@@ -15,6 +15,7 @@ export interface DemoProduct {
   quantity?: number
   desc?: string
   brand?: string
+  ikpu?: string
 }
 
 export const demoProducts: DemoProduct[] = [

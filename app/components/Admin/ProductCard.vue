@@ -22,6 +22,9 @@ const fmt = (n: any) => Number(n || 0).toLocaleString('ru-RU')
       <div v-if="product.quantity != null" class="text-[12px] text-[#94a3b8]">
         Omborda: {{ product.quantity }} ta
       </div>
+      <div v-if="product.ikpu" class="text-[12px] text-[#94a3b8]">
+        ИКПУ: {{ product.ikpu }}
+      </div>
     </div>
 
     <div class="flex gap-2 px-3.5 pb-3.5">
