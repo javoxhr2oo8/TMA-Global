@@ -1,9 +1,4 @@
 <script setup lang="ts">
-// app/components/UI/BackBar.vue
-// Sahifa tepasidagi "Orqaga" qatori (iconka + matn).
-// Telegram ichida BUTUNLAY yashiriladi (Telegram'ning o'z native BackButton'i
-// ishlaydi) — iconka ham, "Orqaga" so'zi ham, bo'sh joyi ham qolmaydi.
-// Telegram'dan tashqarida (oddiy brauzer) esa zaxira sifatida ko'rinadi.
 import { ref, computed, onMounted } from "vue";
 
 const router = useRouter();
@@ -20,7 +15,6 @@ const props = withDefaults(
   }
 );
 
-// SSR/hydration nomuvofiqligini oldini olish uchun mount'dan keyin hisoblaymiz.
 const mounted = ref(false);
 onMounted(() => {
   mounted.value = true;

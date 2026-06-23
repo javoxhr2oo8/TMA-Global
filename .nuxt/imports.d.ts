@@ -34,7 +34,7 @@ export { useAdminAuth } from '../app/composables/useAdminAuth';
 export { useAdminOrders } from '../app/composables/useAdminOrders';
 export { useAdminProducts } from '../app/composables/useAdminProducts';
 export { useCart } from '../app/composables/useCart';
-export { useCategory } from '../app/composables/useCategory';
+export { productCategories, useCategory } from '../app/composables/useCategory';
 export { useColorMode } from '../app/composables/useColorMode';
 export { useFavorites } from '../app/composables/useFavorites';
 export { getFirebaseConfig, getFirebaseApp, getDb, getStorageInstance } from '../app/composables/useFirebase';

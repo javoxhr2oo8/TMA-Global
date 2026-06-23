@@ -1,8 +1,4 @@
 <script setup lang="ts">
-// "Orqaga" tugmasi — faqat ZAXIRA sifatida ishlaydi.
-// Telegram ichida Telegram'ning o'z native BackButton'i (app.vue da ulangan)
-// ishlatiladi, shuning uchun bu tugma yashiriladi. Ilova oddiy brauzerda
-// (Telegram'dan tashqarida) ochilganda esa zaxira sifatida ko'rinadi.
 import { ref, computed, onMounted } from 'vue'
 
 const router = useRouter()
@@ -17,7 +13,6 @@ const props = withDefaults(
   }
 )
 
-// SSR/hydration nomuvofiqligini oldini olish uchun mount'dan keyin hisoblaymiz.
 const mounted = ref(false)
 onMounted(() => {
   mounted.value = true
@@ -32,7 +27,6 @@ function goBack(): void {
     return
   }
 
-  // Tarixda orqaga sahifa bo'lsa — qaytamiz, aks holda bosh sahifaga.
   if (import.meta.client && window.history.length > 1) {
     router.back()
   } else {

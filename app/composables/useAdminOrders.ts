@@ -1,7 +1,4 @@
-// app/composables/useAdminOrders.ts
-// Admin uchun buyurtmalarni Firestore 'orders' kolleksiyasidan o'qiydi.
-// Buyurtmalar mijoz checkout qilganda yoziladi (useOrder.placeOrder).
-// firestore.rules: orders read/update/delete faqat admin (email/parol) uchun.
+
 
 import {
   collection, getDocs, query, orderBy, doc, updateDoc, deleteDoc,
@@ -17,10 +14,8 @@ export const useAdminOrders = () => {
     try {
       let snap
       try {
-        // Eng yangisi tepada
         snap = await getDocs(query(collection(getDb(), 'orders'), orderBy('createdAt', 'desc')))
       } catch {
-        // createdAt bo'lmasa — tartibsiz olamiz
         snap = await getDocs(collection(getDb(), 'orders'))
       }
       orders.value = snap.docs.map((d) => ({ id: d.id, ...d.data() }))

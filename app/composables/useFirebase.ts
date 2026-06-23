@@ -49,7 +49,6 @@ export const getFirebaseApp = (): FirebaseApp =>
 
 let dbInstance: Firestore | null = null
 
-// Firestore — XOTIRA keshi (IndexedDB emas). Barqaror, b815 xatosi bo'lmaydi.
 export const getDb = (): Firestore => {
   if (!dbInstance) dbInstance = getFirestore(getFirebaseApp())
   return dbInstance

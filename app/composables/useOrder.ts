@@ -28,8 +28,6 @@ export const useOrder = () => {
       quantity: i.quantity,
     }))
 
-  // Telegram bot orqali admin'ga xabar — IXTIYORIY.
-  // Bot token / server sozlanmagan bo'lsa, bu buyurtmani BUZMAYDI (faqat ogohlantiradi).
   const notifyTelegram = async (customer: OrderCustomer) => {
     if (!tg || !initData) return
     try {
@@ -45,8 +43,6 @@ export const useOrder = () => {
     }
   }
 
-  // Buyurtma beradi. ASOSIY saqlash — Firestore (client SDK).
-  // Muvaffaqiyatda true qaytaradi.
   const placeOrder = async (customer: OrderCustomer): Promise<boolean> => {
     if (!items.value.length || submitting.value) return false
     submitting.value = true
@@ -59,8 +55,6 @@ export const useOrder = () => {
       )
       const orderId = 'ORD-' + Date.now().toString().slice(-8)
 
-      // 1) ASOSIY: Firestore'ga to'g'ridan-to'g'ri yozamiz.
-      //    (Server/bot/service-account talab qilinmaydi — brauzerda ham, Telegram'da ham ishlaydi.)
       const db = getDb()
       await setDoc(doc(db, 'orders', orderId), {
         orderId,
@@ -88,7 +82,6 @@ export const useOrder = () => {
         createdAt: serverTimestamp(),
       })
 
-      // 2) IXTIYORIY: admin'ga Telegram xabari (sozlangan bo'lsa).
       await notifyTelegram(customer)
 
       hapticNotification('success')

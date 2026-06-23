@@ -12,9 +12,6 @@ import {
 import type { Ref } from 'vue'
 import { getDb } from '~/composables/useFirebase'
 
-// Sahifalar orasida ULASHILADIGAN kesh (har bir kolleksiya uchun bitta holat).
-// Shu sababli bosh sahifaga qayta kirilganda ro'yxat qaytadan so'ralmaydi —
-// darhol ko'rinadi va fon rejimida yangilanadi.
 interface CollState {
   data: Ref<any[]>
   loading: Ref<boolean>
@@ -53,7 +50,6 @@ export const useRandomCollection = (collectionName: string) => {
 
     const hasMemory = loaded.value && data.value.length > 0
 
-    // 1) Xotirada bo'lmasa — avval IndexedDB keshidan o'qiymiz (darhol ko'rsatish).
     if (!hasMemory) {
       try {
         const cached = await getDocsFromCache(baseQuery)
@@ -70,7 +66,6 @@ export const useRandomCollection = (collectionName: string) => {
       }
     }
 
-    // 2) Serverdan yangilaymiz (revalidate) — kesh ko'rsatilgan bo'lsa fon rejimida.
     try {
       const snap = await getDocs(baseQuery)
       data.value = snap.docs.map((d) => ({ id: d.id, ...d.data() }))

@@ -154,12 +154,20 @@
               >
                 <i
                   class="text-[#00c853] text-sm"
-                  :class="(isInstalled || addedToHomeScreen) ? 'fa-solid fa-circle-check' : 'fa-solid fa-download'"
+                  :class="
+                    isInstalled || addedToHomeScreen
+                      ? 'fa-solid fa-circle-check'
+                      : 'fa-solid fa-download'
+                  "
                 ></i>
               </div>
               <div class="text-left">
                 <p class="font-semibold text-[13px] text-[#00c853]">
-                  {{ (isInstalled || addedToHomeScreen) ? "O'rnatildi" : "O'rnatish" }}
+                  {{
+                    isInstalled || addedToHomeScreen
+                      ? "O'rnatildi"
+                      : "O'rnatish"
+                  }}
                 </p>
                 <p class="text-[11px] text-gray-500">Dastur sifatida</p>
               </div>
@@ -204,7 +212,8 @@
             <p class="mt-3 text-center text-sm text-gray-400">
               Ilovani telefonga o'rnatish uchun Chrome brauzerida ochish kerak.
               Quyidagi tugmani bosing — sahifa Chrome'da ochiladi, so'ng
-              <b class="text-white">«Bosh ekranga qo'shish»</b> tugmasini toping.
+              <b class="text-white">«Bosh ekranga qo'shish»</b> tugmasini
+              toping.
             </p>
 
             <div class="mt-5 flex gap-3">
@@ -229,10 +238,14 @@
             <p class="mt-3 text-center text-sm text-gray-400">
               iPhone yoki iPad'da ilovani bosh ekranga o'rnatish uchun:
             </p>
-            <ol class="mt-3 space-y-2 text-sm text-gray-300 list-decimal list-inside">
+            <ol
+              class="mt-3 space-y-2 text-sm text-gray-300 list-decimal list-inside"
+            >
               <li>
                 Pastdagi
-                <i class="fa-solid fa-arrow-up-from-bracket text-[#00c853] mx-1"></i>
+                <i
+                  class="fa-solid fa-arrow-up-from-bracket text-[#00c853] mx-1"
+                ></i>
                 <b class="text-white">Ulashish</b> tugmasini bosing
               </li>
               <li>
@@ -240,7 +253,10 @@
                 <b class="text-white">«Bosh ekranga qo'shish»</b>
                 (Add to Home Screen) bandini tanlang
               </li>
-              <li>Yuqori o'ng burchakdagi <b class="text-white">«Qo'shish»</b> tugmasini bosing</li>
+              <li>
+                Yuqori o'ng burchakdagi
+                <b class="text-white">«Qo'shish»</b> tugmasini bosing
+              </li>
             </ol>
             <button
               @click="showInstallModal = false"
@@ -255,17 +271,25 @@
             <p class="mt-3 text-center text-sm text-gray-400">
               Ilovani telefonga o'rnatish uchun:
             </p>
-            <ol class="mt-3 space-y-2 text-sm text-gray-300 list-decimal list-inside">
+            <ol
+              class="mt-3 space-y-2 text-sm text-gray-300 list-decimal list-inside"
+            >
               <li>
                 Yuqori o'ng burchakdagi
-                <i class="fa-solid fa-ellipsis-vertical text-[#00c853] mx-1"></i>
+                <i
+                  class="fa-solid fa-ellipsis-vertical text-[#00c853] mx-1"
+                ></i>
                 menyuni oching
               </li>
               <li>
                 <b class="text-white">«Ilovani o'rnatish»</b> yoki
-                <b class="text-white">«Bosh ekranga qo'shish»</b> bandini tanlang
+                <b class="text-white">«Bosh ekranga qo'shish»</b> bandini
+                tanlang
               </li>
-              <li>Tasdiqlash uchun <b class="text-white">«O'rnatish»</b> tugmasini bosing</li>
+              <li>
+                Tasdiqlash uchun <b class="text-white">«O'rnatish»</b> tugmasini
+                bosing
+              </li>
             </ol>
             <p class="mt-3 text-center text-xs text-gray-500">
               Eslatma: bu funksiya Chrome yoki Edge brauzerida mavjud.
@@ -283,7 +307,9 @@
             <p class="mt-3 text-center text-sm text-gray-400">
               Kompyuterga ilova sifatida o'rnatish uchun:
             </p>
-            <ol class="mt-3 space-y-2 text-sm text-gray-300 list-decimal list-inside">
+            <ol
+              class="mt-3 space-y-2 text-sm text-gray-300 list-decimal list-inside"
+            >
               <li>
                 Manzil satrining o'ng tomonidagi
                 <i class="fa-solid fa-circle-down text-[#00c853] mx-1"></i>
@@ -340,8 +366,6 @@ if (import.meta.client) {
   });
 }
 
-// Modal qaysi ko'rsatma turini ko'rsatishini aniqlaydi:
-// telegram | ios | android | desktop
 const installMode = computed(() => {
   if (isTelegram) return "telegram";
 
@@ -350,7 +374,6 @@ const installMode = computed(() => {
   const ua = navigator.userAgent || "";
   const isIOS =
     /iPad|iPhone|iPod/.test(ua) ||
-    // Yangi iPadOS Safari "Mac" deb ko'rsatadi, lekin touch ekranga ega
     (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
 
   if (isIOS) return "ios";
@@ -369,23 +392,16 @@ const installApp = async () => {
     return;
   }
 
-  // Telegram ichida bo'lsa va Telegramning o'zi "Bosh ekranga qo'shish"ni
-  // qo'llab-quvvatlasa (Bot API 8.0+) — Telegramning o'z dialogini chaqiramiz.
-  // Bunda alohida brauzer kerak emas, yorliq to'g'ridan-to'g'ri Telegramga
-  // ulangan holda qo'shiladi.
   if (isTelegram && canAddToHomeScreen) {
     addToHomeScreen();
     return;
   }
 
-  // Brauzer "o'rnatish" promptini avtomatik ko'rsatishi mumkin bo'lsa —
-  // to'g'ridan-to'g'ri shu promptni chaqiramiz (Chrome/Edge: Android/Desktop)
   if (canInstall.value) {
     await install();
     return;
   }
 
-  // Aks holda — qo'lda o'rnatish bo'yicha yo'riqnoma ko'rsatamiz
   showInstallModal.value = true;
 };
 
@@ -393,12 +409,10 @@ const openInBrowser = () => {
   const appUrl = window.location.origin;
   showInstallModal.value = false;
 
-  // Telegram WebApp mavjud bo'lsa, tashqi brauzerda ochadi (try_instant_view: false = Chrome/Safari)
   if (tg && typeof tg.openLink === "function") {
     tg.openLink(appUrl, { try_instant_view: false });
   } else {
     window.open(appUrl, "_blank");
   }
 };
-
 </script>

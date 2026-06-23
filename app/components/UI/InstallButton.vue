@@ -1,11 +1,3 @@
-<!-- app/components/UI/InstallButton.vue -->
-<!--
-  Loyihangizning dizayniga mos keluvchi "Ilovani o'rnatish" tugmasi.
-  Foydalanish: <InstallButton /> — qayerga qo'ysangiz bo'ladi.
-  
-  Faqat o'rnatish mumkin bo'lganda ko'rinadi (canInstall = true).
-  Allaqachon o'rnatilgan bo'lsa — "O'rnatildi" nishoni ko'rsatadi.
--->
 <script setup lang="ts">
 const { canInstall, isInstalled, install } = usePwaInstall();
 

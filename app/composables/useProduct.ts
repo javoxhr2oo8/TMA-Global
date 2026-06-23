@@ -20,7 +20,6 @@ export const useProduct = () => {
         product.value = { id: snap.id, ...snap.data() }
         console.log(`[Firestore] products/${id} olindi`)
       } else {
-        // Firestore'da topilmasa — zaxira (demo). Xohlasangiz bu qatorni olib tashlang.
         console.warn(`[Firestore] products/${id} topilmadi, demo'ga tushildi`)
         product.value = findDemoProduct(id)
       }

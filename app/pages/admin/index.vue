@@ -14,7 +14,8 @@ const tabCls = (t: string) =>
     : "bg-white/5 text-[#94a3b8] hover:text-white border border-white/10");
 const goOrders = () => { activeTab.value = "orders"; loadOrders(); };
 
-const categories = ["Elektronika", "Kiyim va poyabzal", "Oziq-ovqat", "Uy va roʻzgʻor", "Bolalar dunyosi", "Sport va xobbi"];
+// Admin uchun kategoriyalar — yagona manbadan olinadi ('Barchasi'siz, chunki bu real kategoriya emas).
+const categories = productCategories.map((c) => c.label);
 
 const isAuthed = computed(() => !!user.value);
 const list = computed(() => products.value);

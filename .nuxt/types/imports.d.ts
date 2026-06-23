@@ -78,6 +78,7 @@ declare global {
   const preloadPayload: typeof import('../../node_modules/nuxt/dist/app/composables/payload').preloadPayload
   const preloadRouteComponents: typeof import('../../node_modules/nuxt/dist/app/composables/preload').preloadRouteComponents
   const prerenderRoutes: typeof import('../../node_modules/nuxt/dist/app/composables/ssr').prerenderRoutes
+  const productCategories: typeof import('../../app/composables/useCategory').productCategories
   const provide: typeof import('vue').provide
   const proxyRefs: typeof import('vue').proxyRefs
   const reactive: typeof import('vue').reactive
@@ -300,6 +301,7 @@ declare module 'vue' {
     readonly preloadPayload: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/payload')['preloadPayload']>
     readonly preloadRouteComponents: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/preload')['preloadRouteComponents']>
     readonly prerenderRoutes: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['prerenderRoutes']>
+    readonly productCategories: UnwrapRef<typeof import('../../app/composables/useCategory')['productCategories']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
     readonly proxyRefs: UnwrapRef<typeof import('vue')['proxyRefs']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>

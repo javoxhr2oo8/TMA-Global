@@ -28,12 +28,11 @@ const validatePrices = () => {
   }
 };
 
-// Narx maydonlari: kiritilganda 3 xonadan bo'sh joy bilan formatlaymiz
 const onMoney = (key: "price" | "oldPrice", e: Event) => {
   const el = e.target as HTMLInputElement;
   const formatted = formatMoney(el.value);
   form[key] = formatted;
-  el.value = formatted; // Vue qiymat o'zgarmaganda DOM ni yangilamaydi — majburan sinxronlaymiz
+  el.value = formatted; 
   validatePrices();
 };
 
@@ -41,7 +40,7 @@ const blank = () => ({
   title: "",
   price: "",
   oldPrice: "",
-  category: "Kiyimlar",
+  category: props.categories[0] ?? "",
   brand: "",
   ikpu: "",
   desc: "",
@@ -63,7 +62,7 @@ watch(
         title: p.title || "",
         price: p.price != null ? formatMoney(String(p.price)) : "",
         oldPrice: p.oldPrice != null ? formatMoney(String(p.oldPrice)) : "",
-        category: p.category || "Kiyimlar",
+        category: p.category || props.categories[0] || "",
         brand: p.brand || "",
         ikpu: p.ikpu || "",
         desc: p.desc || "",
@@ -210,9 +209,7 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
           </div>
 
           <div class="mb-3">
-            <label :class="labelCls"
-              >ИКПУ kodi</label
-            >
+            <label :class="labelCls">ИКПУ kodi</label>
             <input
               v-model="form.ikpu"
               placeholder="masalan: 06121001001000000"
@@ -349,7 +346,6 @@ const labelCls = "block text-xs text-[#94a3b8] mb-1.5 font-semibold";
   background-clip: padding-box;
 }
 
-/* type=number spinnerlarini olib tashlash */
 .field-number::-webkit-outer-spin-button,
 .field-number::-webkit-inner-spin-button {
   -webkit-appearance: none;

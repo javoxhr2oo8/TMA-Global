@@ -1,8 +1,4 @@
-// app/composables/useCart.ts
-// Savat localStorage'da saqlanadi (app/plugins/persist.client.ts hydrate qiladi va yozadi).
-// Shu tufayli ilova yopilib qayta ochilganda ham savat saqlanib qoladi.
-// (Avval cookie ishlatilgan edi — 4KB chegarasi tufayli uzun rasm URL'lari bilan
-//  savat saqlanmay qolardi.)
+
 
 interface Product {
   id: number

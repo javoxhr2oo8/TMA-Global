@@ -1,6 +1,3 @@
-// app/composables/useFavorites.ts
-// Sevimlilar (like) localStorage'da saqlanadi (app/plugins/persist.client.ts orqali).
-// Foydalanuvchi o'zi olib tashlamaguncha saqlanib turadi (ilova yopilsa ham).
 
 interface Product {
   id: number

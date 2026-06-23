@@ -2,14 +2,10 @@
 const { activeCategory, setCategory } = useCategory()
 const { hapticImpact } = useTelegram()
 
+// 'Barchasi' har doim birinchi va default tanlov; qolganlari yagona manbadan keladi.
 const categories = [
-    { id: 1, label: 'Barchasi', icon: 'fa-solid fa-border-all' },
-    { id: 2, label: 'Elektronika', icon: 'fa-solid fa-laptop-code' },
-    { id: 3, label: 'Kiyim va poyabzal', icon: 'fa-solid fa-shirt' },
-    { id: 4, label: 'Oziq-ovqat', icon: 'fa-solid fa-basket-shopping' },
-    { id: 5, label: 'Uy va roʻzgʻor', icon: 'fa-solid fa-couch' },
-    { id: 6, label: 'Bolalar dunyosi', icon: 'fa-solid fa-baby-carriage' },
-    { id: 7, label: 'Sport va xobbi', icon: 'fa-solid fa-person-running' }
+    { id: 0, label: 'Barchasi', icon: 'fa-solid fa-border-all' },
+    ...productCategories
 ]
 
 function onCategoryClick(label: string) {

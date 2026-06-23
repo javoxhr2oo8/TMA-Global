@@ -1,4 +1,3 @@
-// composables/useTelegram.ts
 
 interface TelegramUser {
   id: number;
@@ -64,7 +63,6 @@ interface TelegramWebApp {
   version: string;
   platform?: string;
   isVersionAtLeast: (version: string) => boolean;
-  // Bot API 8.0+ : Mini App'ni qurilma bosh ekraniga yorliq sifatida qo'shish
   addToHomeScreen?: () => void;
   checkHomeScreenStatus?: (
     callback: (status: "unsupported" | "unknown" | "added" | "missed") => void,
@@ -100,7 +98,6 @@ interface UseTelegramReturn {
   isTelegram: boolean;
   initData: string;
   themeParams: TelegramThemeParams;
-  // Telegramning o'zi ichida Mini App'ni bosh ekranga yorliq sifatida qo'shish
   canAddToHomeScreen: boolean;
   addToHomeScreen: () => void;
   onHomeScreenAdded: (callback: () => void) => void;
@@ -113,18 +110,12 @@ export const useTelegram = (): UseTelegramReturn => {
 
   const user: TelegramUser | undefined = tg?.initDataUnsafe?.user;
 
-  // Ilova haqiqatan ham Telegram ichida ochilganmi?
-  // telegram-web-app.js skripti brauzerda ham window.Telegram.WebApp ni
-  // yaratadi, lekin u holda platform === 'unknown' va initData bo'sh bo'ladi.
-  // Shu sababli faqat !!tg yetarli emas.
+  
   const platform: string = tg?.platform ?? "unknown";
   const isTelegram: boolean =
     !!tg && (platform !== "unknown" || (tg.initData?.length ?? 0) > 0);
 
-  // Telegram metodlari versiyaga bog'liq. Masalan setHeaderColor,
-  // BackButton va HapticFeedback faqat 6.1+ da bor. 6.0 da chaqirilsa
-  // "not supported in version 6.0" ogohlantirishi chiqadi — shuning
-  // uchun har bir chaqiruvni versiya bilan tekshiramiz.
+ 
   const isVersionAtLeast = (version: string): boolean => {
     if (!tg) return false;
     if (typeof tg.isVersionAtLeast === "function") {
@@ -133,8 +124,7 @@ export const useTelegram = (): UseTelegramReturn => {
     return parseFloat(tg.version ?? "6.0") >= parseFloat(version);
   };
 
-  // Tashqi brauzerda URL ochadi. Telegram WebView ichida PWA install
-  // bo'lmagani uchun foydalanuvchini oddiy Chrome/Safari ga yo'naltiramiz.
+ 
   const openLink = (url: string): void => {
     if (tg && typeof (tg as any).openLink === "function") {
       (tg as any).openLink(url);
@@ -154,17 +144,12 @@ export const useTelegram = (): UseTelegramReturn => {
     }
   };
 
-  // Buyurtma ma'lumotini Telegram bot'ga yuboradi (web_app_data update).
-  // Diqqat: sendData faqat Mini App reply-keyboard tugmasi orqali ochilganda
-  // ishlaydi va yuborgandan keyin ilovani avtomatik yopadi. Limit ~4096 bayt.
+ 
   const sendData = (data: string): void => {
     tg?.sendData(data);
   };
 
   const showAlert = (message: string): void => {
-    // tg.showAlert faqat Bot API 6.2+ da bor. Eski versiyalarda
-    // "WebAppMethodUnsupported" xatosi tashlanadi — shuning uchun
-    // versiyani tekshirib, bo'lmasa oddiy alert'ga tushamiz.
     if (tg && isVersionAtLeast("6.2")) {
       tg.showAlert(message);
     } else if (import.meta.client) {
@@ -222,10 +207,6 @@ export const useTelegram = (): UseTelegramReturn => {
     tg?.expand();
   };
 
-  // Telegram Mini App'ni qurilma bosh ekraniga yorliq sifatida qo'shish
-  // (Bot API 8.0+, Telegram 11.0+ da mavjud). Bosilganda Telegram o'zining
-  // tasdiqlash oynasini ko'rsatadi va yorliqni bosh ekranga qo'yadi —
-  // bu PWA install promptidan farqli, alohida brauzer kerak emas.
   const canAddToHomeScreen: boolean =
     !!tg && typeof tg.addToHomeScreen === "function" && isVersionAtLeast("8.0");
 

@@ -18,10 +18,6 @@ const onModalClose = () => {
   navigateTo("/");
 };
 
-// Telefon kiritilganda +998 XX XXX XX XX ko'rinishiga keltiramiz.
-// MUHIM: Vue qiymat o'zgarmaganda (masalan, 10-raqam kesib tashlanganda)
-// DOM input'ni yangilamaydi — shuning uchun el.value ni qo'lda sinxronlaymiz,
-// aks holda ortiqcha raqam ekranda qoladi va cheklanmaydi.
 const onPhone = (e: Event) => {
   const el = e.target as HTMLInputElement;
   const formatted = formatPhone(el.value);
@@ -89,7 +85,6 @@ const onSubmit = async () => {
   }
 };
 
-// Savat bo'sh bo'lsa — bosh sahifaga qaytaramiz
 onMounted(() => {
   if (!items.value.length) navigateTo("/");
 });
