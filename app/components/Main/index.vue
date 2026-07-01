@@ -9,9 +9,14 @@ const { activeCategory } = useCategory()
 
 const source = computed(() => data.value ?? [])
 
+// Unicode normalizatsiya — ʻ (U+02BB) va boshqa maxsus belgilarni xavfsiz solishtirish
+const norm = (s: string) => (s || '').trim().normalize('NFC')
+
 const list = computed(() => {
   if (activeCategory.value === 'Barchasi') return source.value
-  return source.value.filter((p: any) => p.category === activeCategory.value)
+
+  const active = norm(activeCategory.value)
+  return source.value.filter((p: any) => norm(p.category) === active)
 })
 
 const showMore = computed(() => {

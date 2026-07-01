@@ -1,13 +1,15 @@
 // app/composables/useRandomCollection.ts
+// Real-time listener (onSnapshot) orqali ishlaydi —
+// admin mahsulot qo'shsa/o'zgartirsa, Telegram appda darhol ko'rinadi.
+//
+// MUHIM: orderBy('createdAt') ISHLATILMAYDI!
+// Sabab: Firestore'da orderBy qo'yilsa, faqat shu maydon MAVJUD bo'lgan
+// hujjatlar qaytadi. createdAt yo'q mahsulotlar yashirinib qoladi.
+// Buning o'rniga BARCHA mahsulotlarni olib, client-side tartiblаymiz.
 import {
   collection,
-  query,
-  orderBy,
-  startAfter,
-  limit,
-  getDocs,
-  getDocsFromCache,
-  type DocumentSnapshot,
+  onSnapshot,
+  type Unsubscribe,
 } from 'firebase/firestore'
 import type { Ref } from 'vue'
 import { getDb } from '~/composables/useFirebase'
@@ -16,12 +18,11 @@ interface CollState {
   data: Ref<any[]>
   loading: Ref<boolean>
   hasMore: Ref<boolean>
-  lastDoc: Ref<DocumentSnapshot | null>
   loaded: Ref<boolean>
+  unsub: Unsubscribe | null
 }
 
 const caches = new Map<string, CollState>()
-const pageSize = 30
 
 function getState(name: string): CollState {
   let s = caches.get(name)
@@ -29,78 +30,62 @@ function getState(name: string): CollState {
     s = {
       data: ref<any[]>([]),
       loading: ref(false),
-      hasMore: ref(true),
-      lastDoc: ref<DocumentSnapshot | null>(null),
+      hasMore: ref(false),
       loaded: ref(false),
+      unsub: null,
     }
     caches.set(name, s)
   }
   return s
 }
 
+// Client-side tartiblash: yangi mahsulotlar birinchi, createdAt yo'qlar oxirida
+function sortByNewest(items: any[]): any[] {
+  return [...items].sort((a, b) => {
+    const ta = a.createdAt ?? 0
+    const tb = b.createdAt ?? 0
+    return tb - ta
+  })
+}
+
 export const useRandomCollection = (collectionName: string) => {
-  const { data, loading, hasMore, lastDoc, loaded } = getState(collectionName)
+  const state = getState(collectionName)
+  const { data, loading, hasMore, loaded } = state
 
   const fetchRandom = async () => {
-    const baseQuery = query(
-      collection(getDb(), collectionName),
-      orderBy('createdAt', 'desc'),
-      limit(pageSize),
+    // Agar allaqachon real-time listener mavjud bo'lsa, qayta ulanish shart emas
+    if (state.unsub) return
+
+    // Birinchi yuklashda skeleton ko'rsatamiz
+    if (!loaded.value) {
+      loading.value = true
+    }
+
+    // orderBy/limit YO'Q — BARCHA mahsulotlarni olamiz
+    // onSnapshot real-time tinglaydi: admin qo'shsa/o'chirsa darhol yangilanadi
+    const colRef = collection(getDb(), collectionName)
+
+    state.unsub = onSnapshot(
+      colRef,
+      (snap) => {
+        const all = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+        data.value = sortByNewest(all)
+        hasMore.value = false
+        loaded.value = true
+        loading.value = false
+        console.log(`[Firestore] ${collectionName}: ${all.length} ta mahsulot yuklandi`)
+      },
+      (err) => {
+        console.error('[Firestore] onSnapshot xato:', err)
+        if (!loaded.value) data.value = []
+        loading.value = false
+      },
     )
-
-    const hasMemory = loaded.value && data.value.length > 0
-
-    if (!hasMemory) {
-      try {
-        const cached = await getDocsFromCache(baseQuery)
-        if (!cached.empty) {
-          data.value = cached.docs.map((d) => ({ id: d.id, ...d.data() }))
-          lastDoc.value = cached.docs[cached.docs.length - 1] ?? null
-          hasMore.value = cached.docs.length === pageSize
-          loaded.value = true
-        } else {
-          loading.value = true // kesh bo'sh — skeleton ko'rsatamiz
-        }
-      } catch {
-        loading.value = true // kesh yo'q/qo'llab-quvvatlanmaydi
-      }
-    }
-
-    try {
-      const snap = await getDocs(baseQuery)
-      data.value = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
-      lastDoc.value = snap.docs[snap.docs.length - 1] ?? null
-      hasMore.value = snap.docs.length === pageSize
-      loaded.value = true
-    } catch (e) {
-      console.error('[Firestore] xato:', e)
-      if (!loaded.value) data.value = []
-    } finally {
-      loading.value = false
-    }
   }
 
-  const loadMore = async () => {
-    if (!lastDoc.value || loading.value) return
-    loading.value = true
-    try {
-      const snap = await getDocs(
-        query(
-          collection(getDb(), collectionName),
-          orderBy('createdAt', 'desc'),
-          startAfter(lastDoc.value),
-          limit(pageSize),
-        ),
-      )
-      data.value = [...data.value, ...snap.docs.map((d) => ({ id: d.id, ...d.data() }))]
-      lastDoc.value = snap.docs[snap.docs.length - 1] ?? null
-      hasMore.value = snap.docs.length === pageSize
-    } catch (e) {
-      console.error('[Firestore] loadMore xato:', e)
-    } finally {
-      loading.value = false
-    }
-  }
+  // loadMore endi kerak emas (barcha mahsulotlar bir yo'la yuklanadi),
+  // lekin interfeysni buzmaslik uchun saqlab qo'yamiz
+  const loadMore = async () => {}
 
   return { data, loading, hasMore, fetchRandom, loadMore }
 }

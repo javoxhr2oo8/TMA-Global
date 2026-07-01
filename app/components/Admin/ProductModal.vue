@@ -92,7 +92,7 @@ const onSave = () => {
     price: num(form.price) ?? 0,
     images: [...images.value],
     image: images.value[0] || "", // birinchisi — asosiy (eski kod bilan moslik uchun)
-    category: form.category,
+    category: (form.category || '').trim().normalize('NFC'),
     brand: form.brand.trim(),
     ikpu: form.ikpu.trim(),
     desc: form.desc.trim(),
