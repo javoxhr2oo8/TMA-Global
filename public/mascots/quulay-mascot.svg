@@ -1,0 +1,68 @@
+<svg viewBox="0 0 400 440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#27B14E"/>
+      <stop offset="1" stop-color="#1B9440"/>
+    </linearGradient>
+    <linearGradient id="bagGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF9E40"/>
+      <stop offset="1" stop-color="#F47C1E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- soft ground shadow -->
+  <ellipse cx="200" cy="408" rx="120" ry="20" fill="#000000" opacity="0.08"/>
+
+  <!-- EARS -->
+  <g>
+    <!-- left ear -->
+    <path d="M148 120 C132 60 138 18 158 16 C176 14 184 56 178 116 Z" fill="url(#bodyGrad)"/>
+    <path d="M155 110 C146 64 150 34 160 33 C169 32 173 62 168 108 Z" fill="#7CD497"/>
+    <!-- right ear -->
+    <path d="M252 120 C268 60 262 18 242 16 C224 14 216 56 222 116 Z" fill="url(#bodyGrad)"/>
+    <path d="M245 110 C254 64 250 34 240 33 C231 32 227 62 232 108 Z" fill="#7CD497"/>
+  </g>
+
+  <!-- HEAD -->
+  <circle cx="200" cy="170" r="86" fill="url(#bodyGrad)"/>
+
+  <!-- cheeks -->
+  <circle cx="150" cy="194" r="19" fill="#FFC4D0" opacity="0.92"/>
+  <circle cx="250" cy="194" r="19" fill="#FFC4D0" opacity="0.92"/>
+
+  <!-- eyes -->
+  <circle cx="172" cy="160" r="13" fill="#15301E"/>
+  <circle cx="228" cy="160" r="13" fill="#15301E"/>
+  <circle cx="176" cy="155" r="4.5" fill="#FFFFFF"/>
+  <circle cx="232" cy="155" r="4.5" fill="#FFFFFF"/>
+
+  <!-- nose + mouth -->
+  <path d="M194 182 L206 182 L200 190 Z" fill="#FF7D97"/>
+  <path d="M200 190 L200 198 M200 198 C190 198 186 192 186 188 M200 198 C210 198 214 192 214 188"
+        fill="none" stroke="#15301E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- BODY -->
+  <path d="M138 248 C138 308 158 360 200 360 C242 360 262 308 262 248 C262 248 236 268 200 268 C164 268 138 248 138 248 Z" fill="url(#bodyGrad)"/>
+
+  <!-- white belly + checkmark (brand mark) -->
+  <ellipse cx="200" cy="312" rx="42" ry="48" fill="#F4FBF5"/>
+  <path d="M180 312 L195 327 L222 296" fill="none" stroke="#1FA84C" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- feet -->
+  <ellipse cx="170" cy="362" rx="22" ry="14" fill="#F4FBF5"/>
+  <ellipse cx="230" cy="362" rx="22" ry="14" fill="#F4FBF5"/>
+
+  <!-- LEFT ARM holding bag -->
+  <path d="M150 270 C120 286 110 318 124 338" fill="none" stroke="url(#bodyGrad)" stroke-width="22" stroke-linecap="round"/>
+
+  <!-- shopping bag -->
+  <g transform="translate(96 314)">
+    <path d="M6 16 L54 16 L48 70 L12 70 Z" fill="url(#bagGrad)"/>
+    <path d="M16 16 C16 2 44 2 44 16" fill="none" stroke="#C85E10" stroke-width="5" stroke-linecap="round"/>
+    <path d="M22 36 L30 44 L40 30" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- RIGHT ARM waving -->
+  <path d="M250 270 C282 280 296 264 300 244" fill="none" stroke="url(#bodyGrad)" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="302" cy="240" r="15" fill="#27B14E"/>
+</svg>

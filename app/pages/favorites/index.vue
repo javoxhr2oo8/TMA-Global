@@ -38,9 +38,11 @@ const totalPrice = computed(() => {
 
       <!-- EMPTY -->
       <div v-if="items.length === 0" class="empty-card !mt-[10px]">
-        <div class="empty-icon">
-          <i class="fa-regular fa-heart text-pink-400 text-4xl"></i>
-        </div>
+        <img
+          src="/mascots/blob-mascot.svg"
+          alt="Bo'sh sevimlilar"
+          class="w-36 h-36 drop-shadow-lg"
+        />
 
         <h2 class="text-white text-2xl font-bold mt-5">Sevimlilar bo'sh</h2>
         <p class="text-gray-400 text-center mt-2">

@@ -77,22 +77,11 @@ const totalPrice = computed(() => {
 
       <!-- EMPTY -->
       <div v-if="items.length === 0" class="empty-card !mt-[10px]">
-        <div class="empty-icon">
-          <svg
-            width="42"
-            height="42"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#00c853"
-            stroke-width="2"
-          >
-            <circle cx="9" cy="21" r="1" />
-            <circle cx="20" cy="21" r="1" />
-            <path
-              d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
-            />
-          </svg>
-        </div>
+        <img
+          src="/mascots/blob-mascot.svg"
+          alt="Bo'sh savat"
+          class="w-36 h-36 drop-shadow-lg"
+        />
 
         <h2 class="text-white text-2xl font-bold mt-5">Savatingiz bo'sh</h2>
 

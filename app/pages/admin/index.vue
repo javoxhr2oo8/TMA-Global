@@ -5,14 +5,21 @@ import { ref, computed, reactive, onMounted } from "vue";
 const { user, ready, init, login, logout } = useAdminAuth();
 const { products, loading, load, create, update, remove } = useAdminProducts();
 const { orders, loading: ordersLoading, load: loadOrders, updateStatus, remove: removeOrder } = useAdminOrders();
+const {
+  registrations,
+  loading: regsLoading,
+  load: loadRegistrations,
+  remove: removeRegistration,
+} = useRegistration();
 
-const activeTab = ref<"products" | "orders">("products");
+const activeTab = ref<"products" | "orders" | "registrations">("products");
 const tabCls = (t: string) =>
   "px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer transition-colors " +
   (activeTab.value === t
     ? "bg-[#22c55e] text-[#031b0e]"
     : "bg-white/5 text-[#94a3b8] hover:text-white border border-white/10");
 const goOrders = () => { activeTab.value = "orders"; loadOrders(); };
+const goRegistrations = () => { activeTab.value = "registrations"; loadRegistrations(); };
 
 // Admin uchun kategoriyalar — yagona manbadan olinadi ('Barchasi'siz, chunki bu real kategoriya emas).
 const categories = productCategories.map((c) => c.label);
@@ -123,6 +130,12 @@ const onDelete = async (p: any) => {
   }
 };
 
+const onRegDelete = async (reg: any) => {
+  if (!confirm(`"${reg.firstName} ${reg.lastName}" o'chirilsinmi?`)) return;
+  try { await removeRegistration(reg.id); notify("O'chirildi ✓"); }
+  catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
+};
+
 const onOrderStatus = async ({ id, status }: { id: string; status: string }) => {
   try { await updateStatus(id, status); notify("Holat yangilandi ✓"); }
   catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
@@ -163,9 +176,12 @@ onMounted(() => {
 
       <div class="max-w-[1080px] mx-auto px-5 pt-7 pb-20">
         <!-- TABLAR -->
-        <div class="flex gap-2 mb-6">
+        <div class="flex gap-2 mb-6 flex-wrap">
           <button :class="tabCls('products')" @click="activeTab = 'products'">Mahsulotlar</button>
           <button :class="tabCls('orders')" @click="goOrders">Buyurtmalar</button>
+          <button :class="tabCls('registrations')" @click="goRegistrations">
+            <i class="fas fa-users mr-1.5" />So'rovnomalar
+          </button>
         </div>
 
         <template v-if="activeTab === 'products'">
@@ -199,12 +215,20 @@ onMounted(() => {
         </template>
 
         <AdminOrders
-          v-else
+          v-else-if="activeTab === 'orders'"
           :orders="orders"
           :loading="ordersLoading"
           @status="onOrderStatus"
           @delete="onOrderDelete"
           @refresh="loadOrders"
+        />
+
+        <AdminRegistrations
+          v-else-if="activeTab === 'registrations'"
+          :registrations="registrations"
+          :loading="regsLoading"
+          @delete="onRegDelete"
+          @refresh="loadRegistrations"
         />
       </div>
     </template>

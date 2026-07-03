@@ -24,16 +24,12 @@ const emit = defineEmits<{
           v-if="props.open"
           class="w-full max-w-[400px] rounded-t-3xl border border-white/10 bg-[#101828] p-6 pb-8 text-center shadow-2xl sm:mx-4 sm:rounded-3xl sm:pb-6"
         >
-          <!-- ICON -->
-          <div
-            class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#008236]/15"
-          >
-            <div
-              class="flex h-12 w-12 items-center justify-center rounded-full bg-[#008236]"
-            >
-              <i class="fa-solid fa-check text-2xl text-white"></i>
-            </div>
-          </div>
+          <!-- MASCOT -->
+          <img
+            src="/mascots/check-mascot.svg"
+            alt="Muvaffaqiyat"
+            class="w-32 h-32 mx-auto mb-2 drop-shadow-lg"
+          />
 
           <!-- TITLE -->
           <h3 class="text-lg font-bold text-white">

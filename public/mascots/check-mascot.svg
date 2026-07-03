@@ -1,0 +1,43 @@
+<svg viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2BB551"/><stop offset="1" stop-color="#1B9440"/>
+    </linearGradient>
+    <linearGradient id="bagB" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFB05A"/><stop offset="1" stop-color="#F2861F"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="160" cy="332" rx="95" ry="15" fill="#000" opacity="0.08"/>
+
+  <!-- legs -->
+  <rect x="128" y="288" width="16" height="36" rx="8" fill="#1B9440"/>
+  <rect x="176" y="288" width="16" height="36" rx="8" fill="#1B9440"/>
+  <ellipse cx="130" cy="326" rx="20" ry="11" fill="#15803A"/>
+  <ellipse cx="190" cy="326" rx="20" ry="11" fill="#15803A"/>
+
+  <!-- speech-bubble body (the logo, alive) -->
+  <path d="M70 60 H250 a28 28 0 0 1 28 28 V210 a28 28 0 0 1 -28 28 H150 l-26 34 v-34 H70 a28 28 0 0 1 -28 -28 V88 a28 28 0 0 1 28 -28 Z" fill="url(#gB)"/>
+
+  <!-- big white checkmark = belly/identity -->
+  <path d="M104 152 L142 192 L210 104" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- eyes on the bubble top -->
+  <circle cx="135" cy="100" r="12" fill="#15301E"/>
+  <circle cx="185" cy="100" r="12" fill="#15301E"/>
+  <circle cx="139" cy="96" r="4" fill="#fff"/>
+  <circle cx="189" cy="96" r="4" fill="#fff"/>
+  <circle cx="112" cy="118" r="11" fill="#FFC4D0" opacity="0.9"/>
+  <circle cx="208" cy="118" r="11" fill="#FFC4D0" opacity="0.9"/>
+
+  <!-- left arm holding bag -->
+  <path d="M60 150 C36 162 30 190 44 206" fill="none" stroke="url(#gB)" stroke-width="18" stroke-linecap="round"/>
+  <g transform="translate(20 196)">
+    <path d="M4 12 L46 12 L41 58 L9 58 Z" fill="url(#bagB)"/>
+    <path d="M13 12 C13 0 37 0 37 12" fill="none" stroke="#C8651A" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- right arm waving -->
+  <path d="M260 150 C286 150 298 132 300 116" fill="none" stroke="url(#gB)" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="301" cy="112" r="12" fill="#2BB551"/>
+</svg>

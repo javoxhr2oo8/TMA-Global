@@ -1,0 +1,40 @@
+<svg viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gC" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34C75C"/><stop offset="1" stop-color="#179A41"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="160" cy="334" rx="90" ry="14" fill="#000" opacity="0.08"/>
+
+  <!-- little feet -->
+  <ellipse cx="132" cy="320" rx="22" ry="12" fill="#15803A"/>
+  <ellipse cx="188" cy="320" rx="22" ry="12" fill="#15803A"/>
+
+  <!-- blob body: rounded with a single sprout/antenna (leaf) -->
+  <path d="M160 70
+           C232 70 262 132 262 196
+           C262 268 220 314 160 314
+           C100 314 58 268 58 196
+           C58 132 88 70 160 70 Z" fill="url(#gC)"/>
+
+  <!-- sprout -->
+  <path d="M160 72 C160 44 150 26 132 20 C150 24 170 36 176 56 C188 40 206 36 216 38 C200 46 186 60 178 76 Z" fill="#2BB551"/>
+
+  <!-- white rounded badge with checkmark -->
+  <circle cx="160" cy="232" r="40" fill="#F4FBF5"/>
+  <path d="M140 232 L155 248 L182 214" fill="none" stroke="#1FA84C" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- face -->
+  <circle cx="134" cy="160" r="14" fill="#15301E"/>
+  <circle cx="186" cy="160" r="14" fill="#15301E"/>
+  <circle cx="139" cy="154" r="4.5" fill="#fff"/>
+  <circle cx="191" cy="154" r="4.5" fill="#fff"/>
+  <circle cx="112" cy="184" r="16" fill="#FFC4D0" opacity="0.9"/>
+  <circle cx="208" cy="184" r="16" fill="#FFC4D0" opacity="0.9"/>
+  <path d="M148 182 C155 190 165 190 172 182" fill="none" stroke="#15301E" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- little arms -->
+  <path d="M64 196 C44 204 38 224 46 240" fill="none" stroke="url(#gC)" stroke-width="17" stroke-linecap="round"/>
+  <path d="M256 196 C276 204 282 224 274 240" fill="none" stroke="url(#gC)" stroke-width="17" stroke-linecap="round"/>
+</svg>

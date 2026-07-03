@@ -137,7 +137,6 @@ declare global {
   const useModel: typeof import('vue').useModel
   const useNuxtApp: typeof import('../../node_modules/nuxt/dist/app/nuxt').useNuxtApp
   const useNuxtData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData').useNuxtData
-  const useNuxtDevTools: typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools').useNuxtDevTools
   const useOrder: typeof import('../../app/composables/useOrder').useOrder
   const usePWA: typeof import('../../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index').usePWA
   const usePinia: typeof import('../../node_modules/@pinia/nuxt/dist/runtime/composables').usePinia
@@ -145,6 +144,7 @@ declare global {
   const useProduct: typeof import('../../app/composables/useProduct').useProduct
   const usePwaInstall: typeof import('../../app/composables/usePwaInstall').usePwaInstall
   const useRandomCollection: typeof import('../../app/composables/useRandomCollection').useRandomCollection
+  const useRegistration: typeof import('../../app/composables/useRegistration').useRegistration
   const useRequestEvent: typeof import('../../node_modules/nuxt/dist/app/composables/ssr').useRequestEvent
   const useRequestFetch: typeof import('../../node_modules/nuxt/dist/app/composables/ssr').useRequestFetch
   const useRequestHeader: typeof import('../../node_modules/nuxt/dist/app/composables/ssr').useRequestHeader
@@ -216,6 +216,9 @@ declare global {
   // @ts-ignore
   export type { OrderCustomer } from '../../app/composables/useOrder'
   import('../../app/composables/useOrder')
+  // @ts-ignore
+  export type { Registration } from '../../app/composables/useRegistration'
+  import('../../app/composables/useRegistration')
   // @ts-ignore
   export type { DemoProduct } from '../../app/utils/products'
   import('../../app/utils/products')
@@ -360,7 +363,6 @@ declare module 'vue' {
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useNuxtApp: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/nuxt')['useNuxtApp']>
     readonly useNuxtData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useNuxtData']>
-    readonly useNuxtDevTools: UnwrapRef<typeof import('../../node_modules/@nuxt/devtools/dist/runtime/use-nuxt-devtools')['useNuxtDevTools']>
     readonly useOrder: UnwrapRef<typeof import('../../app/composables/useOrder')['useOrder']>
     readonly usePWA: UnwrapRef<typeof import('../../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index')['usePWA']>
     readonly usePinia: UnwrapRef<typeof import('../../node_modules/@pinia/nuxt/dist/runtime/composables')['usePinia']>
@@ -368,6 +370,7 @@ declare module 'vue' {
     readonly useProduct: UnwrapRef<typeof import('../../app/composables/useProduct')['useProduct']>
     readonly usePwaInstall: UnwrapRef<typeof import('../../app/composables/usePwaInstall')['usePwaInstall']>
     readonly useRandomCollection: UnwrapRef<typeof import('../../app/composables/useRandomCollection')['useRandomCollection']>
+    readonly useRegistration: UnwrapRef<typeof import('../../app/composables/useRegistration')['useRegistration']>
     readonly useRequestEvent: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestEvent']>
     readonly useRequestFetch: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestFetch']>
     readonly useRequestHeader: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/ssr')['useRequestHeader']>

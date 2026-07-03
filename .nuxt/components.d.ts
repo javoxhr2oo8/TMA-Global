@@ -20,6 +20,7 @@ export const AdminProductCard: typeof import("../app/components/Admin/ProductCar
 export const AdminProductGrid: typeof import("../app/components/Admin/ProductGrid.vue").default
 export const AdminProductImages: typeof import("../app/components/Admin/ProductImages.vue").default
 export const AdminProductModal: typeof import("../app/components/Admin/ProductModal.vue").default
+export const AdminRegistrations: typeof import("../app/components/Admin/Registrations.vue").default
 export const AdminStats: typeof import("../app/components/Admin/Stats.vue").default
 export const AdminToast: typeof import("../app/components/Admin/Toast.vue").default
 export const AdminTopBar: typeof import("../app/components/Admin/TopBar.vue").default
@@ -39,6 +40,7 @@ export const UIInstallButton: typeof import("../app/components/UI/InstallButton.
 export const UILoader: typeof import("../app/components/UI/Loader.vue").default
 export const UIOrderSuccessModal: typeof import("../app/components/UI/OrderSuccessModal.vue").default
 export const UIProductCard: typeof import("../app/components/UI/ProductCard.vue").default
+export const UIRegistrationModal: typeof import("../app/components/UI/RegistrationModal.vue").default
 export const UISelect: typeof import("../app/components/UI/Select.vue").default
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default
@@ -77,6 +79,7 @@ export const LazyAdminProductCard: LazyComponent<typeof import("../app/component
 export const LazyAdminProductGrid: LazyComponent<typeof import("../app/components/Admin/ProductGrid.vue").default>
 export const LazyAdminProductImages: LazyComponent<typeof import("../app/components/Admin/ProductImages.vue").default>
 export const LazyAdminProductModal: LazyComponent<typeof import("../app/components/Admin/ProductModal.vue").default>
+export const LazyAdminRegistrations: LazyComponent<typeof import("../app/components/Admin/Registrations.vue").default>
 export const LazyAdminStats: LazyComponent<typeof import("../app/components/Admin/Stats.vue").default>
 export const LazyAdminToast: LazyComponent<typeof import("../app/components/Admin/Toast.vue").default>
 export const LazyAdminTopBar: LazyComponent<typeof import("../app/components/Admin/TopBar.vue").default>
@@ -96,6 +99,7 @@ export const LazyUIInstallButton: LazyComponent<typeof import("../app/components
 export const LazyUILoader: LazyComponent<typeof import("../app/components/UI/Loader.vue").default>
 export const LazyUIOrderSuccessModal: LazyComponent<typeof import("../app/components/UI/OrderSuccessModal.vue").default>
 export const LazyUIProductCard: LazyComponent<typeof import("../app/components/UI/ProductCard.vue").default>
+export const LazyUIRegistrationModal: LazyComponent<typeof import("../app/components/UI/RegistrationModal.vue").default>
 export const LazyUISelect: LazyComponent<typeof import("../app/components/UI/Select.vue").default>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default>

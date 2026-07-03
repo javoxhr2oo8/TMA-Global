@@ -22,6 +22,15 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider == 'password';
     }
 
+    // RO'YXATDAN O'TISH (So'rovnomalar)
+    // - create: har kim forma to'ldira oladi (autentifikatsiya shart emas)
+    // - read/delete: faqat admin
+    match /registrations/{regId} {
+      allow create: if true;
+      allow read, delete: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'password';
+    }
+
     // Boshqa hamma narsa — taqiq
     match /{document=**} {
       allow read, write: if false;

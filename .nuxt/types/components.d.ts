@@ -20,6 +20,7 @@ interface _GlobalComponents {
   'AdminProductGrid': typeof import("../../app/components/Admin/ProductGrid.vue").default
   'AdminProductImages': typeof import("../../app/components/Admin/ProductImages.vue").default
   'AdminProductModal': typeof import("../../app/components/Admin/ProductModal.vue").default
+  'AdminRegistrations': typeof import("../../app/components/Admin/Registrations.vue").default
   'AdminStats': typeof import("../../app/components/Admin/Stats.vue").default
   'AdminToast': typeof import("../../app/components/Admin/Toast.vue").default
   'AdminTopBar': typeof import("../../app/components/Admin/TopBar.vue").default
@@ -39,6 +40,7 @@ interface _GlobalComponents {
   'UILoader': typeof import("../../app/components/UI/Loader.vue").default
   'UIOrderSuccessModal': typeof import("../../app/components/UI/OrderSuccessModal.vue").default
   'UIProductCard': typeof import("../../app/components/UI/ProductCard.vue").default
+  'UIRegistrationModal': typeof import("../../app/components/UI/RegistrationModal.vue").default
   'UISelect': typeof import("../../app/components/UI/Select.vue").default
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default
@@ -77,6 +79,7 @@ interface _GlobalComponents {
   'LazyAdminProductGrid': LazyComponent<typeof import("../../app/components/Admin/ProductGrid.vue").default>
   'LazyAdminProductImages': LazyComponent<typeof import("../../app/components/Admin/ProductImages.vue").default>
   'LazyAdminProductModal': LazyComponent<typeof import("../../app/components/Admin/ProductModal.vue").default>
+  'LazyAdminRegistrations': LazyComponent<typeof import("../../app/components/Admin/Registrations.vue").default>
   'LazyAdminStats': LazyComponent<typeof import("../../app/components/Admin/Stats.vue").default>
   'LazyAdminToast': LazyComponent<typeof import("../../app/components/Admin/Toast.vue").default>
   'LazyAdminTopBar': LazyComponent<typeof import("../../app/components/Admin/TopBar.vue").default>
@@ -96,6 +99,7 @@ interface _GlobalComponents {
   'LazyUILoader': LazyComponent<typeof import("../../app/components/UI/Loader.vue").default>
   'LazyUIOrderSuccessModal': LazyComponent<typeof import("../../app/components/UI/OrderSuccessModal.vue").default>
   'LazyUIProductCard': LazyComponent<typeof import("../../app/components/UI/ProductCard.vue").default>
+  'LazyUIRegistrationModal': LazyComponent<typeof import("../../app/components/UI/RegistrationModal.vue").default>
   'LazyUISelect': LazyComponent<typeof import("../../app/components/UI/Select.vue").default>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default>
