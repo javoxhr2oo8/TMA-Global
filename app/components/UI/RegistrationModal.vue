@@ -131,7 +131,7 @@ const onSubmit = () => {
                   type="text"
                   placeholder="Ismingiz"
                   class="reg-input"
-                  :class="errors.firstName ? 'border-red-500/60' : 'border-white/10 focus:border-[#008236]/60'"
+                  :class="errors.firstName ? 'border-red-500/60' : 'border-transparent focus:border-[#008236]/60'"
                   @input="errors.firstName = ''"
                 />
                 <p v-if="errors.firstName" class="reg-error">{{ errors.firstName }}</p>
@@ -147,7 +147,7 @@ const onSubmit = () => {
                   type="text"
                   placeholder="Familiyangiz"
                   class="reg-input"
-                  :class="errors.lastName ? 'border-red-500/60' : 'border-white/10 focus:border-[#008236]/60'"
+                  :class="errors.lastName ? 'border-red-500/60' : 'border-transparent focus:border-[#008236]/60'"
                   @input="errors.lastName = ''"
                 />
                 <p v-if="errors.lastName" class="reg-error">{{ errors.lastName }}</p>
@@ -165,7 +165,7 @@ const onSubmit = () => {
                   placeholder="+998 (XX) XXX-XX-XX"
                   maxlength="19"
                   class="reg-input"
-                  :class="errors.phone ? 'border-red-500/60' : 'border-white/10 focus:border-[#008236]/60'"
+                  :class="errors.phone ? 'border-red-500/60' : 'border-transparent focus:border-[#008236]/60'"
                   @input="onPhoneInput"
                   @keydown="onPhoneKeydown"
                   @focus="onPhoneFocus"
@@ -183,7 +183,7 @@ const onSubmit = () => {
                   type="text"
                   placeholder="Shahar, tuman, ko'cha, uy..."
                   class="reg-input"
-                  :class="errors.address ? 'border-red-500/60' : 'border-white/10 focus:border-[#008236]/60'"
+                  :class="errors.address ? 'border-red-500/60' : 'border-transparent focus:border-[#008236]/60'"
                   @input="errors.address = ''"
                 />
                 <p v-if="errors.address" class="reg-error">{{ errors.address }}</p>

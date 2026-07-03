@@ -32,8 +32,8 @@ onMounted(() => {
   expand()
   setHeaderColor('#008236')
 
-  // Agar foydalanuvchi ro'yxatdan o'tmagan bo'lsa — formani ko'rsatish
-  if (!isRegistered()) {
+  // Admin sahifasida formani ko'rsatmaslik
+  if (!isRegistered() && !route.path.startsWith('/admin')) {
     showRegModal.value = true
   }
 })
