@@ -388,7 +388,7 @@ const installApp = async () => {
   if (hapticImpact) hapticImpact("light");
 
   if (isInstalled.value || addedToHomeScreen.value) {
-    alert("Ilova allaqachon o'rnatilgan!");
+    useToast().info("Ilova allaqachon o'rnatilgan!");
     return;
   }
 

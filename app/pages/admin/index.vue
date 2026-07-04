@@ -1,6 +1,6 @@
 <!-- app/pages/admin/index.vue -->
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const { user, ready, init, login, logout } = useAdminAuth();
 const { products, loading, load, create, update, remove } = useAdminProducts();
@@ -12,7 +12,10 @@ const {
   remove: removeRegistration,
 } = useRegistration();
 
-const activeTab = ref<"products" | "orders" | "registrations">("products");
+const { confirm } = useConfirm();
+const toast = useToast();
+
+const activeTab = ref<"products" | "orders" | "registrations" | "banners">("products");
 const tabCls = (t: string) =>
   "px-4 py-2 rounded-xl text-sm font-semibold cursor-pointer transition-colors " +
   (activeTab.value === t
@@ -21,7 +24,55 @@ const tabCls = (t: string) =>
 const goOrders = () => { activeTab.value = "orders"; loadOrders(); };
 const goRegistrations = () => { activeTab.value = "registrations"; loadRegistrations(); };
 
-// Admin uchun kategoriyalar — yagona manbadan olinadi ('Barchasi'siz, chunki bu real kategoriya emas).
+// --- BANNERLAR ---
+const {
+  banners: bannerList,
+  loading: bannersLoading,
+  load: loadBanners,
+  create: createBanner,
+  update: updateBanner,
+  remove: removeBanner,
+} = useBanners();
+
+const goBanners = () => { activeTab.value = "banners"; loadBanners(); };
+
+const bannerModalOpen = ref(false);
+const editingBanner = ref<any | null>(null);
+const bannerSaving = ref(false);
+
+const openAddBanner = () => { editingBanner.value = null; bannerModalOpen.value = true; };
+const openEditBanner = (b: any) => { editingBanner.value = b; bannerModalOpen.value = true; };
+const closeBannerModal = () => { bannerModalOpen.value = false; };
+
+const onBannerSave = async (data: any) => {
+  bannerSaving.value = true;
+  try {
+    if (editingBanner.value) {
+      await updateBanner(editingBanner.value.id, data);
+      toast.success("Banner yangilandi ✓");
+    } else {
+      await createBanner(data);
+      toast.success("Banner qo'shildi ✓");
+    }
+    closeBannerModal();
+  } catch (e: any) {
+    toast.error("Xato: " + (e.code || e.message));
+  } finally {
+    bannerSaving.value = false;
+  }
+};
+
+const onBannerDelete = async (b: any) => {
+  const ok = await confirm({
+    title: "Bannerni o'chirish",
+    message: `"${b.title}" banner o'chirilsinmi?`,
+  });
+  if (!ok) return;
+  try { await removeBanner(b.id); toast.success("Banner o'chirildi ✓"); }
+  catch (e: any) { toast.error("Xato: " + (e.code || e.message)); }
+};
+
+// Admin uchun kategoriyalar
 const categories = productCategories.map((c) => c.label);
 
 const isAuthed = computed(() => !!user.value);
@@ -70,16 +121,6 @@ const onLogout = async () => {
   await logout();
 };
 
-const toast = reactive({ msg: "", bad: false, show: false });
-let toastTimer: any;
-const notify = (msg: string, bad = false) => {
-  toast.msg = msg;
-  toast.bad = bad;
-  toast.show = true;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => (toast.show = false), 2600);
-};
-
 const modalOpen = ref(false);
 const editing = ref<any | null>(null);
 const saving = ref(false);
@@ -100,54 +141,69 @@ const closeModal = () => {
 
 const onSave = async (data: Record<string, any>) => {
   if (!data.title || !data.images?.length || !data.price) {
-    notify("Nomi, narxi va kamida 1 ta rasm shart.", true);
+    toast.warning("Nomi, narxi va kamida 1 ta rasm shart.");
     return;
   }
   saving.value = true;
   try {
     if (editing.value) {
       await update(editing.value.id, data);
-      notify("Yangilandi ✓");
+      toast.success("Yangilandi ✓");
     } else {
       await create(data);
-      notify("Qo'shildi ✓");
+      toast.success("Qo'shildi ✓");
     }
     closeModal();
   } catch (e: any) {
-    notify("Saqlashda xato: " + (e.code || e.message), true);
+    toast.error("Saqlashda xato: " + (e.code || e.message));
   } finally {
     saving.value = false;
   }
 };
 
 const onDelete = async (p: any) => {
-  if (!confirm(`"${p.title || "mahsulot"}" o'chirilsinmi?`)) return;
+  const ok = await confirm({
+    title: "Mahsulotni o'chirish",
+    message: `"${p.title || "mahsulot"}" o'chirilsinmi? Bu amalni qaytarib bo'lmaydi.`,
+  });
+  if (!ok) return;
   try {
     await remove(p.id);
-    notify("O'chirildi ✓");
+    toast.success("Mahsulot o'chirildi ✓");
   } catch (e: any) {
-    notify("O'chirishda xato: " + (e.code || e.message), true);
+    toast.error("O'chirishda xato: " + (e.code || e.message));
   }
 };
 
 const onRegDelete = async (reg: any) => {
-  if (!confirm(`"${reg.firstName} ${reg.lastName}" o'chirilsinmi?`)) return;
-  try { await removeRegistration(reg.id); notify("O'chirildi ✓"); }
-  catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
+  const ok = await confirm({
+    title: "So'rovni o'chirish",
+    message: `"${reg.firstName} ${reg.lastName}" so'rovnomasi o'chirilsinmi?`,
+  });
+  if (!ok) return;
+  try { await removeRegistration(reg.id); toast.success("So'rov o'chirildi ✓"); }
+  catch (e: any) { toast.error("Xato: " + (e.code || e.message)); }
 };
 
 const onOrderStatus = async ({ id, status }: { id: string; status: string }) => {
-  try { await updateStatus(id, status); notify("Holat yangilandi ✓"); }
-  catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
+  try { await updateStatus(id, status); toast.success("Holat yangilandi ✓"); }
+  catch (e: any) { toast.error("Xato: " + (e.code || e.message)); }
 };
 const onOrderDelete = async (o: any) => {
-  if (!confirm(`#${o.orderId || o.id} buyurtma o'chirilsinmi?`)) return;
-  try { await removeOrder(o.id); notify("O'chirildi ✓"); }
-  catch (e: any) { notify("Xato: " + (e.code || e.message), true); }
+  const ok = await confirm({
+    title: "Buyurtmani o'chirish",
+    message: `#${o.orderId || o.id} buyurtma o'chirilsinmi?`,
+  });
+  if (!ok) return;
+  try { await removeOrder(o.id); toast.success("Buyurtma o'chirildi ✓"); }
+  catch (e: any) { toast.error("Xato: " + (e.code || e.message)); }
 };
 
 onMounted(() => {
-  init(() => load())
+  init(() => {
+    load()
+    loadBanners()
+  })
 });
 </script>
 
@@ -181,6 +237,9 @@ onMounted(() => {
           <button :class="tabCls('orders')" @click="goOrders">Buyurtmalar</button>
           <button :class="tabCls('registrations')" @click="goRegistrations">
             <i class="fas fa-users mr-1.5" />So'rovnomalar
+          </button>
+          <button :class="tabCls('banners')" @click="goBanners">
+            <i class="fas fa-image mr-1.5" />Bannerlar
           </button>
         </div>
 
@@ -230,6 +289,16 @@ onMounted(() => {
           @delete="onRegDelete"
           @refresh="loadRegistrations"
         />
+
+        <AdminBanners
+          v-else-if="activeTab === 'banners'"
+          :banners="bannerList"
+          :loading="bannersLoading"
+          @add="openAddBanner"
+          @edit="openEditBanner"
+          @delete="onBannerDelete"
+          @refresh="loadBanners"
+        />
       </div>
     </template>
 
@@ -246,6 +315,12 @@ onMounted(() => {
       @save="onSave"
     />
 
-    <AdminToast :msg="toast.msg" :show="toast.show" :bad="toast.bad" />
+    <AdminBannerModal
+      :open="bannerModalOpen"
+      :banner="editingBanner"
+      :saving="bannerSaving"
+      @close="closeBannerModal"
+      @save="onBannerSave"
+    />
   </div>
 </template>

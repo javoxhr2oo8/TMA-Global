@@ -6,20 +6,19 @@ import type { Swiper as SwiperClass } from 'swiper/types'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/effect-fade'
-import { heroSlides as slides } from './slides'
 
 const { hapticImpact } = useTelegram()
+const { activeBanners, listen, loaded, loading } = useBanners()
+
+onMounted(() => listen())
 
 const modules = [Navigation, Pagination, Autoplay, EffectFade]
-
-/* faol slayd indeksi — yozuvlarni almashtirish uchun */
 const activeIndex = ref(0)
 
 function onSlideChange(swiper: SwiperClass) {
   activeIndex.value = swiper.realIndex
 }
 
-/* rasm yuklanmasa, uni yashirib zaxira gradientni ko‘rsatamiz */
 function onImgError(e: Event) {
   const img = e.target as HTMLImageElement
   img.style.display = 'none'
@@ -27,25 +26,26 @@ function onImgError(e: Event) {
 </script>
 
 <template>
-  <section class="hero-section">
+  <section v-if="activeBanners.length > 0" class="hero-section">
     <div class="container">
       <div class="hero relative w-full h-[200px] sm:h-[260px] rounded-[16px] overflow-hidden shadow-lg">
-        <!-- Rasmlar karuseli -->
         <swiper
           :modules="modules"
           :slides-per-view="1"
           effect="fade"
           :fade-effect="{ crossFade: true }"
-          :loop="true"
+          :loop="activeBanners.length > 1"
           :speed="700"
           :autoplay="{ delay: 4500, disableOnInteraction: false }"
           :pagination="{ clickable: true }"
-          :navigation="{ nextEl: '.hero-next', prevEl: '.hero-prev' }"
           class="w-full h-full"
           @slide-change="onSlideChange"
         >
-          <swiper-slide v-for="(item, i) in slides" :key="i">
-            <div class="relative w-full h-full" :style="{ background: item.fallback }">
+          <swiper-slide v-for="(item, i) in activeBanners" :key="item.id">
+            <div
+              class="relative w-full h-full"
+              style="background: linear-gradient(120deg, #065f46 0%, #008236 60%, #16a34a 100%)"
+            >
               <img
                 :src="item.image"
                 :alt="item.title"
@@ -54,55 +54,43 @@ function onImgError(e: Event) {
                 decoding="async"
                 @error="onImgError"
               />
-              <!-- matn o‘qilishi uchun qoraytiruvchi gradient -->
               <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10"></div>
               <div class="absolute inset-0 bg-gradient-to-r from-black/45 to-transparent"></div>
             </div>
           </swiper-slide>
         </swiper>
 
-        <!-- Ustki yozuv (rasm bilan birga almashib turadi) -->
         <div class="hero-overlay absolute inset-0 z-10 flex flex-col justify-center p-4 sm:p-6 pointer-events-none">
           <Transition name="hero" mode="out-in">
             <div :key="activeIndex" class="hero-content max-w-[78%]">
-              <span class="hero-line inline-flex items-center text-[11px] sm:text-[13px] font-semibold text-white bg-[#008236] px-3 py-1 rounded-full shadow">
-                {{ slides[activeIndex]?.badge }}
+              <span
+                v-if="activeBanners[activeIndex]?.badge"
+                class="hero-line inline-flex items-center text-[11px] sm:text-[13px] font-semibold text-white bg-[#008236] px-3 py-1 rounded-full shadow"
+              >
+                {{ activeBanners[activeIndex]?.badge }}
               </span>
 
               <h2 class="hero-line text-white font-bold leading-tight mt-2 text-[18px] sm:text-[26px] drop-shadow">
-                {{ slides[activeIndex]?.title }}
+                {{ activeBanners[activeIndex]?.title }}
               </h2>
 
-              <p class="hero-line text-white/85 text-[12px] sm:text-[15px] mt-1 leading-snug">
-                {{ slides[activeIndex]?.subtitle }}
-              </p>
-
-              <!-- <NuxtLink
-                :to="slides[activeIndex]?.to || '/'"
-                class="hero-line hero-cta pointer-events-auto inline-flex items-center gap-2 mt-3 bg-white text-[#008236] font-semibold text-[12px] sm:text-[14px] px-4 sm:px-5 py-2 rounded-full shadow-md active:scale-95 transition-transform"
-                @click="hapticImpact('light')"
+              <p
+                v-if="activeBanners[activeIndex]?.subtitle"
+                class="hero-line text-white/85 text-[12px] sm:text-[15px] mt-1 leading-snug"
               >
-                {{ slides[activeIndex]?.cta }}
-                <i class="fa-solid fa-arrow-right text-[10px] sm:text-[12px]"></i>
-              </NuxtLink> -->
+                {{ activeBanners[activeIndex]?.subtitle }}
+              </p>
             </div>
           </Transition>
         </div>
-
-        <!-- Navigatsiya tugmalari -->
-        <button v-if="false"
-          class="hero-prev absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm shadow-md rounded-full w-8 h-8 flex items-center justify-center hover:bg-white active:scale-95 transition-all"
-          aria-label="Oldingi"
-        >
-          <i class="fa-solid fa-chevron-left text-gray-800 text-xs"></i>
-        </button>
-        <button v-if="false"
-          class="hero-next absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/80 backdrop-blur-sm shadow-md rounded-full w-8 h-8 flex items-center justify-center hover:bg-white active:scale-95 transition-all"
-          aria-label="Keyingi"
-        >
-          <i class="fa-solid fa-chevron-right text-gray-800 text-xs"></i>
-        </button>
       </div>
+    </div>
+  </section>
+
+  <!-- Banner yo'q bo'lganda skeleton -->
+  <section v-else-if="loading && !loaded" class="hero-section">
+    <div class="container">
+      <div class="w-full h-[200px] sm:h-[260px] rounded-[16px] bg-white/5 animate-pulse"></div>
     </div>
   </section>
 </template>
@@ -112,7 +100,6 @@ function onImgError(e: Event) {
   padding: 12px 0;
 }
 
-/* faol slaydda rasm sekin kattalashadi (Ken Burns) */
 .hero :deep(.swiper-slide-active) .hero-img {
   animation: hero-kenburns 6s ease forwards;
 }
@@ -122,7 +109,6 @@ function onImgError(e: Event) {
   to { transform: scale(1.08); }
 }
 
-/* yozuvlar almashganda staggered chiqishi */
 .hero-line {
   animation: hero-line-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -136,7 +122,6 @@ function onImgError(e: Event) {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* eski matn chiqib ketishi */
 .hero-leave-active {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
@@ -147,7 +132,6 @@ function onImgError(e: Event) {
 </style>
 
 <style>
-/* pagination nuqtalari (global, swiper ichidagi elementlar uchun) */
 .hero .swiper-pagination {
   display: flex !important;
   align-items: center;

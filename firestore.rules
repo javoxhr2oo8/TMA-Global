@@ -22,6 +22,15 @@ service cloud.firestore {
         && request.auth.token.firebase.sign_in_provider == 'password';
     }
 
+    // BANNERLAR
+    // - read: hamma (Hero slayder uchun)
+    // - create/update/delete: faqat admin
+    match /banners/{bannerId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null
+        && request.auth.token.firebase.sign_in_provider == 'password';
+    }
+
     // RO'YXATDAN O'TISH (So'rovnomalar)
     // - create: har kim forma to'ldira oladi (autentifikatsiya shart emas)
     // - read/delete: faqat admin

@@ -8,6 +8,7 @@ const route = useRoute();
 const router = useRouter();
 const { showBackButton, hideBackButton, setHeaderColor, expand } = useTelegram();
 const { submit, isRegistered, markRegistered } = useRegistration();
+const toast = useToast();
 useColorMode()
 
 // Ro'yxatdan o'tish modal holati
@@ -46,11 +47,7 @@ const onRegSubmit = async (data: { firstName: string; lastName: string; phone: s
     showRegModal.value = false
   } catch (e: any) {
     console.error('Registration error:', e)
-    if (import.meta.client && window.Telegram?.WebApp) {
-      window.Telegram.WebApp.showAlert("Xatolik yuz berdi. Qayta urinib ko'ring.")
-    } else {
-      alert("Xatolik yuz berdi. Qayta urinib ko'ring.")
-    }
+    toast.error("Xatolik yuz berdi. Qayta urinib ko'ring.")
   } finally {
     regSaving.value = false
   }
@@ -69,6 +66,10 @@ const onRegSubmit = async (data: { firstName: string; lastName: string; phone: s
       :saving="regSaving"
       @submit="onRegSubmit"
     />
+
+    <!-- Global komponentlar -->
+    <UIConfirmModal />
+    <UIToasts />
   </div>
 </template>
 
