@@ -14,6 +14,8 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 
+export const AdminBannerModal: typeof import("../app/components/Admin/BannerModal.vue").default
+export const AdminBanners: typeof import("../app/components/Admin/Banners.vue").default
 export const AdminLogin: typeof import("../app/components/Admin/Login.vue").default
 export const AdminOrders: typeof import("../app/components/Admin/Orders.vue").default
 export const AdminProductCard: typeof import("../app/components/Admin/ProductCard.vue").default
@@ -36,12 +38,14 @@ export const UIAppSwiper: typeof import("../app/components/UI/AppSwiper.vue").de
 export const UIBackBar: typeof import("../app/components/UI/BackBar.vue").default
 export const UIBackButton: typeof import("../app/components/UI/BackButton.vue").default
 export const UIButton: typeof import("../app/components/UI/Button.vue").default
+export const UIConfirmModal: typeof import("../app/components/UI/ConfirmModal.vue").default
 export const UIInstallButton: typeof import("../app/components/UI/InstallButton.vue").default
 export const UILoader: typeof import("../app/components/UI/Loader.vue").default
 export const UIOrderSuccessModal: typeof import("../app/components/UI/OrderSuccessModal.vue").default
 export const UIProductCard: typeof import("../app/components/UI/ProductCard.vue").default
 export const UIRegistrationModal: typeof import("../app/components/UI/RegistrationModal.vue").default
 export const UISelect: typeof import("../app/components/UI/Select.vue").default
+export const UIToasts: typeof import("../app/components/UI/Toasts.vue").default
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default
 export const NuxtLayout: typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default
 export const NuxtErrorBoundary: typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default
@@ -73,6 +77,8 @@ export const Head: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/components").Html
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components").Body
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island").default
+export const LazyAdminBannerModal: LazyComponent<typeof import("../app/components/Admin/BannerModal.vue").default>
+export const LazyAdminBanners: LazyComponent<typeof import("../app/components/Admin/Banners.vue").default>
 export const LazyAdminLogin: LazyComponent<typeof import("../app/components/Admin/Login.vue").default>
 export const LazyAdminOrders: LazyComponent<typeof import("../app/components/Admin/Orders.vue").default>
 export const LazyAdminProductCard: LazyComponent<typeof import("../app/components/Admin/ProductCard.vue").default>
@@ -95,12 +101,14 @@ export const LazyUIAppSwiper: LazyComponent<typeof import("../app/components/UI/
 export const LazyUIBackBar: LazyComponent<typeof import("../app/components/UI/BackBar.vue").default>
 export const LazyUIBackButton: LazyComponent<typeof import("../app/components/UI/BackButton.vue").default>
 export const LazyUIButton: LazyComponent<typeof import("../app/components/UI/Button.vue").default>
+export const LazyUIConfirmModal: LazyComponent<typeof import("../app/components/UI/ConfirmModal.vue").default>
 export const LazyUIInstallButton: LazyComponent<typeof import("../app/components/UI/InstallButton.vue").default>
 export const LazyUILoader: LazyComponent<typeof import("../app/components/UI/Loader.vue").default>
 export const LazyUIOrderSuccessModal: LazyComponent<typeof import("../app/components/UI/OrderSuccessModal.vue").default>
 export const LazyUIProductCard: LazyComponent<typeof import("../app/components/UI/ProductCard.vue").default>
 export const LazyUIRegistrationModal: LazyComponent<typeof import("../app/components/UI/RegistrationModal.vue").default>
 export const LazyUISelect: LazyComponent<typeof import("../app/components/UI/Select.vue").default>
+export const LazyUIToasts: LazyComponent<typeof import("../app/components/UI/Toasts.vue").default>
 export const LazyNuxtWelcome: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/welcome.vue").default>
 export const LazyNuxtLayout: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout").default>
 export const LazyNuxtErrorBoundary: LazyComponent<typeof import("../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default>

@@ -23,7 +23,10 @@ export const productCategories = [
   { id: 14, label: "Oyoq kiyimlar", icon: "fa-solid fa-shoe-prints" },
   { id: 15, label: "Ayollar kiyimi", icon: "fa-solid fa-person-dress" },
   { id: 16, label: "Erkaklar kiyimi", icon: "fa-solid fa-person" },
-  { id: 17, label: "Boshqa mahsulotlar", icon: "fa-solid fa-ellipsis" },
+  { id: 17, label: "Sumka (erkaklar)", icon: "fa-solid fa-briefcase" },
+  { id: 18, label: "Sumka (ayollar)", icon: "fa-solid fa-bag-shopping" },
+  { id: 19, label: "Aksessuarlar", icon: "fa-solid fa-glasses" },
+  { id: 20, label: "Boshqa mahsulotlar", icon: "fa-solid fa-ellipsis" },
 ];
 
 export const useCategory = () => {

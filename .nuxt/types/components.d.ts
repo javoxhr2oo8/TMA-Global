@@ -14,6 +14,8 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  'AdminBannerModal': typeof import("../../app/components/Admin/BannerModal.vue").default
+  'AdminBanners': typeof import("../../app/components/Admin/Banners.vue").default
   'AdminLogin': typeof import("../../app/components/Admin/Login.vue").default
   'AdminOrders': typeof import("../../app/components/Admin/Orders.vue").default
   'AdminProductCard': typeof import("../../app/components/Admin/ProductCard.vue").default
@@ -36,12 +38,14 @@ interface _GlobalComponents {
   'UIBackBar': typeof import("../../app/components/UI/BackBar.vue").default
   'UIBackButton': typeof import("../../app/components/UI/BackButton.vue").default
   'UIButton': typeof import("../../app/components/UI/Button.vue").default
+  'UIConfirmModal': typeof import("../../app/components/UI/ConfirmModal.vue").default
   'UIInstallButton': typeof import("../../app/components/UI/InstallButton.vue").default
   'UILoader': typeof import("../../app/components/UI/Loader.vue").default
   'UIOrderSuccessModal': typeof import("../../app/components/UI/OrderSuccessModal.vue").default
   'UIProductCard': typeof import("../../app/components/UI/ProductCard.vue").default
   'UIRegistrationModal': typeof import("../../app/components/UI/RegistrationModal.vue").default
   'UISelect': typeof import("../../app/components/UI/Select.vue").default
+  'UIToasts': typeof import("../../app/components/UI/Toasts.vue").default
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default
   'NuxtErrorBoundary': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default
@@ -73,6 +77,8 @@ interface _GlobalComponents {
   'Html': typeof import("../../node_modules/nuxt/dist/head/runtime/components").Html
   'Body': typeof import("../../node_modules/nuxt/dist/head/runtime/components").Body
   'NuxtIsland': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island").default
+  'LazyAdminBannerModal': LazyComponent<typeof import("../../app/components/Admin/BannerModal.vue").default>
+  'LazyAdminBanners': LazyComponent<typeof import("../../app/components/Admin/Banners.vue").default>
   'LazyAdminLogin': LazyComponent<typeof import("../../app/components/Admin/Login.vue").default>
   'LazyAdminOrders': LazyComponent<typeof import("../../app/components/Admin/Orders.vue").default>
   'LazyAdminProductCard': LazyComponent<typeof import("../../app/components/Admin/ProductCard.vue").default>
@@ -95,12 +101,14 @@ interface _GlobalComponents {
   'LazyUIBackBar': LazyComponent<typeof import("../../app/components/UI/BackBar.vue").default>
   'LazyUIBackButton': LazyComponent<typeof import("../../app/components/UI/BackButton.vue").default>
   'LazyUIButton': LazyComponent<typeof import("../../app/components/UI/Button.vue").default>
+  'LazyUIConfirmModal': LazyComponent<typeof import("../../app/components/UI/ConfirmModal.vue").default>
   'LazyUIInstallButton': LazyComponent<typeof import("../../app/components/UI/InstallButton.vue").default>
   'LazyUILoader': LazyComponent<typeof import("../../app/components/UI/Loader.vue").default>
   'LazyUIOrderSuccessModal': LazyComponent<typeof import("../../app/components/UI/OrderSuccessModal.vue").default>
   'LazyUIProductCard': LazyComponent<typeof import("../../app/components/UI/ProductCard.vue").default>
   'LazyUIRegistrationModal': LazyComponent<typeof import("../../app/components/UI/RegistrationModal.vue").default>
   'LazyUISelect': LazyComponent<typeof import("../../app/components/UI/Select.vue").default>
+  'LazyUIToasts': LazyComponent<typeof import("../../app/components/UI/Toasts.vue").default>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue").default>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout").default>
   'LazyNuxtErrorBoundary': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue").default>

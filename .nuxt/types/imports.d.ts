@@ -113,9 +113,11 @@ declare global {
   const useAppleSplashScreenPwaIcon: typeof import('../../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index').useAppleSplashScreenPwaIcon
   const useAsyncData: typeof import('../../node_modules/nuxt/dist/app/composables/asyncData').useAsyncData
   const useAttrs: typeof import('vue').useAttrs
+  const useBanners: typeof import('../../app/composables/useBanners').useBanners
   const useCart: typeof import('../../app/composables/useCart').useCart
   const useCategory: typeof import('../../app/composables/useCategory').useCategory
   const useColorMode: typeof import('../../app/composables/useColorMode').useColorMode
+  const useConfirm: typeof import('../../app/composables/useConfirm').useConfirm
   const useCookie: typeof import('../../node_modules/nuxt/dist/app/composables/cookie').useCookie
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
@@ -196,6 +198,7 @@ declare global {
   const useState: typeof import('../../node_modules/nuxt/dist/app/composables/state').useState
   const useTelegram: typeof import('../../app/composables/useTelegram').useTelegram
   const useTemplateRef: typeof import('vue').useTemplateRef
+  const useToast: typeof import('../../app/composables/useToast').useToast
   const useTransitionState: typeof import('vue').useTransitionState
   const useTransparentPwaIcon: typeof import('../../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index').useTransparentPwaIcon
   const watch: typeof import('vue').watch
@@ -214,6 +217,9 @@ declare global {
   // @ts-ignore
   export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { Banner } from '../../app/composables/useBanners'
+  import('../../app/composables/useBanners')
   // @ts-ignore
   export type { OrderCustomer } from '../../app/composables/useOrder'
   import('../../app/composables/useOrder')
@@ -340,9 +346,11 @@ declare module 'vue' {
     readonly useAppleSplashScreenPwaIcon: UnwrapRef<typeof import('../../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index')['useAppleSplashScreenPwaIcon']>
     readonly useAsyncData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/asyncData')['useAsyncData']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useBanners: UnwrapRef<typeof import('../../app/composables/useBanners')['useBanners']>
     readonly useCart: UnwrapRef<typeof import('../../app/composables/useCart')['useCart']>
     readonly useCategory: UnwrapRef<typeof import('../../app/composables/useCategory')['useCategory']>
     readonly useColorMode: UnwrapRef<typeof import('../../app/composables/useColorMode')['useColorMode']>
+    readonly useConfirm: UnwrapRef<typeof import('../../app/composables/useConfirm')['useConfirm']>
     readonly useCookie: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/cookie')['useCookie']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
@@ -423,6 +431,7 @@ declare module 'vue' {
     readonly useState: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app/composables/state')['useState']>
     readonly useTelegram: UnwrapRef<typeof import('../../app/composables/useTelegram')['useTelegram']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
+    readonly useToast: UnwrapRef<typeof import('../../app/composables/useToast')['useToast']>
     readonly useTransitionState: UnwrapRef<typeof import('vue')['useTransitionState']>
     readonly useTransparentPwaIcon: UnwrapRef<typeof import('../../node_modules/@vite-pwa/nuxt/dist/runtime/composables/index')['useTransparentPwaIcon']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>

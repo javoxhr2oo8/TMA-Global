@@ -1,0 +1,9 @@
+{
+  "pid": 12076,
+  "startedAt": 1783587369499,
+  "command": "dev",
+  "cwd": "D:/Asosiy loyihalar/TMA-Global",
+  "port": 3000,
+  "hostname": "::1",
+  "url": "http://[::1]:3000"
+}
